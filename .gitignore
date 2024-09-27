@@ -65,4 +65,4 @@ yarn-error.log
 # testing
 /coverage
 
-./android/app/google-services.json
+/app/google-services.json
