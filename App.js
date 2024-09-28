@@ -61,6 +61,7 @@ class App extends React.Component {
     initialState: null,
     previousRouteName: null,
     currentRouteName: null,
+    inititialRouteName: null,
   };
 
   persistenceKey = 'persistenceKey';
@@ -340,9 +341,38 @@ class App extends React.Component {
   handleStateChange = state => {
     console.log(state, 'my state');
     const route = state.routes[state.index];
-    console.log(route.name, 'my route');
+    console.log(route, 'my route');
+
+    const currentRoute = state.routes[state.index];
+
+    console.log(currentRoute, 'my current route object');
+
+    // Retrieve the previous route object from the current state
+    const previousRoute = this.state.currentRouteName;
+
+    // Set the previous route before updating the current route
+    this.setState({previousRouteName: previousRoute}, () => {
+      // Once previousRoute is set, check if it's different from the current route
+      if (!previousRoute || previousRoute.name !== currentRoute.name) {
+        // Update the current route object
+        this.setState({
+          currentRouteName: currentRoute, // store the entire route object
+        });
+
+        // Log previous and current routes for debugging
+        console.log(`Previous route:`, previousRoute);
+        console.log(`Current route:`, currentRoute);
+
+        // Call NavigationService with the updated route objects
+        NavigationService.onNavigationStateChange(previousRoute, currentRoute);
+
+        // Log previous and current routes for debugging
+        console.log(`Previous route:`, previousRoute);
+        console.log(`Current route:`, currentRoute);
+      }
+    });
     this.persistNavigationState(state);
-    NavigationService.onNavigationStateChange(state);
+    // NavigationService.onNavigationStateChange(state);
   };
 
   render() {

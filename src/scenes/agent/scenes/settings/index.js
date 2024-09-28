@@ -1,9 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {InteractionManager, View} from 'react-native';
 import ActivityIndicator from '../../../../components/activity-indicator';
 import {COLOUR_BLUE} from '../../../../constants/styles';
-import NavigationService from '../../../../utils/navigation-service';
 import Routes from './routes';
 
 export default class SettingsScene extends React.Component {
@@ -19,19 +17,6 @@ export default class SettingsScene extends React.Component {
     });
   }
 
-  persistNavigationState = async navState => {
-    try {
-      await AsyncStorage.setItem(this.persistenceKey, JSON.stringify(navState));
-    } catch (err) {
-      // handle the error according to your needs
-    }
-  };
-
-  loadNavigationState = async () => {
-    const jsonString = await AsyncStorage.getItem(this.persistenceKey);
-    return JSON.parse(jsonString);
-  };
-
   render() {
     if (!this.state.animationsDone) {
       return (
@@ -41,13 +26,6 @@ export default class SettingsScene extends React.Component {
       );
     }
 
-    return (
-      <Routes
-        loadNavigationState={this.loadNavigationState}
-        onNavigationStateChange={NavigationService.onNavigationStateChange}
-        persistNavigationState={this.persistNavigationState}
-        renderLoadingExperimental={() => <ActivityIndicator />}
-      />
-    );
+    return <Routes />;
   }
 }
