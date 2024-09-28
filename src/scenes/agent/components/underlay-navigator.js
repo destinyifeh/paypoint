@@ -601,7 +601,7 @@ class UnderlayNavigator extends React.Component {
                 alignItems: 'center',
                 borderRadius: 8,
                 paddingHorizontal: 20,
-                paddingVertical: 20,
+                //paddingVertical: 20,
                 color: COLOUR_WHITE,
                 backgroundColor: COLOUR_CBN_BLUE, // fontSize: process.env.REACT_APP_SMALL_FONT_SIZE,
                 marginTop: 50,

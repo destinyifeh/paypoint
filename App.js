@@ -59,6 +59,8 @@ class App extends React.Component {
     showingReleaseNotes: false,
     isReady: false,
     initialState: null,
+    previousRouteName: null,
+    currentRouteName: null,
   };
 
   persistenceKey = 'persistenceKey';
@@ -338,7 +340,7 @@ class App extends React.Component {
   handleStateChange = state => {
     console.log(state, 'my state');
     const route = state.routes[state.index];
-    console.log(route, 'my route');
+    console.log(route.name, 'my route');
     this.persistNavigationState(state);
     NavigationService.onNavigationStateChange(state);
   };

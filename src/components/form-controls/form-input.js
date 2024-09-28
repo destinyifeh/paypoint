@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -7,14 +7,14 @@ import {
   Text,
   TextInput,
   View,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import { connect } from "react-redux";
+} from 'react-native';
+import {Icon} from 'react-native-elements';
+import {connect} from 'react-redux';
 
 import {
   MAX_NIGERIA_PHONE_LENGTH,
   MIN_NIGERIA_PHONE_LENGTH,
-} from "../../constants/fields";
+} from '../../constants/fields';
 import {
   COLOUR_BLACK,
   COLOUR_BLUE,
@@ -28,19 +28,19 @@ import {
   FONT_FAMILY_BODY_SEMIBOLD,
   FONT_SIZE_TEXT_INPUT,
   FONT_SIZE_TITLE,
-} from "../../constants/styles";
+} from '../../constants/styles';
 import {
   validateEmail,
   validateFieldLength,
   validateName,
   validatePassword,
-} from "../../validators/form-validators";
+} from '../../validators/form-validators';
 
 export class FormInput extends React.Component {
   constructor(props) {
     super(props);
 
-    const { validators } = props;
+    const {validators} = props;
 
     this.state = {
       errorMessage: null,
@@ -65,8 +65,8 @@ export class FormInput extends React.Component {
 
   componentDidMount() {
     this.keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      this._keyboardDidHide
+      'keyboardDidHide',
+      this._keyboardDidHide,
     );
   }
 
@@ -97,9 +97,7 @@ export class FormInput extends React.Component {
       if (validators.minLength && value !== null) {
         fieldIsValid = validateFieldLength(value, validators.minLength);
         if (!fieldIsValid) {
-          errorMessage = `Field must be at least ${
-            validators.minLength
-          } characters`;
+          errorMessage = `Field must be at least ${validators.minLength} characters`;
         }
       }
 
@@ -115,11 +113,11 @@ export class FormInput extends React.Component {
           value,
           null,
           null,
-          validators.length
+          validators.length,
         );
         if (!fieldIsValid) {
           errorMessage = Array.isArray(validators.length)
-            ? "Field is invalid"
+            ? 'Field is invalid'
             : `Field must be ${validators.length} characters`;
         }
       }
@@ -127,21 +125,21 @@ export class FormInput extends React.Component {
       if (fieldIsValid && validators.email && value !== null) {
         fieldIsValid = validateEmail(value);
         if (!fieldIsValid) {
-          errorMessage = "Field is not a valid email";
+          errorMessage = 'Field is not a valid email';
         }
       }
 
       if (fieldIsValid && validators.number && value !== null) {
         fieldIsValid = !isNaN(value);
         if (!fieldIsValid) {
-          errorMessage = "Field is not a valid number";
+          errorMessage = 'Field is not a valid number';
         }
       }
 
       if (fieldIsValid && validators.positiveNumber && value !== null) {
         fieldIsValid = !(!isNaN(value) && parseFloat(value) < 0);
         if (!fieldIsValid) {
-          errorMessage = "Field must not be negative";
+          errorMessage = 'Field must not be negative';
         }
       }
 
@@ -152,7 +150,7 @@ export class FormInput extends React.Component {
           validateName(value);
 
         if (!fieldIsValid) {
-          errorMessage = "Field must be valid name, email or phone number";
+          errorMessage = 'Field must be valid name, email or phone number';
         }
       }
 
@@ -165,34 +163,34 @@ export class FormInput extends React.Component {
           ]);
 
         if (!fieldIsValid) {
-          errorMessage = "Field must be valid email or phone number";
+          errorMessage = 'Field must be valid email or phone number';
         }
       }
 
       if (fieldIsValid && validators.password && value !== null) {
         fieldIsValid = validatePassword(value);
         if (!fieldIsValid) {
-          errorMessage = "Field must have at least four (4) characters.";
+          errorMessage = 'Field must have at least four (4) characters.';
         }
       }
 
       if (fieldIsValid && validators.required) {
-        fieldIsValid = ![null, ""].includes(value);
+        fieldIsValid = ![null, ''].includes(value);
         if (!fieldIsValid) {
-          errorMessage = "Field is required";
+          errorMessage = 'Field is required';
         }
       }
 
       if (fieldIsValid && validators.numberOfWords) {
-        if (value.trim().split(" ").length !== validators.numberOfWords) {
+        if (value.trim().split(' ').length !== validators.numberOfWords) {
           errorMessage = `Field must have ${validators.numberOfWords} words`;
         }
 
         if (validators.minLengthOfWord) {
           const shortWords = value
             .trim()
-            .split(" ")
-            .find((word) => {
+            .split(' ')
+            .find(word => {
               return word.length < validators.minLengthOfWord;
             });
           if (shortWords !== undefined) {
@@ -207,7 +205,7 @@ export class FormInput extends React.Component {
         const regexExp = new RegExp(validators.rawRegex);
         if (!regexExp.test(value)) {
           fieldIsValid = false;
-          errorMessage = "Field is invalid";
+          errorMessage = 'Field is invalid';
         }
       }
 
@@ -216,13 +214,8 @@ export class FormInput extends React.Component {
           isLoading: true,
         });
 
-        const {
-          errorToDisplay,
-          func,
-          onFailTest,
-          onPassTest,
-          test,
-        } = validators.asyncFunction_;
+        const {errorToDisplay, func, onFailTest, onPassTest, test} =
+          validators.asyncFunction_;
 
         const testResult = test(await func());
 
@@ -230,19 +223,19 @@ export class FormInput extends React.Component {
           isLoading: false,
         });
 
-        if (typeof testResult === "object" && testResult != null) {
+        if (typeof testResult === 'object' && testResult != null) {
           if (testResult.status) {
             onPassTest && onPassTest();
             successMessage = testResult.errorToDisplay;
           } else {
             onFailTest && onFailTest();
             fieldIsValid = false;
-            errorMessage = testResult.errorToDisplay || "Field is invalid";
+            errorMessage = testResult.errorToDisplay || 'Field is invalid';
           }
         } else if (!testResult) {
           onFailTest && onFailTest();
           fieldIsValid = false;
-          errorMessage = errorToDisplay || "Field is invalid";
+          errorMessage = errorToDisplay || 'Field is invalid';
         } else {
           onPassTest && onPassTest();
         }
@@ -269,11 +262,11 @@ export class FormInput extends React.Component {
       this.onChangeText(nextProps.defaultValue);
 
       this.checkInputValidity(nextProps.defaultValue).then(
-        ({ fieldIsValid }) => {
+        ({fieldIsValid}) => {
           this.props.onChangeText &&
             this.props.onChangeText(nextProps.defaultValue, fieldIsValid);
         },
-        (error) => {}
+        error => {},
       );
     }
 
@@ -293,7 +286,7 @@ export class FormInput extends React.Component {
           if (this.props.propagateError || nextProps.propagateError) {
             this.checkInputValidity();
           }
-        }
+        },
       );
 
       return true;
@@ -308,12 +301,14 @@ export class FormInput extends React.Component {
         toValue: 0,
         easing: Easing.ease,
         duration: 200,
+        useNativeDriver: true,
       }).start();
     } else if (this.state.fieldIsValid === false) {
       Animated.timing(this.labelColor, {
         toValue: 1,
         easing: Easing.ease,
         duration: 200,
+        useNativeDriver: true,
       }).start();
     }
   }
@@ -329,14 +324,15 @@ export class FormInput extends React.Component {
       toValue: 0,
       easing: Easing.ease,
       duration: 300,
+      useNativeDriver: true,
     }).start();
 
     this.checkInputValidity().then(
-      ({ fieldIsValid }) => {
+      ({fieldIsValid}) => {
         this.props.onChangeText &&
           this.props.onChangeText(this.state.value, fieldIsValid);
       },
-      (error) => {}
+      error => {},
     );
   }
 
@@ -359,13 +355,14 @@ export class FormInput extends React.Component {
       toValue: 1,
       easing: Easing.ease,
       duration: 300,
+      useNativeDriver: true,
     }).start();
 
     this.props.onFocus && this.props.onFocus();
   }
 
   onSubmitEditing() {
-    const { on_submit_editing_delay_milliseconds } = this.props;
+    const {on_submit_editing_delay_milliseconds} = this.props;
 
     setTimeout(() => {
       this.props.onSubmitEditing && this.props.onSubmitEditing();
@@ -373,8 +370,8 @@ export class FormInput extends React.Component {
   }
 
   render() {
-    const { hint, silenceErrors, multiline } = this.props;
-    const { focused } = this.state;
+    const {hint, silenceErrors, multiline} = this.props;
+    const {focused} = this.state;
 
     const validators = this.props.validators || {};
     const borderColor = this.borderColor.interpolate({
@@ -396,30 +393,27 @@ export class FormInput extends React.Component {
             marginBottom:
               (this.props.outerContainerStyle?.marginBottom || 0) + 12,
           },
-        ]}
-      >
+        ]}>
         {this.props.text && (
           <View
             style={{
-              alignItems: "center",
-              flexDirection: "row",
+              alignItems: 'center',
+              flexDirection: 'row',
               justifyContent: this.props.rightTextExist
-                ? "space-between"
-                : "flex-start",
+                ? 'space-between'
+                : 'flex-start',
               marginBottom: 4,
-            }}
-          >
+            }}>
             <Animated.Text
               style={{
                 color: COLOUR_BLACK,
                 fontFamily: FONT_FAMILY_BODY_SEMIBOLD,
                 fontSize: FONT_SIZE_TITLE,
-              }}
-            >
-              {this.props.text}{" "}
+              }}>
+              {this.props.text}{' '}
               {!validators.required && !this.props.hideOptionalLabel
-                ? "(Optional)"
-                : ""}
+                ? '(Optional)'
+                : ''}
             </Animated.Text>
             {this.state.isLoading && <ActivityIndicator size="small" />}
             {!this.state.isLoading &&
@@ -439,8 +433,7 @@ export class FormInput extends React.Component {
                   color: COLOUR_BLACK,
                   fontFamily: FONT_FAMILY_BODY_SEMIBOLD,
                   fontSize: FONT_SIZE_TITLE,
-                }}
-              >
+                }}>
                 {this.props.rightText && this.props.rightText}
               </Text>
             )}
@@ -449,26 +442,24 @@ export class FormInput extends React.Component {
 
         <Animated.View
           style={{
-            alignItems: multiline ? "flex-start" : "center",
+            alignItems: multiline ? 'flex-start' : 'center',
             // backgroundColor: this.props.disabled ? COLOUR_LIGHT_GREY : COLOUR_WHITE,
             backgroundColor: COLOUR_FORM_CONTROL_BACKGROUND,
             borderColor: this.state.errorMessage ? COLOUR_RED : borderColor,
             borderWidth: 1.5,
             borderRadius: multiline ? 4 : 8,
-            flexDirection: "row",
+            flexDirection: 'row',
             height: multiline ? 90 : 50,
-            justifyContent: "flex-start",
+            justifyContent: 'flex-start',
             padding: 0,
             ...this.props.innerContainerStyle,
-          }}
-        >
+          }}>
           {this.props.leftIcon && (
             <View
               style={{
                 padding: 10,
-                width: "15%",
-              }}
-            >
+                width: '15%',
+              }}>
               <Icon
                 name={this.props.leftIcon}
                 size={this.props.leftIconSize || 28}
@@ -495,7 +486,7 @@ export class FormInput extends React.Component {
             onSubmitEditing={this.onSubmitEditing}
             placeholder={this.props.placeholder}
             placeholderTextColor={COLOUR_GREY}
-            ref={(textInput) => {
+            ref={textInput => {
               this.textInput = textInput;
               this.props.textInputRef && this.props.textInputRef(textInput);
             }}
@@ -504,16 +495,16 @@ export class FormInput extends React.Component {
             style={{
               fontFamily: FONT_FAMILY_BODY,
               fontSize: FONT_SIZE_TEXT_INPUT,
-              height: multiline ? "100%" : undefined,
+              height: multiline ? '100%' : undefined,
               padding: 0,
               paddingLeft: 15,
               paddingVertical: multiline ? 16 : undefined,
               width:
                 this.props.rightIcon || this.props.secureTextEntry
-                  ? "70%"
+                  ? '70%'
                   : this.props.textInputWidth
                   ? this.props.textInputWidth
-                  : "85%",
+                  : '85%',
               ...this.props.inputStyle,
             }}
             textContentType={this.props.textContentType}
@@ -522,20 +513,17 @@ export class FormInput extends React.Component {
           {this.props.rightIcon && (
             <View
               style={{
-                alignItems: "flex-end",
-                width: "15%",
-              }}
-            >
+                alignItems: 'flex-end',
+                width: '15%',
+              }}>
               <Icon
                 color={COLOUR_MID_GREY}
-                name={this.state.hideText ? "visibility" : "visibility-off"}
+                name={this.state.hideText ? 'visibility' : 'visibility-off'}
                 size={28}
                 style={{
                   padding: 10,
                 }}
-                onPress={() =>
-                  this.setState({ hideText: !this.state.hideText })
-                }
+                onPress={() => this.setState({hideText: !this.state.hideText})}
               />
             </View>
           )}
@@ -544,15 +532,14 @@ export class FormInput extends React.Component {
             <View
               style={{
                 padding: 10,
-                width: "15%",
-              }}
-            >
+                width: '15%',
+              }}>
               <Icon
                 name={this.props.rightIconName}
                 size={this.props.rightIconSize || 28}
                 type="material"
                 color={
-                  this.props.rightIconParams === "" ? COLOUR_MID_GREY : "black"
+                  this.props.rightIconParams === '' ? COLOUR_MID_GREY : 'black'
                 }
                 onPress={this.props.rightIconOnpress}
                 disabled={this.props.rightIconDisabled}
@@ -563,18 +550,15 @@ export class FormInput extends React.Component {
           {this.props.secureTextEntry && !this.props.rightIcon && (
             <View
               style={{
-                alignItems: "flex-end",
+                alignItems: 'flex-end',
                 padding: 10,
-                width: "15%",
-              }}
-            >
+                width: '15%',
+              }}>
               <Icon
                 color={COLOUR_MID_GREY}
-                name={this.state.hideText ? "visibility" : "visibility-off"}
+                name={this.state.hideText ? 'visibility' : 'visibility-off'}
                 size={28}
-                onPress={() =>
-                  this.setState({ hideText: !this.state.hideText })
-                }
+                onPress={() => this.setState({hideText: !this.state.hideText})}
               />
             </View>
           )}
@@ -583,11 +567,10 @@ export class FormInput extends React.Component {
         {!silenceErrors && !focused && this.state.errorMessage ? (
           <View
             style={{
-              flexDirection: "row",
-              position: "absolute",
+              flexDirection: 'row',
+              position: 'absolute',
               top: this.props.showMultiline ? 120 : 78,
-            }}
-          >
+            }}>
             <Icon
               color={COLOUR_RED}
               containerStyle={{
@@ -604,13 +587,12 @@ export class FormInput extends React.Component {
         ) : (
           <View
             style={{
-              flexDirection: "row",
-              position: "absolute",
+              flexDirection: 'row',
+              position: 'absolute',
               top: 78,
-            }}
-          >
+            }}>
             {this.state.successMessage && (
-              <Text mid style={{ color: "#32de84" }}>
+              <Text mid style={{color: '#32de84'}}>
                 {this.state.successMessage}
               </Text>
             )}
@@ -629,12 +611,9 @@ export class FormInput extends React.Component {
 function mapStateToProps(state) {
   return {
     on_submit_editing_delay_milliseconds: parseInt(
-      state.tunnel.remoteConfig.on_submit_editing_delay_milliseconds
+      state.tunnel.remoteConfig.on_submit_editing_delay_milliseconds,
     ),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  null
-)(FormInput);
+export default connect(mapStateToProps, null)(FormInput);

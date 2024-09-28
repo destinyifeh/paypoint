@@ -62,6 +62,7 @@ function screenTransitionConfig() {
       duration: 450,
       easing: Easing.out(Easing.exp),
       timing: Animated.timing,
+      useNativeDriver: true,
     },
     screenInterpolator: sceneProps => {
       const {layout, position, scene} = sceneProps;

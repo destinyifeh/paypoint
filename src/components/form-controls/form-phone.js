@@ -322,12 +322,14 @@ class FormPhone extends FormInput {
         toValue: 0,
         easing: Easing.ease,
         duration: 250,
+        useNativeDriver: true,
       }).start();
     } else if (this.state.fieldIsValid === false) {
       Animated.timing(this.labelColor, {
         toValue: 1,
         easing: Easing.ease,
         duration: 250,
+        useNativeDriver: true,
       }).start();
     }
   }
@@ -343,6 +345,7 @@ class FormPhone extends FormInput {
       toValue: 0,
       easing: Easing.ease,
       duration: 300,
+      useNativeDriver: true,
     }).start();
 
     this.checkInputValidity().then(
@@ -372,6 +375,7 @@ class FormPhone extends FormInput {
       toValue: 1,
       easing: Easing.ease,
       duration: 300,
+      useNativeDriver: true,
     }).start();
 
     this.props.onFocus && this.props.onFocus();

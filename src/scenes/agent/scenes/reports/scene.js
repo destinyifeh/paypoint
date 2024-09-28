@@ -1,45 +1,45 @@
-import React from "react";
-import { InteractionManager, View } from "react-native";
-import { Icon } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
-import { connect } from "react-redux";
-import ClickableListItem from "../../../../components/clickable-list-item";
-import Header from "../../../../components/header";
-import GradientIcon from "../../../../components/icons/gradient-icon";
-import Text from "../../../../components/text";
-import { AGENT } from "../../../../constants";
+import React from 'react';
+import {InteractionManager, View} from 'react-native';
+import {Icon} from 'react-native-elements';
+import {ScrollView} from 'react-native-gesture-handler';
+import {connect} from 'react-redux';
+import ActivityIndicator from '../../../../components/activity-indicator';
+import ClickableListItem from '../../../../components/clickable-list-item';
+import Header from '../../../../components/header';
+import GradientIcon from '../../../../components/icons/gradient-icon';
+import Text from '../../../../components/text';
+import {AGENT} from '../../../../constants';
 import {
   SHOW_AGGREGATOR_COMMISSION,
   SHOW_BANK_NETWORK,
   SHOW_CRM,
-} from "../../../../constants/api-resources";
+} from '../../../../constants/api-resources';
 import {
   COLOUR_BLUE,
   COLOUR_WHITE,
   CONTENT_LIGHT,
-} from "../../../../constants/styles";
+} from '../../../../constants/styles';
 import FeatureFlag, {
   FeatureFlagNewBadge,
-} from "../../../../fragments/feature-flag";
+} from '../../../../fragments/feature-flag';
 import {
   hideNavigator,
   showNavigator,
-} from "../../../../services/redux/actions/navigation";
-import DisabledScene from "../../../misc/disabled-scene";
+} from '../../../../services/redux/actions/navigation';
+import DisabledScene from '../../../misc/disabled-scene';
 
 class ItemRow extends React.Component {
   render() {
-    const { isNew } = this.props;
+    const {isNew} = this.props;
 
     return (
       <ClickableListItem
         style={{
-          alignItems: "center",
-          flexDirection: "row",
+          alignItems: 'center',
+          flexDirection: 'row',
           ...this.props.style,
         }}
-        onPressOut={this.props.onPressOut}
-      >
+        onPressOut={this.props.onPressOut}>
         <GradientIcon
           colors={this.props.colors}
           icon={this.props.icon}
@@ -50,7 +50,7 @@ class ItemRow extends React.Component {
         <Text>{this.props.title}</Text>
         {isNew && (
           <FeatureFlagNewBadge
-            style={{ position: "absolute", right: -4, top: -4 }}
+            style={{position: 'absolute', right: -4, top: -4}}
           />
         )}
       </ClickableListItem>
@@ -60,7 +60,7 @@ class ItemRow extends React.Component {
 
 class ReportsScene extends React.Component {
   static navigationOptions = {
-    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+    tabBarIcon: ({focused, horizontal, tintColor}) => {
       let IconComponent = Icon;
       let iconName;
 
@@ -73,7 +73,7 @@ class ReportsScene extends React.Component {
         />
       );
     },
-    title: "My Reports",
+    title: 'My Reports',
   };
 
   state = {};
@@ -89,10 +89,11 @@ class ReportsScene extends React.Component {
   }
 
   render() {
-    const { enable_reports } = this.props.remoteConfig;
+    const {enable_reports} = this.props.remoteConfig;
 
     if (!this.state.animationsDone) {
-      return <View />;
+      return <ActivityIndicator />;
+      // return <View />;
     }
 
     return (
@@ -101,10 +102,9 @@ class ReportsScene extends React.Component {
           this.props.isNavigatorVisible ? this.props.hideNavigator() : null
         }
         style={{
-          backgroundColor: "white",
+          backgroundColor: 'white',
           flex: 1,
-        }}
-      >
+        }}>
         <Header
           containerStyle={{
             backgroundColor: COLOUR_BLUE,
@@ -113,13 +113,13 @@ class ReportsScene extends React.Component {
           hideNavigationMenu={this.props.hideNavigator}
           showNavigationMenu={this.props.showNavigator}
           statusBarProps={{
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
             barStyle: CONTENT_LIGHT,
           }}
           title="My Reports"
           titleStyle={{
             color: COLOUR_WHITE,
-            fontWeight: "bold",
+            fontWeight: 'bold',
           }}
           withNavigator
         />
@@ -130,62 +130,61 @@ class ReportsScene extends React.Component {
           <ScrollView
             contentContainerStyle={{
               padding: 30,
-            }}
-          >
+            }}>
             <ItemRow
-              colors={["#F9BE7A", "#F6935A"]}
+              colors={['#F9BE7A', '#F6935A']}
               icon="exchange"
               style={{
                 marginBottom: 30,
               }}
               title="Transactions"
               onPressOut={() =>
-                this.props.navigation.navigate("ReportTransactions")
+                this.props.navigation.navigate('ReportTransactions')
               }
             />
             <ItemRow
-              colors={["#9578F8", "#9E53F5"]}
+              colors={['#9578F8', '#9E53F5']}
               icon="bar-chart"
               style={{
                 marginBottom: 30,
               }}
               title="Services Report"
               onPressOut={() =>
-                this.props.navigation.navigate("ReportServices")
+                this.props.navigation.navigate('ReportServices')
               }
             />
             {SHOW_BANK_NETWORK && (
               <ItemRow
-                colors={["#A71D31", "#3F0D12"]}
+                colors={['#A71D31', '#3F0D12']}
                 icon="bar-chart"
                 style={{
                   marginBottom: 30,
                 }}
                 title="Bank Network"
-                onPressOut={() => this.props.navigation.navigate("BankNetwork")}
+                onPressOut={() => this.props.navigation.navigate('BankNetwork')}
               />
             )}
             <ItemRow
-              colors={["#FE515A", "#EE312A"]}
+              colors={['#FE515A', '#EE312A']}
               icon="exchange"
               style={{
                 marginBottom: 30,
               }}
               title="Commissions Report"
               onPressOut={() =>
-                this.props.navigation.navigate("CommissionsEarned")
+                this.props.navigation.navigate('CommissionsEarned')
               }
             />
             {SHOW_AGGREGATOR_COMMISSION && (
               <ItemRow
-                colors={["#FE515A", "#EE312A"]}
+                colors={['#FE515A', '#EE312A']}
                 icon="exchange"
                 style={{
                   marginBottom: 30,
                 }}
                 title="Aggregator Commissions Report"
                 onPressOut={() =>
-                  this.props.navigation.navigate("AggregatorCommissionsEarned")
+                  this.props.navigation.navigate('AggregatorCommissionsEarned')
                 }
               />
             )}
@@ -205,11 +204,10 @@ class ReportsScene extends React.Component {
         </FeatureFlag> */}
             <FeatureFlag
               targetVersion="1.0.14"
-              uid="statement-of-transactions-account"
-            >
-              {({ isNew, onUseFeature }) => (
+              uid="statement-of-transactions-account">
+              {({isNew, onUseFeature}) => (
                 <ItemRow
-                  colors={["#20D8FE", "#00B8DE"]}
+                  colors={['#20D8FE', '#00B8DE']}
                   icon="file-text"
                   isNew={isNew}
                   style={{
@@ -217,8 +215,8 @@ class ReportsScene extends React.Component {
                   }}
                   title="Statement of Transactions Account"
                   onPressOut={() => {
-                    this.props.navigation.navigate("StatementOfAccount", {
-                      category: "Transactions",
+                    this.props.navigation.navigate('StatementOfAccount', {
+                      category: 'Transactions',
                       isHistoricalData: false,
                     });
                     isNew && onUseFeature();
@@ -228,11 +226,10 @@ class ReportsScene extends React.Component {
             </FeatureFlag>
             <FeatureFlag
               targetVersion="1.0.14"
-              uid="statement-of-commissions-account"
-            >
-              {({ isNew, onUseFeature }) => (
+              uid="statement-of-commissions-account">
+              {({isNew, onUseFeature}) => (
                 <ItemRow
-                  colors={["#007992", "#008eab"]}
+                  colors={['#007992', '#008eab']}
                   icon="file-text"
                   isNew={isNew}
                   style={{
@@ -240,8 +237,8 @@ class ReportsScene extends React.Component {
                   }}
                   title="Statement of Commissions Account"
                   onPressOut={() => {
-                    this.props.navigation.navigate("StatementOfAccount", {
-                      category: "Commissions",
+                    this.props.navigation.navigate('StatementOfAccount', {
+                      category: 'Commissions',
                       isHistoricalData: false,
                     });
                     isNew && onUseFeature();
@@ -252,14 +249,14 @@ class ReportsScene extends React.Component {
             <FeatureFlag requiredDomain={AGENT} uid="reports">
               {() => (
                 <ItemRow
-                  colors={["#20627F", "#00425F"]}
+                  colors={['#20627F', '#00425F']}
                   icon="clock-o"
                   style={{
                     marginBottom: 30,
                   }}
                   title="Historical Transactions"
                   onPressOut={() =>
-                    this.props.navigation.navigate("ReportTransactions", {
+                    this.props.navigation.navigate('ReportTransactions', {
                       isHistoricalData: true,
                     })
                   }
@@ -268,14 +265,14 @@ class ReportsScene extends React.Component {
             </FeatureFlag>
             {SHOW_CRM && (
               <ItemRow
-                colors={["#233329", "#63D471"]}
+                colors={['#233329', '#63D471']}
                 icon="ticket"
                 style={{
                   marginBottom: 30,
                 }}
                 title="Issue History"
                 onPressOut={() =>
-                  this.props.navigation.navigate("IssueHistory")
+                  this.props.navigation.navigate('IssueHistory')
                 }
               />
             )}
@@ -301,7 +298,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReportsScene);
+export default connect(mapStateToProps, mapDispatchToProps)(ReportsScene);
