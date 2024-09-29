@@ -56,7 +56,6 @@ import SplashScene from './scenes/splash';
 import VerifyPhoneScene from './scenes/verify-phone';
 import WelcomeScene from './scenes/welcome';
 import navigationService from './utils/navigation-service';
-//import navigationService from "./utils/navigation-service";
 
 const withErrorBoundary = Component => props =>
   (
@@ -76,6 +75,7 @@ export const MainStackNavigator = () => {
 
   const [initialState, setInitialState] = React.useState(null);
   const [isReady, setIsReady] = React.useState(false);
+  const [isStateRestored, setIsStateRestored] = React.useState(false);
 
   const persistNavigationState = async navState => {
     console.log(navState, 'my navstate');
@@ -95,13 +95,12 @@ export const MainStackNavigator = () => {
             ? JSON.parse(savedStateString)
             : undefined;
           console.log(state, 'my boss');
-          const currentScreen = state.routes[state.index].name;
-          console.log(currentScreen, 'cureentttt');
-          if (state !== undefined) {
+          if (state) {
             setInitialState(state);
           }
         }
       } finally {
+        setIsStateRestored(true);
         setIsReady(true);
       }
     };
@@ -120,7 +119,7 @@ export const MainStackNavigator = () => {
       onReady={() => {
         routeNameRef.current = navigationRef.getCurrentRoute().name;
       }}
-      // initialState={initialState}
+      initialState={isStateRestored ? initialState : undefined}
       onStateChange={async state => {
         persistNavigationState(state);
         const previousRouteName = routeNameRef.current;
