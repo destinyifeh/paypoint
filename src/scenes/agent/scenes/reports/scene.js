@@ -3,7 +3,6 @@ import {InteractionManager, View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
-import ActivityIndicator from '../../../../components/activity-indicator';
 import ClickableListItem from '../../../../components/clickable-list-item';
 import Header from '../../../../components/header';
 import GradientIcon from '../../../../components/icons/gradient-icon';
@@ -91,10 +90,10 @@ class ReportsScene extends React.Component {
   render() {
     const {enable_reports} = this.props.remoteConfig;
 
-    if (!this.state.animationsDone) {
-      return <ActivityIndicator />;
-      // return <View />;
-    }
+    // if (!this.state.animationsDone) {
+    //   return <ActivityIndicator />;
+    //   // return <View />;
+    // }
 
     return (
       <View

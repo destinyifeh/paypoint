@@ -14,7 +14,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import QuickActions from 'react-native-quick-actions';
 import {Provider} from 'react-redux';
 
-import {NavigationContainer} from '@react-navigation/native';
 import ErrorBoundary from './src/components/error-boundary';
 import {BUY_AIRTIME, PAY_A_BILL_NORMALIZED} from './src/constants';
 import {
@@ -22,7 +21,6 @@ import {
   SET_SCREEN_AFTER_LOGIN,
 } from './src/constants/action-types/tunnel';
 import {QUICK_ACTION_ITEMS_DELIMITER} from './src/constants/api-resources';
-import {COLOUR_BLUE} from './src/constants/styles';
 import UpdateBanner from './src/fragments/update-banner';
 import {MainStackNavigator} from './src/routes';
 import {
@@ -34,7 +32,6 @@ import ImportantUpdateAvailable, {
   shouldForceAppUpdate,
 } from './src/scenes/misc/important-update-available';
 import {shouldShowReleaseNotes} from './src/scenes/release-notes';
-import SplashScene from './src/scenes/splash';
 import store from './src/services/redux/store';
 import './src/setup';
 import {
@@ -59,9 +56,6 @@ class App extends React.Component {
     showingReleaseNotes: false,
     isReady: false,
     initialState: null,
-    previousRouteName: null,
-    currentRouteName: null,
-    inititialRouteName: null,
   };
 
   persistenceKey = 'persistenceKey';
@@ -245,16 +239,6 @@ class App extends React.Component {
     });
   }
 
-  async componentDidMount() {
-    try {
-      const initialState = await this.loadNavigationState();
-      this.setState({initialState, isReady: true});
-    } catch (e) {
-      console.error('Failed to load navigation state', e);
-      this.setState({isReady: true}); // Even if loading fails, continue
-    }
-  }
-
   handleQuickAction(quickActionData) {
     console.log({quickActionData});
     if (!quickActionData) {
@@ -294,8 +278,7 @@ class App extends React.Component {
 
       const navigationState = JSON.parse(navigationStateString);
 
-      const currentScreen =
-        navigationState.routes[navigationState.index].routeName;
+      const currentScreen = navigationState.routes[navigationState.index].name;
       if (
         currentScreen === 'Login' ||
         currentScreen === 'Welcome' ||
@@ -327,54 +310,6 @@ class App extends React.Component {
     hasAuthTokenExpired === false && onNewSessionBegin();
   }
 
-  persistNavigationState = async navState => {
-    try {
-      await AsyncStorage.setItem(this.persistenceKey, JSON.stringify(navState));
-    } catch (err) {}
-  };
-
-  loadNavigationState = async () => {
-    const jsonString = await AsyncStorage.getItem(this.persistenceKey);
-    return JSON.parse(jsonString);
-  };
-
-  handleStateChange = state => {
-    console.log(state, 'my state');
-    const route = state.routes[state.index];
-    console.log(route, 'my route');
-
-    const currentRoute = state.routes[state.index];
-
-    console.log(currentRoute, 'my current route object');
-
-    // Retrieve the previous route object from the current state
-    const previousRoute = this.state.currentRouteName;
-
-    // Set the previous route before updating the current route
-    this.setState({previousRouteName: previousRoute}, () => {
-      // Once previousRoute is set, check if it's different from the current route
-      if (!previousRoute || previousRoute.name !== currentRoute.name) {
-        // Update the current route object
-        this.setState({
-          currentRouteName: currentRoute, // store the entire route object
-        });
-
-        // Log previous and current routes for debugging
-        console.log(`Previous route:`, previousRoute);
-        console.log(`Current route:`, currentRoute);
-
-        // Call NavigationService with the updated route objects
-        NavigationService.onNavigationStateChange(previousRoute, currentRoute);
-
-        // Log previous and current routes for debugging
-        console.log(`Previous route:`, previousRoute);
-        console.log(`Current route:`, currentRoute);
-      }
-    });
-    this.persistNavigationState(state);
-    // NavigationService.onNavigationStateChange(state);
-  };
-
   render() {
     const {
       app_release_lifespan,
@@ -385,48 +320,11 @@ class App extends React.Component {
       initialState,
     } = this.state;
 
-    const persistNavigationState = async navState => {
-      try {
-        await AsyncStorage.setItem(
-          this.persistenceKey,
-          JSON.stringify(navState),
-        );
-      } catch (err) {}
-    };
+    // if (!isReady) {
+    //   return <SplashScene backgroundColor={COLOUR_BLUE} />;
+    // }
 
-    const loadNavigationState = async () => {
-      const jsonString = await AsyncStorage.getItem(this.persistenceKey);
-      return JSON.parse(jsonString);
-    };
-
-    if (!isReady) {
-      return <SplashScene backgroundColor={COLOUR_BLUE} />;
-    }
-
-    let content = (
-      // <Navigation
-      //   loadNavigationState={loadNavigationState}
-      //   persistNavigationState={persistNavigationState}
-      //   onNavigationStateChange={NavigationService.onNavigationStateChange}
-      //   renderLoadingExperimental={() => (
-      //     <SplashScene backgroundColor={COLOUR_BLUE} />
-      //   )}
-      //   ref={navigatorRef => {
-      //     console.log('SETTING UP NAVIGATOR REF');
-      //     NavigationService.setTopLevelNavigator(navigatorRef);
-      //   }}
-      // />
-
-      <NavigationContainer
-        initialState={initialState}
-        onStateChange={this.handleStateChange}
-        ref={navigatorRef => {
-          console.log('SETTING UP NAVIGATOR REF');
-          NavigationService.setTopLevelNavigator(navigatorRef);
-        }}>
-        <MainStackNavigator />
-      </NavigationContainer>
-    );
+    let content = <MainStackNavigator />;
 
     if (this.state.enableApp === false) {
       content = <DisabledScene />;

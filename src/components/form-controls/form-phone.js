@@ -6,11 +6,12 @@ import {
   Keyboard,
   Modal,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 
-import {Flag} from 'react-native-svg-flagkit';
+import CountryFlag from 'react-native-country-flag';
 
 import {FlatList} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
@@ -66,8 +67,10 @@ class FlagDropdown extends Component {
             alignItems: 'center',
             flexDirection: 'row',
             margin: 10,
+            marginLeft: 30,
           }}>
-          <Flag id={countryShortCode} size={0.2} />
+          <CountryFlag isoCode={countryShortCode?.toLowerCase()} size={14} />
+
           <Text style={{marginLeft: 10}}>{countryName}</Text>
         </View>
       </ClickableListItem>
@@ -77,20 +80,20 @@ class FlagDropdown extends Component {
   render() {
     return (
       <View style={{marginLeft: 15}}>
-        <Flag
-          id={this.state.countryShortCode}
+        <TouchableOpacity
           onPress={() => {
             this.setState({
               modalVisible: true,
             });
-          }}
-          size={0.1}
-        />
+          }}>
+          <CountryFlag
+            isoCode={this.state.countryShortCode?.toLowerCase()}
+            size={14}
+          />
+        </TouchableOpacity>
         <Modal
           animationType="fade"
-          presentationStyle={{
-            height: 100,
-          }}
+          presentationStyle="fullScreen"
           transparent={false}
           visible={this.state.modalVisible}
           onRequestClose={() => {

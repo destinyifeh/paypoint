@@ -33,13 +33,8 @@ function getActiveRouteName(navigationState) {
   return route.Name;
 }
 
-function onNavigationStateChange(prevState, currentState, action) {
-  console.log(`Previous route: ${prevState}`);
-  console.log(`Current route: ${currentState}`);
-  const currentRouteName = getActiveRouteName(currentState);
-  const previousRouteName = getActiveRouteName(prevState);
-
-  console.log({currentRouteName, previousRouteName});
+function onNavigationStateChange(previousRouteName, currentRouteName) {
+  console.log({previousRouteName, currentRouteName});
 
   store.dispatch(
     onScreenChange({
