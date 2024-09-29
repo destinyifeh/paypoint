@@ -99,6 +99,8 @@ export const MainStackNavigator = () => {
             setInitialState(state);
           }
         }
+      } catch (e) {
+        console.error('Error restoring state: ', e);
       } finally {
         setIsStateRestored(true);
         setIsReady(true);
@@ -119,7 +121,7 @@ export const MainStackNavigator = () => {
       onReady={() => {
         routeNameRef.current = navigationRef.getCurrentRoute().name;
       }}
-      initialState={isStateRestored ? initialState : undefined}
+      // initialState={isStateRestored ? initialState : undefined}
       onStateChange={async state => {
         persistNavigationState(state);
         const previousRouteName = routeNameRef.current;
