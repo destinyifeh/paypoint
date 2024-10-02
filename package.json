@@ -8,13 +8,11 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "debug-build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && cd android && $ SET ENVFILE=.env.development ./gradlew assembleDebug && cd ..",
-    "release-build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && cd android && $ SET ENVFILE=.env.production ./gradlew assembleRelease && cd ..",
-    "release-builder": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* &&  SET ENVFILE=.env.production && cd android && ./gradlew installRelease && cd ..",
-   
-    "debug-builder": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ && cd android && $ SET ENVFILE=.env.development ./gradlew installDebug && cd ..",
-    "bundleBuild": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-  "android:prod": "SET ENVFILE=.env.prod && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && react-native run-android --mode=release"
+    "dev:build": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && set ENVFILE=.env.development && npx react-native run-android",
+    "test:build": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && set ENVFILE=.env.development && npx react-native run-android --mode=release",
+    "canary:build": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && set ENVFILE=.env.production && npx react-native run-android --mode=release",
+    "prod:apk": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && cd android && gradlew clean && set ENVFILE=.env.production && gradlew assembleRelease",
+    "prod:bundle": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && cd android && gradlew clean && set ENVFILE=.env.production && gradlew bundleRelease"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.0.0",
@@ -24,7 +22,7 @@
     "@react-native-firebase/app": "^18.3.0",
     "@react-native-firebase/crashlytics": "^18.3.0",
     "@react-native-firebase/in-app-messaging": "^18.3.0",
-    "@react-native-firebase/messaging": "^18.3.0",
+    "@react-native-firebase/messaging": "^18.3.0", 
     "@react-native-firebase/remote-config": "^18.3.0",
     "@react-native-masked-view/masked-view": "^0.3.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
