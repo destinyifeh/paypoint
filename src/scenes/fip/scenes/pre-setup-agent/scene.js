@@ -1,43 +1,37 @@
-import React from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  InteractionManager,
-  ScrollView,
-  View,
-} from "react-native";
-import { connect } from "react-redux";
+import React from 'react';
+import {Alert, InteractionManager, ScrollView, View} from 'react-native';
+import {connect} from 'react-redux';
 
-import { Icon } from "react-native-elements";
-import Button from "../../../../components/button";
-import Header from "../../../../components/header";
-import Hyperlink from "../../../../components/hyperlink";
-import Modal from "../../../../components/modal";
-import Text from "../../../../components/text";
-import { AGENT_TYPE_ID } from "../../../../constants";
-import { ERROR_STATUS, SUCCESS_STATUS } from "../../../../constants/api";
+import {Icon} from 'react-native-elements';
+import Button from '../../../../components/button';
+import Header from '../../../../components/header';
+import Hyperlink from '../../../../components/hyperlink';
+import Modal from '../../../../components/modal';
+import Text from '../../../../components/text';
+import {AGENT_TYPE_ID} from '../../../../constants';
+import {ERROR_STATUS, SUCCESS_STATUS} from '../../../../constants/api';
 import {
   COLOUR_BLUE,
   COLOUR_WHITE,
   CONTENT_LIGHT,
   FONT_SIZE_TITLE,
-} from "../../../../constants/styles";
-import Onboarding from "../../../../services/api/resources/onboarding";
-import Platform from "../../../../services/api/resources/platform";
+} from '../../../../constants/styles';
+import Onboarding from '../../../../services/api/resources/onboarding';
+import Platform from '../../../../services/api/resources/platform';
 import {
   resetApplication,
   updateApplication,
-} from "../../../../services/redux/actions/fmpa-tunnel";
+} from '../../../../services/redux/actions/fmpa-tunnel';
 import {
   hideNavigator,
   showNavigator,
-} from "../../../../services/redux/actions/navigation";
-import { setIsFastRefreshPending } from "../../../../services/redux/actions/tunnel";
-import { flashMessage } from "../../../../utils/dialog";
-import handleErrorResponse from "../../../../utils/error-handlers/api";
-import navigationService from "../../../../utils/navigation-service";
-import ApplicationSerializer from "../../../../utils/serializers/application";
-import PreSetupAgentForm from "./forms/pre-setup-agent-form";
+} from '../../../../services/redux/actions/navigation';
+import {setIsFastRefreshPending} from '../../../../services/redux/actions/tunnel';
+import {flashMessage} from '../../../../utils/dialog';
+import handleErrorResponse from '../../../../utils/error-handlers/api';
+import navigationService from '../../../../utils/navigation-service';
+import ApplicationSerializer from '../../../../utils/serializers/application';
+import PreSetupAgentForm from './forms/pre-setup-agent-form';
 class PreSetupAgentScene extends React.Component {
   onboarding = new Onboarding();
   platform = new Platform();
@@ -54,11 +48,11 @@ class PreSetupAgentScene extends React.Component {
           nextOfKin: {},
         },
         businessDetails: {},
-        howYouHeardAboutUs: "Referred by an Agent",
+        howYouHeardAboutUs: 'Referred by an Agent',
       },
       isLoading: false,
       showSuccessModal: false,
-      slide: "PERSONAL INFORMATION",
+      slide: 'PERSONAL INFORMATION',
       superAgents: [],
     };
 
@@ -78,9 +72,9 @@ class PreSetupAgentScene extends React.Component {
   }
 
   async fetchSuperAgents() {
-    const { response, status } = await this.platform.retrieveSuperAgents();
+    const {response, status} = await this.platform.retrieveSuperAgents();
 
-    console.log({ response, status });
+    console.log({response, status});
 
     if (status === SUCCESS_STATUS) {
       this.setState({
@@ -97,7 +91,7 @@ class PreSetupAgentScene extends React.Component {
     const formIsComplete = this.form.state.isComplete;
     const formIsValid = this.form.state.isValid;
 
-    console.log({ formIsComplete, formIsValid });
+    console.log({formIsComplete, formIsValid});
 
     if (!formIsComplete) {
       this.setState({
@@ -116,11 +110,11 @@ class PreSetupAgentScene extends React.Component {
       isLoading: true,
     });
 
-    const { code, response, status } = await this.onboarding.createApplication(
-      application
+    const {code, response, status} = await this.onboarding.createApplication(
+      application,
     );
 
-    console.log({ code, response });
+    console.log({code, response});
 
     if (status === ERROR_STATUS) {
       flashMessage(null, await handleErrorResponse(response));
@@ -146,17 +140,17 @@ class PreSetupAgentScene extends React.Component {
       message,
       [
         {
-          text: "Logout",
-          onPress: () => navigationService.replace("Logout"),
+          text: 'Logout',
+          onPress: () => navigationService.replace('Logout'),
         },
         {
-          text: "Try Again",
+          text: 'Try Again',
           onPress: () => {},
-          style: "cancel",
+          style: 'cancel',
         },
       ],
 
-      { cancelable: false }
+      {cancelable: false},
     );
   }
 
@@ -166,19 +160,19 @@ class PreSetupAgentScene extends React.Component {
       message,
       [
         {
-          text: "Continue",
+          text: 'Continue',
           onPress: () => {
             this.createApplication(application);
           },
         },
         {
-          text: "Try Again",
+          text: 'Try Again',
           onPress: () => {},
-          style: "cancel",
+          style: 'cancel',
         },
       ],
 
-      { cancelable: false }
+      {cancelable: false},
     );
   }
 
@@ -199,8 +193,8 @@ class PreSetupAgentScene extends React.Component {
 
     const serializedForm = this.form.serializeFormData();
 
-    console.log({ serializedForm });
-    const { firstName, surname, phoneNumber, bvn, dob } = serializedForm;
+    console.log({serializedForm});
+    const {firstName, surname, phoneNumber, bvn, dob} = serializedForm;
 
     const agentData = {
       bvnFirstName: firstName,
@@ -217,7 +211,7 @@ class PreSetupAgentScene extends React.Component {
     const application = {
       agentTypeId: serializedForm.agentType,
       applicantDetails: serializedForm,
-      howYouHeardAboutUs: "Referred by an Agent",
+      howYouHeardAboutUs: 'Referred by an Agent',
       referralCode: serializedForm.referralCode,
     };
     const updateApplicationForm = application;
@@ -233,22 +227,22 @@ class PreSetupAgentScene extends React.Component {
         isLoading: false,
       });
       this.showAlert(
-        "BVN Validation Failed",
+        'BVN Validation Failed',
         saveAsDraftResponseObj
           ? this.state.message || this.state.description
-          : ""
+          : '',
       );
-    } else if (saveAsDraftResponseObj.validationStatus === "NOT_VERIFIED") {
+    } else if (saveAsDraftResponseObj.validationStatus === 'NOT_VERIFIED') {
       this.setState({
         message: saveAsDraftResponseObj.message,
         isLoading: false,
       });
-      this.showAlert("BVN Validation Failed", this.state.message);
+      this.showAlert('BVN Validation Failed', this.state.message);
       return;
-    } else if (saveAsDraftResponseObj.validationStatus === "VERIFIED") {
+    } else if (saveAsDraftResponseObj.validationStatus === 'VERIFIED') {
       return this.createApplication(application);
     } else {
-      this.showAlert("Error", "Something went wrong. Please try again.");
+      this.showAlert('Error', 'Something went wrong. Please try again.');
     }
   }
 
@@ -257,40 +251,40 @@ class PreSetupAgentScene extends React.Component {
       <Modal
         onRequestClose={() => {
           this.form.clear();
-          this.props.navigation.replace("PreSetupAgent");
+          this.props.navigation.replace('PreSetupAgent');
         }}
         buttons={[
           {
             onPress: () => {
               this.form.clear();
-              this.setState({ showSuccessModal: false });
-              this.props.navigation.replace("PreSetupAgent");
+              this.setState({showSuccessModal: false});
+              this.props.navigation.replace('PreSetupAgent');
             },
             buttonStyle: {
               paddingHorizontal: 10,
             },
             containerStyle: {
               paddingHorizontal: 10,
-              width: "100%",
+              width: '100%',
             },
-            title: "Pre-Setup Another Agent",
+            title: 'Pre-Setup Another Agent',
           },
         ]}
         content={
-          <View style={{ flex: 0.6, justifyContent: "center" }}>
+          <View style={{flex: 0.6, justifyContent: 'center'}}>
             <Text big center>
               Application has been created!
             </Text>
             <Text center>
-              You can{" "}
+              You can{' '}
               <Hyperlink onPress={this.onCompleteSetupPress}>
                 complete setup
-              </Hyperlink>{" "}
+              </Hyperlink>{' '}
               or
             </Text>
           </View>
         }
-        image={require("../../../../assets/media/images/clap.png")}
+        image={require('../../../../assets/media/images/clap.png')}
         isModalVisible={true}
         size="md"
         title="Success"
@@ -305,21 +299,21 @@ class PreSetupAgentScene extends React.Component {
     });
 
     this.props.updateApplication(this.serializedApplication);
-    this.props.navigation.navigate("Application");
+    this.props.navigation.navigate('Application');
   }
 
   render() {
-    const { superAgents } = this.state;
+    const {superAgents} = this.state;
 
-    if (!this.state.animationsDone) {
-      return (
-        <View
-          style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
-        >
-          <ActivityIndicator size="large" color={COLOUR_BLUE} />
-        </View>
-      );
-    }
+    // if (!this.state.animationsDone) {
+    //   return (
+    //     <View
+    //       style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
+    //     >
+    //       <ActivityIndicator size="large" color={COLOUR_BLUE} />
+    //     </View>
+    //   );
+    // }
 
     const skipButton = <Hyperlink onPress={this.onSkip}>Save</Hyperlink>;
 
@@ -328,8 +322,7 @@ class PreSetupAgentScene extends React.Component {
         style={{
           backgroundColor: COLOUR_WHITE,
           flex: 1,
-        }}
-      >
+        }}>
         {this.state.showSuccessModal && this.successModal}
 
         <Header
@@ -350,13 +343,13 @@ class PreSetupAgentScene extends React.Component {
           // rightComponent={skipButton}
           // rightComponent={this.toShowSkipButton ? skipButton : null}
           statusBarProps={{
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
             barStyle: CONTENT_LIGHT,
           }}
           title="Pre-Setup Agent"
           titleStyle={{
             color: COLOUR_WHITE,
-            fontWeight: "bold",
+            fontWeight: 'bold',
             fontSize: FONT_SIZE_TITLE,
           }}
           hideNavigationMenu={this.props.hideNavigator}
@@ -367,15 +360,14 @@ class PreSetupAgentScene extends React.Component {
         <View
           style={{
             flex: 1,
-            justifyContent: "space-between",
+            justifyContent: 'space-between',
             padding: 15,
-          }}
-        >
+          }}>
           <ScrollView>
             <PreSetupAgentForm
               isDisabled={this.state.isLoading}
               propagateFormErrors={this.state.propagateFormErrors}
-              ref={(form) => (this.form = form)}
+              ref={form => (this.form = form)}
               superAgents={superAgents}
             />
           </ScrollView>
@@ -403,16 +395,11 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     hideNavigator: () => dispatch(hideNavigator()),
-    setIsFastRefreshPending: (value) =>
-      dispatch(setIsFastRefreshPending(value)),
+    setIsFastRefreshPending: value => dispatch(setIsFastRefreshPending(value)),
     showNavigator: () => dispatch(showNavigator()),
     resetApplication: () => dispatch(resetApplication()),
-    updateApplication: (application) =>
-      dispatch(updateApplication(application)),
+    updateApplication: application => dispatch(updateApplication(application)),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PreSetupAgentScene);
+export default connect(mapStateToProps, mapDispatchToProps)(PreSetupAgentScene);

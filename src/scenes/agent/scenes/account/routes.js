@@ -37,8 +37,8 @@ const AppNavigator = () => (
   <Stack.Navigator
     initialRouteName="DefaultScene"
     screenOptions={{headerShown: false}}>
-    <Stack.Screen name="AuditTrailDetails" component={AuditTrailDetailsScene} />
     <Stack.Screen name="DefaultScene" component={DefaultScene} />
+    <Stack.Screen name="AuditTrailDetails" component={AuditTrailDetailsScene} />
     <Stack.Screen name="FilterAuditTrail" component={FilterAuditTrailScene} />
     <Stack.Screen name="ImageViewer" component={ImageViewerScene} />
     <Stack.Screen name="ManageDevices" component={ManageDevicesScene} />

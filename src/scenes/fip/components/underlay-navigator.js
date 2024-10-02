@@ -29,6 +29,7 @@ class UnderlayNavigator extends React.Component {
     Settings: 'my-settings',
     'Pre-Setup Agent': 'pre-setup-agent',
     'Sync Data': 'sync-data',
+    Account: 'my-account',
   };
 
   constructor(props) {
@@ -66,7 +67,7 @@ class UnderlayNavigator extends React.Component {
     this.props.navigateTo('Account');
     this.onNavigate('Account');
     this.setState({
-      active: 'account',
+      active: 'my-account',
     });
   }
 
@@ -307,6 +308,7 @@ class UnderlayNavigator extends React.Component {
               }
               title="My Account"
               titleStyle={{
+                fontWeight: 'bold',
                 opacity: this.state.active === 'my-account' ? 1 : 0.6,
                 textTransform: null,
               }}
