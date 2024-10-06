@@ -99,7 +99,7 @@ export let SHOW_CRM = true;
 export let SHOW_AGGREGATOR_COMMISSION = true;
 export let SHOW_CBN_COMPLIANCE = true;
 
-const FORCE_UAT = true;
+const FORCE_UAT = false;
 if (FORCE_UAT) {
   SHOW_CBN_COMPLIANCE = true;
   SHOW_AGGREGATOR_COMMISSION = true;
@@ -153,7 +153,7 @@ if (FORCE_UAT) {
   TRANSFER_TO_ACCOUNT_PAYMENT_ITEM_CODE = 70101;
 }
 
-const FORCE_PROD = false;
+const FORCE_PROD = true;
 if (FORCE_PROD) {
   SHOW_CBN_COMPLIANCE = true;
   SHOW_AGGREGATOR_COMMISSION = false;

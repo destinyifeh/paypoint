@@ -96,7 +96,6 @@ class SelfOnboardingKYCScene extends React.Component {
         isFromDashboard,
         selfOnboarding: false,
         application: new ApplicationSerializer(resumeApplicationDetails),
-        selfOnboarding: false,
         declineReason,
         // isReady: true,
       });
