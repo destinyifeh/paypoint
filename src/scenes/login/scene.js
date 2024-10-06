@@ -135,18 +135,22 @@ export default class LoginScene extends BaseScene {
   }
 
   async componentDidMount() {
-    const {isAssistedPasswordPage} = this.props.route.params || {};
+    const isAssistedPasswordPage =
+      this.props.route?.params?.isAssistedPasswordPage;
 
     if (isAssistedPasswordPage == true) {
-      const {isResumeUsername, isResumeuserDomains} =
-        this.props.route.params || {};
+      const isResumeUsername = this.props.route?.params?.isResumeUsername;
+      const isResumeuserDomains = this.props.route?.params?.isResumeuserDomains;
 
-      console.log({isResumeuserDomains}, 'NUGAGEE USER DOMAINS');
+      console.log(
+        {isResumeuserDomains, isAssistedPasswordPage, isResumeuserDomains},
+        'Dez log...',
+      );
 
       this.setState({
-        isAssistedPasswordPage,
-        isResumeUsername,
-        isResumeuserDomains,
+        isAssistedPasswordPage: isAssistedPasswordPage,
+        isResumeUsername: isResumeUsername,
+        isResumeuserDomains: isResumeuserDomains,
       });
       return;
     } else {
@@ -703,11 +707,19 @@ export default class LoginScene extends BaseScene {
       username,
     });
 
+    const deviceDetails = await getDeviceDetails();
+
     const loginResponse = await this.userManagement.login(
       {
         username: this.state.isResumeUsername || username,
         password,
-        device: await getDeviceDetails(),
+        device: {
+          deviceUuid: deviceDetails.deviceUuid?.toString(),
+          deviceName: deviceDetails.deviceName?.toString(),
+          deviceOs: deviceDetails.deviceOs?.toString(),
+          deviceModel: deviceDetails.deviceModel?.toString(),
+          channel: deviceDetails.channel?.toString(),
+        },
         domainTypeId:
           this.state.isResumeuserDomains?.domainTypeId || domainTypeId,
       },

@@ -126,7 +126,9 @@ export default class ResetPasswordScene extends BaseScene {
 
     return (
       <ScrollView contentContainerStyle={{padding: 0}}>
-        <Header paypointLogo />
+        <View style={{height: 70, marginBottom: 25}}>
+          <Header paypointLogo />
+        </View>
 
         <View
           style={{

@@ -112,8 +112,9 @@ export default class GuestLoginScene extends React.Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.view}>
-        <Header paypointLogo />
-
+        <View style={{height: 70, marginBottom: 25}}>
+          <Header paypointLogo />
+        </View>
         <ContactUsOptionsMenu
           ref_={component => (this.contactUsOptionsMenu = component)}
           requestClose={() => this.contactUsOptionsMenu.close()}

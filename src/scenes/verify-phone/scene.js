@@ -62,12 +62,19 @@ export default class VerifyPhoneScene extends React.Component {
 
   async doLogin() {
     const {mobileNo, password} = this.props.route?.params?.user || {};
+    const deviceDetails = await getDeviceDetails();
 
     const loginResponse = await this.userManagement.login(
       {
         mobileNo,
         password,
-        device: await getDeviceDetails(),
+        device: {
+          deviceUuid: deviceDetails.deviceUuid?.toString(),
+          deviceName: deviceDetails.deviceName?.toString(),
+          deviceOs: deviceDetails.deviceOs?.toString(),
+          deviceModel: deviceDetails.deviceModel?.toString(),
+          channel: deviceDetails.channel?.toString(),
+        },
       },
       null,
       {
@@ -501,12 +508,19 @@ export default class VerifyPhoneScene extends React.Component {
     }
 
     console.warn({formData});
+    const deviceDetails = await getDeviceDetails();
 
     const {code, response, status} = await this.userManagement.login(
       {
         username: this.extractUsernameFromFormData(formData),
         domainTypeId: signupResponse.data.domainTypeId,
-        device: await getDeviceDetails(),
+        device: {
+          deviceUuid: deviceDetails.deviceUuid?.toString(),
+          deviceName: deviceDetails.deviceName?.toString(),
+          deviceOs: deviceDetails.deviceOs?.toString(),
+          deviceModel: deviceDetails.deviceModel?.toString(),
+          channel: deviceDetails.channel?.toString(),
+        },
         password: formData.password,
       },
       null,
@@ -721,7 +735,9 @@ export default class VerifyPhoneScene extends React.Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.view}>
-        <Header paypointLogo />
+        <View style={{height: 70, marginBottom: 25}}>
+          <Header paypointLogo />
+        </View>
 
         <View
           style={{

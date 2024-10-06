@@ -110,8 +110,9 @@ export default class ChangePasswordScene extends BaseScene {
   render() {
     return (
       <ScrollView contentContainerStyle={{padding: 0}}>
-        <Header paypointLogo />
-
+        <View style={{height: 70, marginBottom: 25}}>
+          <Header paypointLogo />
+        </View>
         <View
           style={{
             padding: 25,
