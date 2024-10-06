@@ -123,7 +123,9 @@ export default class ForgotPasswordOtpScene extends BaseScene {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={{padding: 0}}>
+      <ScrollView
+        contentContainerStyle={{padding: 0}}
+        style={{backgroundColor: 'white', flex: 1}}>
         <View style={{height: 70, marginBottom: 25}}>
           <Header paypointLogo />
         </View>
