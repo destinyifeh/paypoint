@@ -256,11 +256,19 @@ class SelfOnboardingOTPScene extends React.Component {
 
     stopwatch.start();
 
+    const deviceDetails = await getDeviceDetails();
+
     const loginResponse = await this.userManagement.login(
       {
         username,
         password,
-        device: await getDeviceDetails(),
+        device: {
+          deviceUuid: deviceDetails.deviceUuid?.toString(),
+          deviceName: deviceDetails.deviceName?.toString(),
+          deviceOs: deviceDetails.deviceOs?.toString(),
+          deviceModel: deviceDetails.deviceModel?.toString(),
+          channel: deviceDetails.channel?.toString(),
+        },
         domainTypeId,
       },
       null,

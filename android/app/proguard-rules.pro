@@ -38,5 +38,10 @@
 # -keep resources string/build_config_package
 -dontwarn io.invertase.firebase.**
 
+-keep class com.google.zxing.** { *; }
+-dontwarn com.google.zxing.**
 
--keep class com.telpo.**
+-keep class com.telpo.** { *; }
+-dontwarn com.telpo.**
+
+-keep class com.common.sdk.printer.** { *; }
