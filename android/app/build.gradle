@@ -111,11 +111,33 @@ android {
 
 dependencies {
     implementation ('com.google.firebase:firebase-bom:32.1.1')
-    implementation files('libs/NeptuneLiteApi_V2.03.00_20180208.jar')
-    
-    implementation "com.interswitchng:smart-pos-core:2.1.1"
-    implementation "com.interswitchng:smart-pos-emv-telpo:2.1.1"
+    //implementation fileTree(dir: "libs", include: ["telpo_api.jar"])    
+    def versionName = "2.3.5"
+   // def versionNameTelpo = "2.2.6"
 
+    implementation("com.interswitchng:smart-pos-core:$versionName")
+  //  implementation("com.interswitchng:smart-pos-emv-pax:$versionName")
+   // implementation("com.interswitchng:smart-pos-emv-telpo:$versionNameTelpo")
+   implementation('com.interswitchng:smart-pos-emv-telpo:2.2.6') {
+    exclude group: 'org.koin', module: 'koin-core'
+}
+
+ // Realm dependencies
+    implementation 'io.realm:realm-android-library:10.19.0'
+    implementation 'io.realm:realm-android-kotlin-extensions:10.10.0'
+    implementation 'io.realm:realm-annotations:10.19.0'
+
+    // Koin dependencies
+    implementation 'io.insert-koin:koin-core:4.0.0'
+    implementation 'io.insert-koin:koin-androidx-viewmodel:2.2.3'
+    // Alerter dependency
+   // implementation 'com.tapadoo.android:alerter:3.0.0'
+    implementation "com.github.tapadoo:alerter:7.2.4"
+    // KOptional dependency
+    //  implementation 'com.gojuno.koptional:koptional:1.7.0'
+     implementation 'com.github.gojuno.koptional:koptional:1.7.0'
+    
+   // implementation(files("libs/NeptuneLiteApi_V2.03.00_20180208.jar"))
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

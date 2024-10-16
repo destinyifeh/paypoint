@@ -305,12 +305,19 @@ export default class LoginScene extends BaseScene {
     }
 
     let headers = {};
+    const deviceDetails = await getDeviceDetails();
 
     const deviceAuthResponseObj = await this.userManagement.deviceAuth(
       {
         otp: formData.otp,
         tokenId: this.state.tokenId,
-        device: await getDeviceDetails(),
+        device: {
+          deviceUuid: deviceDetails.deviceUuid?.toString(),
+          deviceName: deviceDetails.deviceName?.toString(),
+          deviceOs: deviceDetails.deviceOs?.toString(),
+          deviceModel: deviceDetails.deviceModel?.toString(),
+          channel: deviceDetails.channel?.toString(),
+        },
         registerDevice: this.state.registerDevice,
       },
       headers,
