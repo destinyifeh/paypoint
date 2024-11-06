@@ -11,7 +11,7 @@
 
 -keep public class com.horcrux.svg.** {*;}
 -keep class io.invertase.firebase.** { *; }
--keep class com.finch_agent_mobile_app.BuildConfig { *; }
+-keep class com.finch_agent_mobile_app_pax.BuildConfig { *; }
 -keep class com.facebook.hermes.unicode.* { *; }
 
 # WebPay stuff
@@ -39,4 +39,10 @@
 -dontwarn io.invertase.firebase.**
 
 
--keep class com.telpo.**
+-keep class com.google.zxing.** { *; }
+-dontwarn com.google.zxing.**
+
+-keep class com.pax.** { *; }
+-dontwarn com.pax.**
+
+-keep class com.common.sdk.printer.** { *; }
