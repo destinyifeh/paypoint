@@ -141,7 +141,9 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
        // implementation fileTree(dir: "libs", include: ["neptune-lite.aar"]) //, "ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar", "acssmc-1.1.1.jar"
      implementation fileTree(dir: "libs", include: ["NeptuneLiteApi.jar"]) //, "ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar", "acssmc-1.1.1.jar"
- 
+   
+    implementation "com.interswitchng:smart-pos-core:2.3.7"
+    implementation "com.interswitchng:smart-pos-emv-pax:2.3.4"
    
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
