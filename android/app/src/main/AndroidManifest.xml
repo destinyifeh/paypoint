@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" /> 
-    <uses-permission android:name="android.permission.GET_INTENT_SENDER_INTENT" />
+    <!-- <uses-permission android:name="android.permission.GET_INTENT_SENDER_INTENT" /> -->
 
     <uses-feature 
       android:name="android.hardware.usb.host"
