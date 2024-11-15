@@ -140,10 +140,10 @@ dependencies {
     implementation ('com.google.firebase:firebase-bom:32.1.1')
     // The version of react-native is set by the React Native Gradle Plugin
        // implementation fileTree(dir: "libs", include: ["neptune-lite.aar"]) //, "ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar", "acssmc-1.1.1.jar"
-    implementation fileTree(dir: "libs", include: ["NeptuneLiteApi.jar"]) //, "ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar", "acssmc-1.1.1.jar"
+      implementation fileTree(dir: "libs", include: ["NeptuneLiteApi.jar"]) //, "ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar", "acssmc-1.1.1.jar"
    
     implementation "com.interswitchng:smart-pos-core:2.3.7"
-   // implementation "com.interswitchng:smart-pos-emv-pax:2.3.4"
+   // api "com.interswitchng:smart-pos-emv-pax:2.3.4"
 
     // Realm dependencies
      implementation 'io.realm:realm-android-library:10.19.0'
