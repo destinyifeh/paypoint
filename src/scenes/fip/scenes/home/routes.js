@@ -6,6 +6,22 @@ import AllApplicationsScene from '../all-applications';
 import ApplicationScene from '../application';
 import ApplicationPreview from '../application-preview';
 import RequestConfirmationScene from '../complete-setup/request-confirmation';
+import FipAgentBusinessInformationScene from '../fip-new/onboarding/scenes/business-details';
+import FipAgentBvnVerification from '../fip-new/onboarding/scenes/government-compliance/bvn-verification';
+import FipAgentFacialVerification from '../fip-new/onboarding/scenes/government-compliance/facial-verification';
+import FipAgentTinAndCacVerification from '../fip-new/onboarding/scenes/government-compliance/tin-cac-verification';
+import FipAgentNextOfKinInformationScene from '../fip-new/onboarding/scenes/next-of-kin';
+import FipAgentPersonalDetailsScene from '../fip-new/onboarding/scenes/personal-details';
+
+import FipAgentApplicationPreviewScene from '../fip-new/onboarding/scenes/application-preview';
+import {FipAgentSubmitApplicationSuccessScene} from '../fip-new/onboarding/scenes/application-preview/submit-success';
+import FipAgentAuthorizationLetter from '../fip-new/onboarding/scenes/government-biller/authorization-letter';
+import FipAgentFacialVerificationConfirmation from '../fip-new/onboarding/scenes/government-compliance/facial-verification-confirmation';
+import {FipAgentFailedVerification} from '../fip-new/onboarding/scenes/government-compliance/fail-verification';
+import FipAgentNinVerification from '../fip-new/onboarding/scenes/government-compliance/nin-verfication';
+import FipAgentOtpVerification from '../fip-new/onboarding/scenes/government-compliance/otp';
+import FipAgentFaceVerificatiobWebViewScreen from '../fip-new/onboarding/scenes/government-compliance/web-view';
+import FipAgentResidentialInformationScene from '../fip-new/onboarding/scenes/residential-address';
 import PreSetupAgentScene from '../pre-setup-agent';
 import SearchApplicationScene from '../search-application';
 import CompleteSetupScene from './scenes/complete-setup';
@@ -83,6 +99,66 @@ const AppNavigator = () => {
       <Stack.Screen name="ViewAllAgents" component={ViewAllAgentsScene} />
       <Stack.Screen name="ViewAgentDetails" component={ViewAgentDetailsScene} />
       <Stack.Screen name="ViewAllRequests" component={ViewAllRequestsScene} />
+      <Stack.Screen
+        name="FipAgentFailedVerification"
+        component={FipAgentFailedVerification}
+      />
+      <Stack.Screen
+        name="FipAgentAuthorizationLetter"
+        component={FipAgentAuthorizationLetter}
+      />
+      <Stack.Screen
+        name="FipAgentSubmitApplicationSuccess"
+        component={FipAgentSubmitApplicationSuccessScene}
+      />
+      <Stack.Screen
+        name="FipAgentWebViewFacialVerification"
+        component={FipAgentFaceVerificatiobWebViewScreen}
+      />
+      <Stack.Screen
+        name="FipAgentApplicationPreview"
+        component={FipAgentApplicationPreviewScene}
+      />
+      <Stack.Screen
+        name="FipAgentResidentialInformation"
+        component={FipAgentResidentialInformationScene}
+      />
+      <Stack.Screen
+        name="FipAgentBusinessInformation"
+        component={FipAgentBusinessInformationScene}
+      />
+      <Stack.Screen
+        name="FipAgentPersonalInformation"
+        component={FipAgentPersonalDetailsScene}
+      />
+      <Stack.Screen
+        name="FipAgentNextOfKinInformation"
+        component={FipAgentNextOfKinInformationScene}
+      />
+      <Stack.Screen
+        name="FipAgentFacialVerificationConfirmation"
+        component={FipAgentFacialVerificationConfirmation}
+      />
+      <Stack.Screen
+        name="FipAgentOtpVerification"
+        component={FipAgentOtpVerification}
+      />
+      <Stack.Screen
+        name="FipAgentNinVerification"
+        component={FipAgentNinVerification}
+      />
+      <Stack.Screen
+        name="FipAgentTinVerification"
+        component={FipAgentTinAndCacVerification}
+      />
+      <Stack.Screen
+        name="FipAgentFacialVerification"
+        component={FipAgentFacialVerification}
+      />
+      <Stack.Screen
+        name="FipAgentBvnVerification"
+        component={FipAgentBvnVerification}
+      />
     </Stack.Navigator>
   );
 };

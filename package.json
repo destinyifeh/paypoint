@@ -10,6 +10,7 @@
     "test": "jest",
     "dev:build": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && set ENVFILE=.env.development && npx react-native run-android --mode=debug",
     "test:build": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && set ENVFILE=.env.development && npx react-native run-android --mode=release",
+    "dev:apk": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && cd android && gradlew clean && set ENVFILE=.env.development && gradlew assembleDebug",
     "canary:build": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && set ENVFILE=.env.production && npx react-native run-android --mode=release",
     "prod:apk": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && cd android && gradlew clean && set ENVFILE=.env.production && gradlew assembleRelease",
     "prod:bundle": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && cd android && gradlew clean && set ENVFILE=.env.production && gradlew bundleRelease"
@@ -22,7 +23,7 @@
     "@react-native-firebase/app": "^18.3.0",
     "@react-native-firebase/crashlytics": "^18.3.0",
     "@react-native-firebase/in-app-messaging": "^18.3.0",
-    "@react-native-firebase/messaging": "^18.3.0", 
+    "@react-native-firebase/messaging": "^18.3.0",
     "@react-native-firebase/remote-config": "^18.3.0",
     "@react-native-masked-view/masked-view": "^0.3.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
@@ -67,7 +68,8 @@
     "react-native-webview": "^13.2.2",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1",
-    "rn-fetch-blob": "^0.12.0"
+    "rn-fetch-blob": "^0.12.0",
+    "sp-react-native-in-app-updates": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

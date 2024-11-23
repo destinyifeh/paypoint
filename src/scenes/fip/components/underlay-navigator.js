@@ -118,7 +118,7 @@ class UnderlayNavigator extends React.Component {
   onPreSetupAgentButtonPress() {
     this.props.resetApplication();
 
-    this.props.navigateTo('Pre-Setup Agent');
+    this.props.navigateTo('Home');
     this.onNavigate('Pre-Setup Agent');
     this.setState({
       active: 'pre-setup-agent',

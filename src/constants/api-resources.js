@@ -71,6 +71,11 @@ export let WEBVIEW_FACIAL_VERIFICATION_BASE_URL = {
   uat: 'https://finch-agent-dashboard.k8.isw.la/agent/face-verification-mobile',
   production: 'https://paypoint.quickteller.com/agent/face-verification-mobile',
 }[ENVIRONMENT];
+
+export let FIP_WEBVIEW_FACIAL_VERIFICATION_BASE_URL = {
+  uat: 'https://finch-agent-dashboard.k8.isw.la/agent/face-verification-fmpa',
+  production: 'https://paypoint.quickteller.com/agent/face-verification-fmpa',
+}[ENVIRONMENT];
 export let NIP_API_BASE_URL = {
   uat: 'https://finch-nip-service.k8.isw.la/api',
   production: 'https://api-gateway.interswitchng.com/api',
@@ -78,6 +83,7 @@ export let NIP_API_BASE_URL = {
 export let ONBOARDING_API_BASE_URL = Config.ONBOARDING_API_BASE_URL;
 export let PASSPORT_API_BASE_URL = Config.PASSPORT_API_BASE_URL;
 export let PLATFORM_API_BASE_URL = Config.PLATFORM_API_BASE_URL;
+export let CAC_API_BASE_URL = Config.CAC_API_BASE_URL;
 
 export let SETTLEMENT_API_BASE_URL = Config.SETTLEMENT_API_BASE_URL;
 export let TRANSACTION_API_BASE_URL = Config.TRANSACTION_API_BASE_URL;
@@ -98,8 +104,9 @@ export let SHOW_BANK_NETWORK = true;
 export let SHOW_CRM = true;
 export let SHOW_AGGREGATOR_COMMISSION = true;
 export let SHOW_CBN_COMPLIANCE = true;
+export let ALLOW_NEW_FMPA = false;
 
-const FORCE_UAT = false;
+const FORCE_UAT = true;
 if (FORCE_UAT) {
   SHOW_CBN_COMPLIANCE = true;
   SHOW_AGGREGATOR_COMMISSION = true;
@@ -116,6 +123,7 @@ if (FORCE_UAT) {
   ONBOARDING_API_BASE_URL = 'https://finch-onboarding-service.k8.isw.la/api';
   PASSPORT_API_BASE_URL = 'http://qa.interswitchng.com';
   PLATFORM_API_BASE_URL = 'https://finch-platform-service.k8.isw.la/api';
+  CAC_API_BASE_URL = 'https://cac-registration-service.k8.isw.la/cac';
   SETTLEMENT_API_BASE_URL =
     'http://finch-settlement-service.k8.isw.la/api/v1/finch-settlement';
   TRANSACTION_API_BASE_URL =
@@ -127,7 +135,6 @@ if (FORCE_UAT) {
   BANK_MONITORING_API_BASE_URL =
     'https://finch-bank-monitoring-service.k8.isw.la/finch-bank-monitoring-service/api';
   CRM_API_BASE_URL = 'https://finch-crm-middleware-service.k8.isw.la/api';
-
   USER_MANAGEMENT_API_BASE_URL =
     'https://finch-user-mgmt-service.k8.isw.la/api';
   RECOVER_PASSWORD_DESTINATION_URL =
@@ -144,6 +151,9 @@ if (FORCE_UAT) {
   WEBVIEW_FACIAL_VERIFICATION_BASE_URL =
     'https://finch-agent-dashboard.k8.isw.la/agent/face-verification-mobile';
 
+  FIP_WEBVIEW_FACIAL_VERIFICATION_BASE_URL =
+    'https://finch-agent-dashboard.k8.isw.la/agent/face-verification-fmpa';
+
   QUICKTELLER_CHANNEL = '7';
   QUICKTELLER_API_TERMINAL_ID = '9PBL0001';
   IS_ANALYTICS_ENABLED = false;
@@ -153,7 +163,7 @@ if (FORCE_UAT) {
   TRANSFER_TO_ACCOUNT_PAYMENT_ITEM_CODE = 70101;
 }
 
-const FORCE_PROD = true;
+const FORCE_PROD = false;
 if (FORCE_PROD) {
   SHOW_CBN_COMPLIANCE = true;
   SHOW_AGGREGATOR_COMMISSION = false;
@@ -197,6 +207,10 @@ if (FORCE_PROD) {
     'https://mufasa.interswitchng.com/p/inclusio/finch-onboarding-service';
   WEBVIEW_FACIAL_VERIFICATION_BASE_URL =
     'https://paypoint.quickteller.com/agent/face-verification-mobile';
+
+  FIP_WEBVIEW_FACIAL_VERIFICATION_BASE_URL =
+    'https://paypoint.quickteller.com/agent/face-verification-fmpa';
+  CAC_API_BASE_URL = 'https://cac-registration-service-prod.k2.isw.la/cac';
 
   QUICKTELLER_CHANNEL = '7';
   QUICKTELLER_API_TERMINAL_ID = '9FIS0001';
