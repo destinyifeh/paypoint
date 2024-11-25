@@ -1,35 +1,35 @@
 import React from 'react';
-import { PixelRatio, Text as RnText } from 'react-native';
+import {PixelRatio, Text as RnText} from 'react-native';
 
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 
+import {CASUAL} from '../constants/dialog-priorities';
 import {
   COLOUR_BLACK,
   COLOUR_BLUE,
   COLOUR_GREEN,
   COLOUR_GREY,
+  COLOUR_LIGHT_GREY,
+  COLOUR_LINK_BLUE,
   COLOUR_ORANGE,
   COLOUR_RED,
   COLOUR_WHITE,
+  FONT_FAMILY_BODY,
+  FONT_FAMILY_BODY_BOLD,
+  FONT_FAMILY_BODY_SEMIBOLD,
+  FONT_FAMILY_BODY_THIN,
   FONT_SIZE_BIG,
   FONT_SIZE_BIGGER,
   FONT_SIZE_BIGGEST,
-  FONT_SIZE_SMALL,
   FONT_SIZE_MID,
+  FONT_SIZE_SMALL,
   FONT_SIZE_TITLE,
   LINE_HEIGHT_BIG,
   LINE_HEIGHT_BIGGER,
   LINE_HEIGHT_BIGGEST,
   LINE_HEIGHT_SMALL,
-  FONT_FAMILY_BODY,
-  FONT_FAMILY_BODY_BOLD,
-  FONT_FAMILY_BODY_SEMIBOLD,
-  COLOUR_LIGHT_GREY,
-  COLOUR_LINK_BLUE,
-  FONT_FAMILY_BODY_THIN,
 } from '../constants/styles';
-import { flashMessage } from '../utils/dialog';
-import { CASUAL } from '../constants/dialog-priorities';
+import {flashMessage} from '../utils/dialog';
 
 const COPIED_TO_CLIPBOARD = 'Copied to clipboard!';
 
@@ -159,38 +159,30 @@ export default class Text extends React.Component {
       // screenDensity >= 2.5 ? 11 : 8;
       specifiedStyle.lineHeight = receiptLineItemFont;
       specifiedStyle.color = specifiedStyle.color || COLOUR_BLACK;
-      specifiedStyle.fontFamily = (
-        specifiedStyle.fontFamily === FONT_FAMILY_BODY_BOLD ?
-          FONT_FAMILY_BODY_BOLD :
-          FONT_FAMILY_BODY_BOLD
-      );
+      specifiedStyle.fontFamily =
+        specifiedStyle.fontFamily === FONT_FAMILY_BODY_BOLD
+          ? FONT_FAMILY_BODY_BOLD
+          : FONT_FAMILY_BODY_BOLD;
     }
 
     const copyContentToClipboard = () => {
       Clipboard.setString(this.props.children);
 
-      flashMessage(
-          null,
-          COPIED_TO_CLIPBOARD,
-          CASUAL,
-      );
+      flashMessage(null, COPIED_TO_CLIPBOARD, CASUAL);
     };
 
     return (
       <RnText
         {...this.props}
         onPress={
-          this.props.copyOnPress ?
-            copyContentToClipboard :
-            this.props.onPress
+          this.props.copyOnPress ? copyContentToClipboard : this.props.onPress
         }
         style={{
           color: COLOUR_GREY,
           ...specifiedStyle,
           ...this.props.style,
           fontWeight: 'normal',
-        }}
-      >
+        }}>
         {this.props.children}
       </RnText>
     );

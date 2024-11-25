@@ -1,34 +1,27 @@
 import CryptoJS from 'crypto-js';
 
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 
+import {COPIED_TO_CLIPBOARD} from '../constants';
+import {CASUAL} from '../constants/dialog-priorities';
 import Banks from '../fixtures/banks.json';
-import { COPIED_TO_CLIPBOARD } from '../constants';
-import { CASUAL } from '../constants/dialog-priorities';
-import { flashMessage } from './dialog';
-
+import {flashMessage} from './dialog';
 
 export function checkIfWordIncludesAnyOf(word, referenceList) {
   word = word.toLowerCase();
   referenceList = referenceList.map(element => element.toLowerCase());
-  return referenceList.some(
-      element => word.includes(element),
-  );
+  return referenceList.some(element => word.includes(element));
 }
 
 export function copyContentToClipboard(content) {
   Clipboard.setString(content);
 
-  flashMessage(
-      null,
-      COPIED_TO_CLIPBOARD,
-      CASUAL,
-  );
+  flashMessage(null, COPIED_TO_CLIPBOARD, CASUAL);
 }
 
 export function generateChecksum(rawValue) {
   const hashedValue = CryptoJS.MD5(rawValue).toString();
-  console.log({rawValue, hashedValue})
+  console.log({rawValue, hashedValue});
   return hashedValue;
 }
 
@@ -45,7 +38,7 @@ export function getBankNameForSanefBank(bank) {
     'Stanbic IBTC Bank': 'Stanbic IBTC Plc',
     'GTBank Plc': 'Guaranty Trust Bank Plc',
     'Access Bank': 'Access Bank Nigeria Plc',
-    'Wema Bank': 'WEMA Bank Plc'
+    'Wema Bank': 'WEMA Bank Plc',
   }[bank];
 }
 
@@ -55,9 +48,7 @@ export function generateMac(rawValue) {
 }
 
 export function getBankForBankCode(bankCode) {
-  return Banks.find(
-    ({cbnCode}) => bankCode === cbnCode
-  );
+  return Banks.find(({cbnCode}) => bankCode === cbnCode);
 }
 
 export function getVersionNumber(versionCode) {
@@ -65,12 +56,12 @@ export function getVersionNumber(versionCode) {
 }
 
 export function safeUsername(username) {
-  return isNaN(username) || username.startsWith('234') ? username : `234${username.slice(1, )}`;
+  return isNaN(username) || username.startsWith('234')
+    ? username
+    : `234${username.slice(1)}`;
 }
 
 export function findBankForSanefBank(sanefBankName) {
   const bankName = getBankNameForSanefBank(sanefBankName);
-  return Banks.find(
-    ({name}) => name === bankName
-  );
+  return Banks.find(({name}) => name === bankName);
 }

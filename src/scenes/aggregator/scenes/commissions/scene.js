@@ -1,7 +1,7 @@
 /* eslint-disable react/require-render-return */
-import Clipboard from "@react-native-community/clipboard";
-import Moment from "moment";
-import React from "react";
+import Clipboard from '@react-native-clipboard/clipboard';
+import Moment from 'moment';
+import React from 'react';
 import {
   Animated,
   Dimensions,
@@ -11,19 +11,19 @@ import {
   SectionList,
   StyleSheet,
   View,
-} from "react-native";
-import { LineChart } from "react-native-chart-kit";
-import { Icon } from "react-native-elements";
-import Carousel, { Pagination } from "react-native-snap-carousel";
-import { connect } from "react-redux";
-import ActivityIndicator from "../../../../components/activity-indicator";
-import AnimatedNumber from "../../../../components/animated-number";
-import Button from "../../../../components/button";
-import ClickableListItem from "../../../../components/clickable-list-item";
-import FormPicker from "../../../../components/form-controls/form-picker";
-import Header from "../../../../components/header";
-import Skeleton from "../../../../components/skeleton";
-import Text from "../../../../components/text";
+} from 'react-native';
+import {LineChart} from 'react-native-chart-kit';
+import {Icon} from 'react-native-elements';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {connect} from 'react-redux';
+import ActivityIndicator from '../../../../components/activity-indicator';
+import AnimatedNumber from '../../../../components/animated-number';
+import Button from '../../../../components/button';
+import ClickableListItem from '../../../../components/clickable-list-item';
+import FormPicker from '../../../../components/form-controls/form-picker';
+import Header from '../../../../components/header';
+import Skeleton from '../../../../components/skeleton';
+import Text from '../../../../components/text';
 import {
   AGENT,
   COPIED_TO_CLIPBOARD,
@@ -31,9 +31,9 @@ import {
   USER,
   WALLET,
   WINDOW_WIDTH,
-} from "../../../../constants";
-import { ERROR_STATUS, HTTP_NOT_FOUND } from "../../../../constants/api";
-import { CASUAL, UNIMPORTANT } from "../../../../constants/dialog-priorities";
+} from '../../../../constants';
+import {ERROR_STATUS, HTTP_NOT_FOUND} from '../../../../constants/api';
+import {CASUAL, UNIMPORTANT} from '../../../../constants/dialog-priorities';
 import {
   COLOUR_BLUE,
   COLOUR_DARK_RED,
@@ -48,28 +48,28 @@ import {
   CONTENT_LIGHT,
   LIGHT_RED,
   LINE_HEIGHT_MID,
-} from "../../../../constants/styles";
-import amountField from "../../../../fragments/amount-field";
-import AgentSerializer from "../../../../serializers/resources/agent";
-import TransactionSerializer from "../../../../serializers/resources/transaction";
-import UserSerializer from "../../../../serializers/resources/user";
-import WalletSerializer from "../../../../serializers/resources/wallet";
-import UserManagement from "../../../../services/api/resources/user-management";
+} from '../../../../constants/styles';
+import amountField from '../../../../fragments/amount-field';
+import AgentSerializer from '../../../../serializers/resources/agent';
+import TransactionSerializer from '../../../../serializers/resources/transaction';
+import UserSerializer from '../../../../serializers/resources/user';
+import WalletSerializer from '../../../../serializers/resources/wallet';
+import UserManagement from '../../../../services/api/resources/user-management';
 import {
   platformService,
   settlementService,
   transactionHistoryService,
   transactionService,
-} from "../../../../setup/api";
-import { convertNgkToNgn } from "../../../../utils/converters/currencies";
-import { flashMessage } from "../../../../utils/dialog";
-import handleErrorResponse from "../../../../utils/error-handlers/api";
-import { formatDate, formatNgnAmount } from "../../../../utils/formatters";
-import ApplicationSerializer from "../../../../utils/serializers/application";
-import { loadData } from "../../../../utils/storage";
-import TransactionRow from "../../../agent/scenes/reports/components/transaction-row";
+} from '../../../../setup/api';
+import {convertNgkToNgn} from '../../../../utils/converters/currencies';
+import {flashMessage} from '../../../../utils/dialog';
+import handleErrorResponse from '../../../../utils/error-handlers/api';
+import {formatDate, formatNgnAmount} from '../../../../utils/formatters';
+import ApplicationSerializer from '../../../../utils/serializers/application';
+import {loadData} from '../../../../utils/storage';
+import TransactionRow from '../../../agent/scenes/reports/components/transaction-row';
 // import { BalanceCard } from "../../../agent/scenes/home/scenes/default-scene/tabs/home-tab";
-const screenWidth = Dimensions.get("window").width;
+const screenWidth = Dimensions.get('window').width;
 
 export class TopAgentCard extends React.Component {
   constructor(props) {
@@ -80,50 +80,46 @@ export class TopAgentCard extends React.Component {
     return (
       <View
         style={{
-          justifyContent: "space-between",
-          backgroundColor: "white",
+          justifyContent: 'space-between',
+          backgroundColor: 'white',
           borderRadius: 12,
           elevation: 1,
           marginRight: 20,
-          width: "100%",
+          width: '100%',
           flex: 0,
-          alignSelf: "auto",
-        }}
-      >
+          alignSelf: 'auto',
+        }}>
         <View
           style={{
-            flexDirection: "row",
-            backgroundColor: "#F3F4F6",
+            flexDirection: 'row',
+            backgroundColor: '#F3F4F6',
             padding: 20,
-            width: "100%",
-          }}
-        >
+            width: '100%',
+          }}>
           <View
             style={{
               flex: 1,
-              alignItems: "flex-start",
-              width: "70%",
-            }}
-          >
+              alignItems: 'flex-start',
+              width: '70%',
+            }}>
             <Text bold>Agent Name</Text>
           </View>
 
           <View
             style={{
               flex: 1,
-              width: "10%",
-            }}
-          >
+              width: '10%',
+            }}>
             <Text bold>Amount Earned</Text>
           </View>
 
           <Text bold />
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <FlatList
             data={this.props.response}
-            keyExtractor={(item) => item.agentId}
-            renderItem={({ item }) => <TopAgentListItem item={item} />}
+            keyExtractor={item => item.agentId}
+            renderItem={({item}) => <TopAgentListItem item={item} />}
           />
         </View>
       </View>
@@ -139,29 +135,28 @@ export class WithdrawalHistoryCard extends React.Component {
     return (
       <View
         style={{
-          justifyContent: "space-between",
+          justifyContent: 'space-between',
           backgroundColor: COLOUR_WHITE,
           borderRadius: 12,
           padding: 10,
           marginRight: 20,
-          width: "100%",
+          width: '100%',
           flex: 0,
-          alignSelf: "auto",
-        }}
-      >
-        <View style={{ flex: 1 }}>
+          alignSelf: 'auto',
+        }}>
+        <View style={{flex: 1}}>
           <FlatList
             data={this.props.response}
-            keyExtractor={(item) => item.uniqueReference}
-            renderItem={({ item }) => (
+            keyExtractor={item => item.uniqueReference}
+            renderItem={({item}) => (
               <WithdrawalHistorytListItem
                 item={item}
                 onPressOut={() => {
                   this.props.navigate.navigate(
-                    "AggregatorCommissionsWithdrawalDetails",
+                    'AggregatorCommissionsWithdrawalDetails',
                     {
                       withdrawal: item,
-                    }
+                    },
                   );
                 }}
               />
@@ -178,11 +173,11 @@ export class ChartCard extends React.Component {
   }
 
   render() {
-    const { periods, values } = this.props;
+    const {periods, values} = this.props;
     const chartConfig = {
-      backgroundGradientFrom: "#FFFFFF",
+      backgroundGradientFrom: '#FFFFFF',
       backgroundGradientFromOpacity: 0,
-      backgroundGradientTo: "#FFFFFF",
+      backgroundGradientTo: '#FFFFFF',
       backgroundGradientToOpacity: 0.5,
       color: (opacity = 1) => `rgba(135, 135, 135, ${opacity})`,
       strokeWidth: 2, // optional, default 3
@@ -192,7 +187,7 @@ export class ChartCard extends React.Component {
     const data = {
       labels: periods.length
         ? periods
-        : ["January", "February", "March", "April", "May", "June"],
+        : ['January', 'February', 'March', 'April', 'May', 'June'],
       // labels: ["January", "February", "March", "April", "May", "June"],
       datasets: [
         {
@@ -208,22 +203,20 @@ export class ChartCard extends React.Component {
     return (
       <View
         style={{
-          justifyContent: "space-between",
-          backgroundColor: "white",
+          justifyContent: 'space-between',
+          backgroundColor: 'white',
           borderRadius: 12,
           elevation: 5,
           height: 300,
           marginRight: 20,
-          width: "100%",
-        }}
-      >
+          width: '100%',
+        }}>
         <View
           style={{
-            flexDirection: "column",
+            flexDirection: 'column',
             padding: 20,
-            width: "100%",
-          }}
-        >
+            width: '100%',
+          }}>
           <Text bold>Commission Performance</Text>
         </View>
         <View>
@@ -262,40 +255,36 @@ export class WithdrawalBalanceCard extends React.Component {
     return (
       <View
         style={{
-          justifyContent: "space-between",
+          justifyContent: 'space-between',
           backgroundColor: COLOUR_WHITE,
           borderRadius: 12,
           elevation: 5,
           height: 170,
           marginRight: 20,
-          width: "100%",
-        }}
-      >
+          width: '100%',
+        }}>
         <View
           style={{
-            flexDirection: "column",
+            flexDirection: 'column',
             padding: 20,
-            width: "100%",
-          }}
-        >
+            width: '100%',
+          }}>
           <Text semiBold>{title}</Text>
           <View
             style={{
-              width: "100%",
-              flexDirection: "row",
-            }}
-          >
+              width: '100%',
+              flexDirection: 'row',
+            }}>
             <View
               style={{
-                width: "70%",
-              }}
-            >
-              <Text style={{ height: 7 }} />
+                width: '70%',
+              }}>
+              <Text style={{height: 7}} />
               <AnimatedNumber
                 blue
                 steps={1}
-                formatter={(value) =>
-                  amountField("NGN", convertNgkToNgn(value || "0.00"))
+                formatter={value =>
+                  amountField('NGN', convertNgkToNgn(value || '0.00'))
                 }
                 semiBold
                 style={{
@@ -308,24 +297,22 @@ export class WithdrawalBalanceCard extends React.Component {
             {withdrawalVariancePercent <= 0 ? (
               <View
                 style={{
-                 
-                  width: "30%",
-                  flexDirection: "row",
+                  width: '30%',
+                  flexDirection: 'row',
                   backgroundColor: COLOUR_LIGHT_RED,
-                  alignContent: "center",
+                  alignContent: 'center',
                   padding: 10,
                   borderRadius: 5,
-                  justifyContent: "center",
-                }}
-              >
+                  justifyContent: 'center',
+                }}>
                 <Image
-                  source={require("../../../../assets/media/images/ArrowFatLinesDown.png")}
+                  source={require('../../../../assets/media/images/ArrowFatLinesDown.png')}
                   style={{
                     width: 20,
                     height: 20,
                   }}
                 />
-                <Text style={{ color: COLOUR_RED }} semiBold>
+                <Text style={{color: COLOUR_RED}} semiBold>
                   {withdrawalVariancePercent}%
                 </Text>
               </View>
@@ -333,23 +320,22 @@ export class WithdrawalBalanceCard extends React.Component {
               <View
                 style={{
                   marginTop: 10,
-                  width: "30%",
-                  flexDirection: "row",
+                  width: '30%',
+                  flexDirection: 'row',
                   backgroundColor: COLOUR_LIGHT_GREEN,
-                  alignContent: "center",
-                  justifyContent: "center",
+                  alignContent: 'center',
+                  justifyContent: 'center',
                   padding: 10,
                   borderRadius: 5,
-                }}
-              >
+                }}>
                 <Image
-                  source={require("../../../../assets/media/images/arrows.png")}
+                  source={require('../../../../assets/media/images/arrows.png')}
                   style={{
                     width: 20,
                     height: 20,
                   }}
                 />
-                <Text style={{ color: COLOUR_GREEN }} semiBold>
+                <Text style={{color: COLOUR_GREEN}} semiBold>
                   {withdrawalVariancePercent}%
                 </Text>
               </View>
@@ -390,36 +376,34 @@ export class BalanceCard extends React.Component {
     return (
       <View
         style={{
-          justifyContent: "space-between",
-          backgroundColor: "white",
+          justifyContent: 'space-between',
+          backgroundColor: 'white',
           borderRadius: 12,
           elevation: 5,
           height: 170,
           marginRight: 20,
           padding: 20,
-          width: "100%",
+          width: '100%',
           ...containerStyle,
-        }}
-      >
+        }}>
         <View>
           <Text semiBold>{`\n${title}`}</Text>
           <Text
             small
-            style={{ color: COLOUR_MID_GREY, lineHeight: LINE_HEIGHT_MID }}
-          >
-            as at {Moment(timestamp).format("MMMM Do, YYYY h:mma")}
+            style={{color: COLOUR_MID_GREY, lineHeight: LINE_HEIGHT_MID}}>
+            as at {Moment(timestamp).format('MMMM Do, YYYY h:mma')}
           </Text>
         </View>
 
         {showAccountNo && (
           <>
             <View>
-              <Text style={{ height: 7 }} />
+              <Text style={{height: 7}} />
               <AnimatedNumber
                 blue
                 steps={1}
-                formatter={(value) =>
-                  amountField("NGN", JSON.stringify(value || "0.00"))
+                formatter={value =>
+                  amountField('NGN', JSON.stringify(value || '0.00'))
                 }
                 semiBold
                 style={{
@@ -431,7 +415,7 @@ export class BalanceCard extends React.Component {
             </View>
             <View>
               <Text semiBold>{accountNo}</Text>
-              <Text small style={{ color: COLOUR_MID_GREY, lineHeight: 13 }}>
+              <Text small style={{color: COLOUR_MID_GREY, lineHeight: 13}}>
                 {bankName}
               </Text>
             </View>
@@ -440,12 +424,12 @@ export class BalanceCard extends React.Component {
         {!showAccountNo && (
           <>
             <View>
-              <Text style={{ height: 7 }} />
+              <Text style={{height: 7}} />
               <AnimatedNumber
                 blue
                 steps={1}
-                formatter={(value) =>
-                  amountField("NGN", JSON.stringify(value || "0.00"))
+                formatter={value =>
+                  amountField('NGN', JSON.stringify(value || '0.00'))
                 }
                 semiBold
                 style={{
@@ -457,12 +441,12 @@ export class BalanceCard extends React.Component {
             </View>
             <View>
               <Text semiBold />
-              <Text small style={{ color: COLOUR_MID_GREY, lineHeight: 13 }} />
+              <Text small style={{color: COLOUR_MID_GREY, lineHeight: 13}} />
             </View>
             {isLoading && (
               <ActivityIndicator
                 containerStyle={{
-                  position: "absolute",
+                  position: 'absolute',
                   right: 20,
                   bottom: 20,
                 }}
@@ -473,11 +457,10 @@ export class BalanceCard extends React.Component {
               <ClickableListItem
                 onPress={retry}
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   right: 18,
                   bottom: 18,
-                }}
-              >
+                }}>
                 <Icon color={COLOUR_BLUE} name="refresh" size={24} />
               </ClickableListItem>
             )}
@@ -487,12 +470,11 @@ export class BalanceCard extends React.Component {
           <ClickableListItem
             onPress={copyContentToClipboard}
             style={{
-              position: "absolute",
+              position: 'absolute',
               right: 16,
               bottom: 14,
-            }}
-          >
-            {accountNo !== "..." && (
+            }}>
+            {accountNo !== '...' && (
               <Icon
                 color={COLOUR_BLUE}
                 name="copy"
@@ -507,14 +489,14 @@ export class BalanceCard extends React.Component {
           <Button
             disabled={this.props.isDisabled}
             buttonStyle={{
-              backgroundColor: "transparent",
+              backgroundColor: 'transparent',
               padding: 20,
               ...this.props.buttonStyle,
             }}
             containerStyle={{
-              backgroundColor: "transparent",
+              backgroundColor: 'transparent',
               flex: 0.4,
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               right: 0,
               ...this.props.buttonContainerStyle,
@@ -524,7 +506,7 @@ export class BalanceCard extends React.Component {
               color: COLOUR_RED,
               fontSize: 13,
               letterSpacing: 1.15,
-              textAlign: "right",
+              textAlign: 'right',
             }}
             onPressOut={() => this.props.buttonOnPressOut()}
           />
@@ -540,32 +522,30 @@ export class TopAgentListItem extends React.Component {
   }
 
   render() {
-    const { item } = this.props;
+    const {item} = this.props;
 
     return (
       <View
         style={{
           flex: 1,
-          flexDirection: "row",
-          backgroundColor: "white",
-          alignItems: "flex-start",
+          flexDirection: 'row',
+          backgroundColor: 'white',
+          alignItems: 'flex-start',
           paddingHorizontal: 20,
           paddingVertical: 20,
-          width: "100%",
-        }}
-      >
-        <View style={{ flex: 1, alignItems: "flex-start", width: "70%" }}>
+          width: '100%',
+        }}>
+        <View style={{flex: 1, alignItems: 'flex-start', width: '70%'}}>
           <Text semiBold>{item.businessName}</Text>
         </View>
 
         <View
           style={{
             flex: 1,
-            alignItems: "flex-start",
-            width: "10%",
+            alignItems: 'flex-start',
+            width: '10%',
             paddingStart: 23,
-          }}
-        >
+          }}>
           <Text semiBold>
             {formatNgnAmount(convertNgkToNgn(item.commission || 0))}
           </Text>
@@ -588,18 +568,18 @@ export class WithdrawalHistorytListItem extends React.Component {
   }
 
   render() {
-    const { item } = this.props;
-    const { journalEntryDate, debitAmount, status, uniqueReference } = item;
+    const {item} = this.props;
+    const {journalEntryDate, debitAmount, status, uniqueReference} = item;
     let statusComponent;
 
     switch (status) {
-      case "Successful":
+      case 'Successful':
         statusComponent = <SuccessComponent />;
         break;
-      case "Pending":
+      case 'Pending':
         statusComponent = <PendingComponent />;
         break;
-      case "Failed":
+      case 'Failed':
         statusComponent = <FailedComponent />;
         break;
       default:
@@ -610,34 +590,30 @@ export class WithdrawalHistorytListItem extends React.Component {
       <ClickableListItem onPressOut={this.props.onPressOut}>
         <View
           style={{
-            flexDirection: "column",
-            backgroundColor: "#F3F5F6",
+            flexDirection: 'column',
+            backgroundColor: '#F3F5F6',
             padding: 10,
-            width: "100%",
+            width: '100%',
             marginBottom: 10,
-          }}
-        >
-          <View style={{ padding: 14 }}>
-            <Text style={{ fontSize: 12 }} bold>
+          }}>
+          <View style={{padding: 14}}>
+            <Text style={{fontSize: 12}} bold>
               {formatDate(journalEntryDate)}
             </Text>
           </View>
           <View
             style={{
-              flexDirection: "row",
-              backgroundColor: "#F3F5F6",
+              flexDirection: 'row',
+              backgroundColor: '#F3F5F6',
               padding: 10,
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
             <Text semiBold> Transaction Wallet</Text>
             <AnimatedNumber
               blue
               steps={1}
-              formatter={(value) =>
-                formatNgnAmount(convertNgkToNgn(value || 0))
-              }
+              formatter={value => formatNgnAmount(convertNgkToNgn(value || 0))}
               semiBold
               style={{
                 fontSize: 16,
@@ -648,13 +624,12 @@ export class WithdrawalHistorytListItem extends React.Component {
           </View>
           <View
             style={{
-              flexDirection: "row",
-              backgroundColor: "#F3F5F6",
-              justifyContent: "space-between",
-              width: "100%",
+              flexDirection: 'row',
+              backgroundColor: '#F3F5F6',
+              justifyContent: 'space-between',
+              width: '100%',
               paddingHorizontal: 13,
-            }}
-          >
+            }}>
             <Text semiBold>{uniqueReference}</Text>
             {statusComponent}
           </View>
@@ -669,18 +644,17 @@ class FailedComponent extends React.Component {
     return (
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: 'row',
           width: 75,
           height: 28,
           backgroundColor: LIGHT_RED,
-          justifyContent: "center",
+          justifyContent: 'center',
           paddingVertical: 5,
           borderRadius: 8,
           borderWidth: 1,
           borderColor: COLOUR_DARK_RED,
-        }}
-      >
-        <View style={{ marginTop: 3 }}>
+        }}>
+        <View style={{marginTop: 3}}>
           <Icon
             color={COLOUR_DARK_RED}
             name="fiber-manual-record"
@@ -690,7 +664,7 @@ class FailedComponent extends React.Component {
           />
         </View>
 
-        <Text style={{ fontSize: 14, color: COLOUR_DARK_RED }}>Failed</Text>
+        <Text style={{fontSize: 14, color: COLOUR_DARK_RED}}>Failed</Text>
       </View>
     );
   }
@@ -700,18 +674,17 @@ class SuccessComponent extends React.Component {
     return (
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: 'row',
           width: 103,
           height: 28,
           backgroundColor: COLOUR_LIGHT_GREEN,
-          justifyContent: "center",
+          justifyContent: 'center',
           paddingVertical: 5,
           borderRadius: 8,
           borderWidth: 1,
           borderColor: COLOUR_GREEN,
-        }}
-      >
-        <View style={{ marginTop: 3 }}>
+        }}>
+        <View style={{marginTop: 3}}>
           <Icon
             color={COLOUR_GREEN}
             name="fiber-manual-record"
@@ -721,7 +694,7 @@ class SuccessComponent extends React.Component {
           />
         </View>
 
-        <Text style={{ fontSize: 14, color: COLOUR_GREEN }}>Successful</Text>
+        <Text style={{fontSize: 14, color: COLOUR_GREEN}}>Successful</Text>
       </View>
     );
   }
@@ -732,18 +705,17 @@ class PendingComponent extends React.Component {
     return (
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: 'row',
           width: 80,
           height: 28,
           backgroundColor: COLOUR_LIGHT_YELLOW,
-          justifyContent: "center",
+          justifyContent: 'center',
           paddingVertical: 5,
           borderRadius: 8,
           borderWidth: 1,
           borderColor: COLOUR_YELLOW,
-        }}
-      >
-        <View style={{ marginTop: 3 }}>
+        }}>
+        <View style={{marginTop: 3}}>
           <Icon
             color={COLOUR_YELLOW}
             name="fiber-manual-record"
@@ -753,7 +725,7 @@ class PendingComponent extends React.Component {
           />
         </View>
 
-        <Text style={{ fontSize: 14, color: COLOUR_YELLOW }}>Pending</Text>
+        <Text style={{fontSize: 14, color: COLOUR_YELLOW}}>Pending</Text>
       </View>
     );
   }
@@ -821,19 +793,15 @@ class CommissionsEarnedDashBoard extends React.Component {
     this.loadTopContributors = this.loadTopContributors.bind(this);
     this.loadCommissionStats = this.loadCommissionStats.bind(this);
     this.loadWithdrawalSummarry = this.loadWithdrawalSummarry.bind(this);
-    this.loadEarningPerformanceYearly = this.loadEarningPerformanceYearly.bind(
-      this
-    );
-    this.loadCommissionWithdrawalReport = this.loadCommissionWithdrawalReport.bind(
-      this
-    );
+    this.loadEarningPerformanceYearly =
+      this.loadEarningPerformanceYearly.bind(this);
+    this.loadCommissionWithdrawalReport =
+      this.loadCommissionWithdrawalReport.bind(this);
     this.changeDateInterval = this.changeDateInterval.bind(this);
-    this.changeWithdrawalDateInterval = this.changeWithdrawalDateInterval.bind(
-      this
-    );
-    this.loadCommissionEarningsStat = this.loadCommissionEarningsStat.bind(
-      this
-    );
+    this.changeWithdrawalDateInterval =
+      this.changeWithdrawalDateInterval.bind(this);
+    this.loadCommissionEarningsStat =
+      this.loadCommissionEarningsStat.bind(this);
   }
 
   componentDidMount() {
@@ -849,7 +817,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       });
     });
 
-    loadData(SHOW_STATUS_BAR).then((response) => {
+    loadData(SHOW_STATUS_BAR).then(response => {
       this.setState({
         showStatusCard: response,
       });
@@ -873,14 +841,14 @@ class CommissionsEarnedDashBoard extends React.Component {
       this.props.navigationState.currentScreen !==
       prevProps.navigationState.currentScreen
     ) {
-      console.log("SUPPOSED TO DO STUFF HERE.");
+      console.log('SUPPOSED TO DO STUFF HERE.');
       this.isCommissionEarnedDashboard() &&
         setTimeout(
           () =>
             this.setState({
               ...this.state.pendingState,
             }),
-          800
+          800,
         );
     }
   }
@@ -893,10 +861,10 @@ class CommissionsEarnedDashBoard extends React.Component {
       },
       async () => {
         console.log(
-          "isFetchingTopContributors",
-          this.state.isFetchingTopContributors
+          'isFetchingTopContributors',
+          this.state.isFetchingTopContributors,
         );
-        console.log("newDateInterval", this.state.dateInterval);
+        console.log('newDateInterval', this.state.dateInterval);
 
         await this.loadTopContributors();
         await this.loadEarningPerformanceYearly();
@@ -905,7 +873,7 @@ class CommissionsEarnedDashBoard extends React.Component {
         this.setState({
           isChangingDateInterval: false,
         });
-      }
+      },
     );
   }
 
@@ -922,7 +890,7 @@ class CommissionsEarnedDashBoard extends React.Component {
         this.setState({
           isChangingDateInterval: false,
         });
-      }
+      },
     );
   }
 
@@ -943,7 +911,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       currentAgent,
     });
 
-    console.log("NUGAGEE AGENT 3", currentAgent);
+    console.log('NUGAGEE AGENT 3', currentAgent);
 
     return currentAgent;
   }
@@ -956,7 +924,7 @@ class CommissionsEarnedDashBoard extends React.Component {
     }
 
     const currentApplication = new ApplicationSerializer(
-      currentApplicationData
+      currentApplicationData,
     );
 
     this.setState({
@@ -973,13 +941,13 @@ class CommissionsEarnedDashBoard extends React.Component {
       currentUser,
     });
 
-    console.log("CURRENT USER NUGAGEE", currentUser);
+    console.log('CURRENT USER NUGAGEE', currentUser);
 
     return currentUser;
   }
   async _loadWallet(currentAgent, currentUser, isFastRefresh = false) {
     let oldWallet = await loadData(WALLET + currentUser.businessMobileNo);
-    console.log("oldWalletDashboard", oldWallet);
+    console.log('oldWalletDashboard', oldWallet);
 
     try {
       oldWallet = JSON.parse(oldWallet) || {};
@@ -988,8 +956,8 @@ class CommissionsEarnedDashBoard extends React.Component {
     }
 
     console.log(
-      "addition",
-      oldWallet.commissions_earned + oldWallet.unsettled_balance
+      'addition',
+      oldWallet.commissions_earned + oldWallet.unsettled_balance,
     );
 
     const ledgerBalance =
@@ -1007,7 +975,7 @@ class CommissionsEarnedDashBoard extends React.Component {
 
     if (this.state.makeCallToAgentsMe) {
       settlementBalance = await this.settlement.getWalletUnsettledBalanceByRef(
-        currentAgent.walletRef
+        currentAgent.walletRef,
       );
       walletBalance = await this.transaction.getWalletBalanceByPost({
         businessPhoneNo: currentAgent.phoneNumber,
@@ -1054,14 +1022,14 @@ class CommissionsEarnedDashBoard extends React.Component {
       pendingState: this.isCommissionEarnedDashboard() ? null : pendingState,
     });
 
-    console.log("myWallet", this.state.wallet);
+    console.log('myWallet', this.state.wallet);
   }
 
   isCommissionEarnedDashboard() {
     const {
-      navigationState: { currentScreen },
+      navigationState: {currentScreen},
     } = this.props;
-    return ["Agent", "AggregatorCommissionsEarned"].includes(currentScreen);
+    return ['Agent', 'AggregatorCommissionsEarned'].includes(currentScreen);
   }
 
   sortTransactions(transactions) {
@@ -1074,10 +1042,10 @@ class CommissionsEarnedDashBoard extends React.Component {
 
       if (
         sections.find(
-          (value) => value.title === serializedTransaction.formattedDate
+          value => value.title === serializedTransaction.formattedDate,
         )
       ) {
-        sections.map((section) => {
+        sections.map(section => {
           if (section.title === serializedTransaction.formattedDate) {
             section.data.push(serializedTransaction);
             return;
@@ -1115,7 +1083,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       currentUser,
     });
 
-    console.log("HARDLOAD USER NUGAGEE", currentUser);
+    console.log('HARDLOAD USER NUGAGEE', currentUser);
 
     await saveData(USER, currentUserResponseObj);
 
@@ -1136,7 +1104,7 @@ class CommissionsEarnedDashBoard extends React.Component {
 
     if (serializedUser.isAgent) {
       if (!doHardLoadAgent) {
-        console.log("NOT HARD LOADING AGENT");
+        console.log('NOT HARD LOADING AGENT');
         this.setState({
           isLoading: false,
         });
@@ -1173,13 +1141,13 @@ class CommissionsEarnedDashBoard extends React.Component {
     isDisabled =
       isDisabled || currentUser.isDisabled || currentUser.isDomainDisabled;
 
-    console.log("User based isDisabled", isDisabled);
+    console.log('User based isDisabled', isDisabled);
     let currentAgent = null;
 
     if (currentUser.isAgent) {
       currentAgent = await this._loadAgent();
 
-      console.log("DID HARD RELOAD FAIL", this.state.hardReloadFailed);
+      console.log('DID HARD RELOAD FAIL', this.state.hardReloadFailed);
 
       if (true) {
         this._loadWallet(currentAgent, currentUser);
@@ -1243,7 +1211,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       <TransactionRow
         isHistoricalData={this.state.isHistoricalData}
         onPressOut={() =>
-          this.props.navigation.navigate("TransactionSummary", {
+          this.props.navigation.navigate('TransactionSummary', {
             transaction: item,
           })
         }
@@ -1256,12 +1224,11 @@ class CommissionsEarnedDashBoard extends React.Component {
     return (
       <Text
         style={{
-          backgroundColor: "#F3F3F4",
+          backgroundColor: '#F3F3F4',
           lineHeight: 32,
           marginLeft: 0,
           paddingLeft: 16,
-        }}
-      >
+        }}>
         {item}
       </Text>
     );
@@ -1273,13 +1240,10 @@ class CommissionsEarnedDashBoard extends React.Component {
       transactions: isFastRefresh ? this.state.transactions : [],
     });
 
-    const {
-      code,
-      response,
-      status,
-    } = await this.transactionHistory.retrieveTransactions(
-      this.state.currentUser.domainCode
-    );
+    const {code, response, status} =
+      await this.transactionHistory.retrieveTransactions(
+        this.state.currentUser.domainCode,
+      );
 
     if (status === ERROR_STATUS) {
       flashMessage(null, await handleErrorResponse(response), UNIMPORTANT);
@@ -1296,8 +1260,8 @@ class CommissionsEarnedDashBoard extends React.Component {
       isFetchingTransactions: false,
       transactions: this.sortTransactions(
         response.content.filter(
-          (value) => value.statusCode.toUpperCase() !== "INITIATED"
-        )
+          value => value.statusCode.toUpperCase() !== 'INITIATED',
+        ),
       ),
     });
   }
@@ -1308,22 +1272,19 @@ class CommissionsEarnedDashBoard extends React.Component {
       topContributors: [],
     });
 
-    const {
-      code,
-      response,
-      status,
-    } = await this.transactionHistory.getTopContributors(
-      "2023-08-01T00:00:00",
-      "2023-08-31T23:59:59",
-      this.state.dateInterval
-    );
+    const {code, response, status} =
+      await this.transactionHistory.getTopContributors(
+        '2023-08-01T00:00:00',
+        '2023-08-31T23:59:59',
+        this.state.dateInterval,
+      );
 
-    if (status === "ERROR") {
+    if (status === 'ERROR') {
       this.setState({
         isFetchingTopContributors: false,
         topContributors: code === HTTP_NOT_FOUND ? [] : null,
       });
-      console.log("TOPCONTRIBUTORSTATUS", this.state.isFetchingTopContributors);
+      console.log('TOPCONTRIBUTORSTATUS', this.state.isFetchingTopContributors);
 
       return;
     }
@@ -1334,10 +1295,10 @@ class CommissionsEarnedDashBoard extends React.Component {
     });
 
     console.log(
-      "Init9 TOPCONTRIBUTORSSTATUS",
-      this.state.isFetchingTopContributors
+      'Init9 TOPCONTRIBUTORSSTATUS',
+      this.state.isFetchingTopContributors,
     );
-    console.log("topContributors", this.state.topContributors);
+    console.log('topContributors', this.state.topContributors);
 
     const topContributors = [...this.state.topContributors];
   }
@@ -1348,13 +1309,10 @@ class CommissionsEarnedDashBoard extends React.Component {
       commissionStats: {},
     });
 
-    const {
-      code,
-      response,
-      status,
-    } = await this.transactionHistory.getCommissionsStats(
-      this.state.dateInterval
-    );
+    const {code, response, status} =
+      await this.transactionHistory.getCommissionsStats(
+        this.state.dateInterval,
+      );
 
     if (status === ERROR_STATUS) {
       flashMessage(null, await handleErrorResponse(data), UNIMPORTANT);
@@ -1378,10 +1336,10 @@ class CommissionsEarnedDashBoard extends React.Component {
       currentWithdrawalValue,
       withdrawalVariancePercent,
     });
-    console.log("currentWithdrawalValue", this.state.currentWithdrawalValue);
+    console.log('currentWithdrawalValue', this.state.currentWithdrawalValue);
     console.log(
-      "withdrawalVariancePercent",
-      this.state.withdrawalVariancePercent
+      'withdrawalVariancePercent',
+      this.state.withdrawalVariancePercent,
     );
   }
 
@@ -1391,13 +1349,10 @@ class CommissionsEarnedDashBoard extends React.Component {
       earningStats: {},
     });
 
-    const {
-      code,
-      response,
-      status,
-    } = await this.transactionHistory.getCommissionsStats(
-      this.state.dateInterval
-    );
+    const {code, response, status} =
+      await this.transactionHistory.getCommissionsStats(
+        this.state.dateInterval,
+      );
 
     if (status === ERROR_STATUS) {
       flashMessage(null, await handleErrorResponse(data), UNIMPORTANT);
@@ -1419,8 +1374,8 @@ class CommissionsEarnedDashBoard extends React.Component {
       earningValue,
       earningVariancePercent,
     });
-    console.log("earningVariancePercent", this.state.earningVariancePercent);
-    console.log("earningValue", this.state.currentEarningValue);
+    console.log('earningVariancePercent', this.state.earningVariancePercent);
+    console.log('earningValue', this.state.currentEarningValue);
   }
 
   async loadCommissionWithdrawalReport() {
@@ -1429,22 +1384,19 @@ class CommissionsEarnedDashBoard extends React.Component {
       commissionWithdrawalReport: [],
     });
 
-    const { pageNo, pageSize } = this.state;
+    const {pageNo, pageSize} = this.state;
 
-    const {
-      code,
-      response,
-      status,
-    } = await this.transactionHistory.getCommissionsWithdrawalReport(
-      this.state.dateInterval,
-      pageNo,
-      pageSize
-    );
+    const {code, response, status} =
+      await this.transactionHistory.getCommissionsWithdrawalReport(
+        this.state.dateInterval,
+        pageNo,
+        pageSize,
+      );
 
-    console.log("response", response);
+    console.log('response', response);
 
-    if (status === "ERROR") {
-      console.log("statusWithdrawal", status);
+    if (status === 'ERROR') {
+      console.log('statusWithdrawal', status);
       this.setState({
         isFetchingCommissionWithdrawalReport: false,
         commissionWithdrawalReport: code === HTTP_NOT_FOUND ? {} : null,
@@ -1458,8 +1410,8 @@ class CommissionsEarnedDashBoard extends React.Component {
       commissionWithdrawalReport: response.data.content,
     });
     console.log(
-      "fetchingvalue2",
-      this.state.isFetchingCommissionWithdrawalReport
+      'fetchingvalue2',
+      this.state.isFetchingCommissionWithdrawalReport,
     );
   }
 
@@ -1469,11 +1421,8 @@ class CommissionsEarnedDashBoard extends React.Component {
       withdrawalSummary: {},
     });
 
-    const {
-      code,
-      response,
-      status,
-    } = await this.transactionHistory.getWithdrawalSummarry("1");
+    const {code, response, status} =
+      await this.transactionHistory.getWithdrawalSummarry('1');
 
     if (status === ERROR_STATUS) {
       flashMessage(null, await handleErrorResponse(data), UNIMPORTANT);
@@ -1490,7 +1439,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       isFetchingWithdrawalSummary: false,
       withdrawalSummary: response.data,
     });
-    console.log("withdrawalSummary", this.state.withdrawalSummary);
+    console.log('withdrawalSummary', this.state.withdrawalSummary);
   }
 
   async loadEarningPerformanceYearly() {
@@ -1499,13 +1448,10 @@ class CommissionsEarnedDashBoard extends React.Component {
       earningPerformance: [],
     });
 
-    const {
-      code,
-      response,
-      status,
-    } = await this.transactionHistory.getEarningPerformanceYearly(
-      this.state.dateInterval
-    );
+    const {code, response, status} =
+      await this.transactionHistory.getEarningPerformanceYearly(
+        this.state.dateInterval,
+      );
 
     if (status === ERROR_STATUS) {
       flashMessage(null, await handleErrorResponse(data), UNIMPORTANT);
@@ -1525,17 +1471,17 @@ class CommissionsEarnedDashBoard extends React.Component {
       const values = [];
 
       // Loop through the API response and extract "period" and "value"
-      apiResponse.forEach((item) => {
+      apiResponse.forEach(item => {
         if (item.period && item.value) {
           periods.push(item.period);
           values.push(item.value);
         }
       });
 
-      return { periods, values };
+      return {periods, values};
     }
 
-    const { periods, values } = filterPeriodAndValue(earningPerformanceData);
+    const {periods, values} = filterPeriodAndValue(earningPerformanceData);
 
     // console.log("Periods:", periods);
     // console.log("Values:", values);
@@ -1546,9 +1492,9 @@ class CommissionsEarnedDashBoard extends React.Component {
       chartPeriods: periods,
       chartValues: values,
     });
-    console.log("Periods:", this.state.chartPeriods);
-    console.log("Values:", this.state.chartValues);
-    console.log("earningPerformance", this.state.earningPerformance);
+    console.log('Periods:', this.state.chartPeriods);
+    console.log('Values:', this.state.chartValues);
+    console.log('earningPerformance', this.state.earningPerformance);
   }
 
   renderTopContributor() {
@@ -1567,8 +1513,7 @@ class CommissionsEarnedDashBoard extends React.Component {
         <View
           style={{
             padding: 20,
-          }}
-        >
+          }}>
           <Text center>Something went wrong. Please, refresh the page.</Text>
         </View>
       );
@@ -1578,8 +1523,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       <View
         style={{
           padding: 20,
-        }}
-      >
+        }}>
         <Text center>Nothing to display.</Text>
       </View>
     ) : (
@@ -1604,8 +1548,7 @@ class CommissionsEarnedDashBoard extends React.Component {
         <View
           style={{
             padding: 20,
-          }}
-        >
+          }}>
           <Text center>Something went wrong. Please, refresh the page.</Text>
         </View>
       );
@@ -1615,15 +1558,14 @@ class CommissionsEarnedDashBoard extends React.Component {
       <View
         style={{
           padding: 20,
-        }}
-      >
+        }}>
         <Text center>Nothing to display.</Text>
       </View>
     ) : (
       <SectionList
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item, index, section }) => this.renderItem(item, index)}
-        renderSectionHeader={({ section: { title } }) =>
+        renderItem={({item, index, section}) => this.renderItem(item, index)}
+        renderSectionHeader={({section: {title}}) =>
           this.renderSectionHeader(title)
         }
         scrollEventThrottle={400}
@@ -1649,8 +1591,7 @@ class CommissionsEarnedDashBoard extends React.Component {
         <View
           style={{
             padding: 20,
-          }}
-        >
+          }}>
           <Text center>Something went wrong. Please, refresh the page.</Text>
         </View>
       );
@@ -1661,8 +1602,7 @@ class CommissionsEarnedDashBoard extends React.Component {
         <View
           style={{
             padding: 20,
-          }}
-        >
+          }}>
           <Text center>Something went wrong. Please, refresh the page.</Text>
         </View>
       );
@@ -1672,8 +1612,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       <View
         style={{
           padding: 20,
-        }}
-      >
+        }}>
         <Text center>Nothing to display.</Text>
       </View>
     ) : (
@@ -1685,7 +1624,7 @@ class CommissionsEarnedDashBoard extends React.Component {
   }
 
   renderCarouselPagination() {
-    const { activeSlide } = this.state;
+    const {activeSlide} = this.state;
 
     return (
       <Pagination
@@ -1714,9 +1653,9 @@ class CommissionsEarnedDashBoard extends React.Component {
 
   render() {
     const date = [
-      { value: 2, name: "This week" },
-      { value: 3, name: "This month" },
-      { value: 4, name: "This year" },
+      {value: 2, name: 'This week'},
+      {value: 3, name: 'This month'},
+      {value: 4, name: 'This year'},
     ];
     const {
       navigation,
@@ -1736,41 +1675,39 @@ class CommissionsEarnedDashBoard extends React.Component {
       <View>
         <View
           style={{
-            flexDirection: "column",
+            flexDirection: 'column',
             flex: 1,
             paddingBottom: 2,
             paddingHorizontal: 16,
             width: WINDOW_WIDTH,
-          }}
-        >
+          }}>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
+              flexDirection: 'row',
+              justifyContent: 'center',
               paddingBottom: 2,
               marginTop: 15,
-            }}
-          >
+            }}>
             <Text bold>Earnings</Text>
           </View>
           <FormPicker
-            choices={date.map(({ value, name }) => ({
+            choices={date.map(({value, name}) => ({
               label: name,
               value: value,
             }))}
             placeholder="This Week"
             innerContainerStyle={styles.formInputInnerContainerStyle}
-            onSelect={(value) => this.changeDateInterval(value)}
+            onSelect={value => this.changeDateInterval(value)}
             outerContainerStyle={styles.formInputOuterContainerStyle}
             propagateError={this.props.propagateFormErrors}
             validators={{
               required: true,
             }}
           />
-          <View style={{ marginBottom: 10, marginTop: 5 }}>
+          <View style={{marginBottom: 10, marginTop: 5}}>
             <WithdrawalBalanceCard
               amount={
-                this.state.earningValue !== 0 ? this.state.earningValue : "0.00"
+                this.state.earningValue !== 0 ? this.state.earningValue : '0.00'
               }
               withdrawalVariancePercent={
                 this.state.earningVariancePercent !== 0
@@ -1780,7 +1717,7 @@ class CommissionsEarnedDashBoard extends React.Component {
               title="Earnings"
             />
           </View>
-          <View style={{ marginBottom: 10 }}>
+          <View style={{marginBottom: 10}}>
             <BalanceCard
               didLoadBalanceFail={this.state.didLoadWalletBalanceFail}
               isDisabled={this.state.isDisabled}
@@ -1789,14 +1726,12 @@ class CommissionsEarnedDashBoard extends React.Component {
                 this._loadWallet(this._loadAgent(), this._loadUser())
               }
               title="Ledger Balance"
-              amount={
-                this.state.wallet ? this.state.ledgerBalance : "0.00"
-              }
+              amount={this.state.wallet ? this.state.ledgerBalance : '0.00'}
               timestamp={this.state.wallet.walletBalanceTimestamp}
               key="ledgerBalance"
             />
           </View>
-          <View style={{ marginBottom: 10, marginTop: 5 }}>
+          <View style={{marginBottom: 10, marginTop: 5}}>
             <BalanceCard
               didLoadBalanceFail={this.state.didLoadWalletBalanceFail}
               isDisabled={this.state.isDisabled}
@@ -1808,11 +1743,11 @@ class CommissionsEarnedDashBoard extends React.Component {
               amount={
                 this.state.wallet
                   ? this.state.wallet.commissions_earned
-                  : "0.00"
+                  : '0.00'
               }
               buttonTitle="Unload"
               buttonOnPressOut={() =>
-                this.props.navigation.navigate("UnloadCommission")
+                this.props.navigation.navigate('UnloadCommission')
               }
               timestamp={this.state.wallet.walletBalanceTimestamp}
             />
@@ -1822,7 +1757,7 @@ class CommissionsEarnedDashBoard extends React.Component {
             periods={this.state.chartPeriods}
             values={this.state.chartValues}
           />
-          <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
+          <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
             <Text bold>Top 5 Agents</Text>
           </View>
         </View>
@@ -1834,31 +1769,29 @@ class CommissionsEarnedDashBoard extends React.Component {
       <View>
         <View
           style={{
-            flexDirection: "column",
+            flexDirection: 'column',
             flex: 1,
             paddingBottom: 2,
             paddingHorizontal: 16,
             width: WINDOW_WIDTH,
-          }}
-        >
+          }}>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
+              flexDirection: 'row',
+              justifyContent: 'center',
               paddingBottom: 2,
               marginTop: 15,
-            }}
-          >
+            }}>
             <Text bold>Withdrawals</Text>
           </View>
           <FormPicker
-            choices={date.map(({ value, name }) => ({
+            choices={date.map(({value, name}) => ({
               label: name,
               value,
             }))}
             placeholder="This Week"
             innerContainerStyle={styles.formInputInnerContainerStyle}
-            onSelect={(value) => this.changeWithdrawalDateInterval(value)}
+            onSelect={value => this.changeWithdrawalDateInterval(value)}
             outerContainerStyle={styles.formInputOuterContainerStyle}
             propagateError={this.props.propagateFormErrors}
             validators={{
@@ -1866,12 +1799,12 @@ class CommissionsEarnedDashBoard extends React.Component {
             }}
           />
 
-          <View style={{ marginBottom: 10, marginTop: 5, width: "100%" }}>
+          <View style={{marginBottom: 10, marginTop: 5, width: '100%'}}>
             <WithdrawalBalanceCard
               amount={
                 this.state.currentWithdrawalValue !== 0
                   ? this.state.currentWithdrawalValue
-                  : "0.00"
+                  : '0.00'
               }
               withdrawalVariancePercent={
                 this.state.withdrawalVariancePercent !== 0
@@ -1881,7 +1814,7 @@ class CommissionsEarnedDashBoard extends React.Component {
               title="Total Withdrawals"
             />
           </View>
-          <View style={{ marginTop: 10 }} />
+          <View style={{marginTop: 10}} />
         </View>
         {this.renderWithdrawalHistory()}
       </View>
@@ -1891,8 +1824,7 @@ class CommissionsEarnedDashBoard extends React.Component {
       <View
         style={{
           flex: 1,
-        }}
-      >
+        }}>
         <Header
           containerStyle={{
             backgroundColor: COLOUR_BLUE,
@@ -1911,13 +1843,13 @@ class CommissionsEarnedDashBoard extends React.Component {
           hideNavigationMenu={this.props.hideNavigator}
           showNavigationMenu={this.props.showNavigator}
           statusBarProps={{
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
             barStyle: CONTENT_LIGHT,
           }}
           title="My Commissions"
           titleStyle={{
             color: COLOUR_WHITE,
-            fontWeight: "bold",
+            fontWeight: 'bold',
           }}
         />
 
@@ -1925,31 +1857,29 @@ class CommissionsEarnedDashBoard extends React.Component {
           onScroll={Animated.event(
             [
               {
-                nativeEvent: { contentOffset: { y: this.state.scrollY } },
+                nativeEvent: {contentOffset: {y: this.state.scrollY}},
               },
             ],
             {
               useNativeDriver: true,
-            }
+            },
           )}
-          scrollEventThrottle={16}
-        >
+          scrollEventThrottle={16}>
           {this.renderCarouselPagination()}
 
           <Carousel
             data={[earningsView, withdrawalView]}
-            onSnapToItem={(index) => this.setState({ activeSlide: index })}
-            ref={(c) => {
+            onSnapToItem={index => this.setState({activeSlide: index})}
+            ref={c => {
               this._carousel = c;
             }}
-            renderItem={({ item: viewFunc }) => (
+            renderItem={({item: viewFunc}) => (
               <>
                 <View
                   style={{
-                    backgroundColor: "white",
+                    backgroundColor: 'white',
                     flex: 0.4,
-                  }}
-                >
+                  }}>
                   {viewFunc()}
                 </View>
               </>
@@ -1962,12 +1892,12 @@ class CommissionsEarnedDashBoard extends React.Component {
             <ActivityIndicator
               color={COLOUR_WHITE}
               containerStyle={{
-                alignItems: "center",
+                alignItems: 'center',
                 backgroundColor: `${COLOUR_BLUE}AA`,
-                height: "100%",
-                justifyContent: "center",
-                position: "absolute",
-                width: "100%",
+                height: '100%',
+                justifyContent: 'center',
+                position: 'absolute',
+                width: '100%',
                 zIndex: 1,
               }}
             />
@@ -1992,17 +1922,16 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     hideNavigator: () => dispatch(hideNavigator()),
-    setIsFastRefreshPending: (value) =>
-      dispatch(setIsFastRefreshPending(value)),
-    setScreenAfterLogin: (screen) => dispatch(setScreenAfterLogin(screen)),
+    setIsFastRefreshPending: value => dispatch(setIsFastRefreshPending(value)),
+    setScreenAfterLogin: screen => dispatch(setScreenAfterLogin(screen)),
     showNavigator: () => dispatch(showNavigator()),
-    navigateTo: (message) => dispatch(navigateTo(message)),
+    navigateTo: message => dispatch(navigateTo(message)),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(CommissionsEarnedDashBoard);
 
 const styles = StyleSheet.create({
