@@ -67,7 +67,7 @@ const withErrorBoundary = Component => props =>
 const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-const MainStackNavigator = () => {
+function MainStackNavigator() {
   const persistenceKey = 'persistenceKey';
 
   const navigationRef = useNavigationContainerRef();
@@ -315,7 +315,7 @@ const MainStackNavigator = () => {
       </MainStack.Navigator>
     </NavigationContainer>
   );
-};
+}
 
 const AuthStackNavigator = () => (
   <AuthStack.Navigator screenOptions={{headerShown: false}}>

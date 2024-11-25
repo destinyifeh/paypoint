@@ -22,7 +22,7 @@ import {
 } from './src/constants/action-types/tunnel';
 import {QUICK_ACTION_ITEMS_DELIMITER} from './src/constants/api-resources';
 import UpdateBanner from './src/fragments/update-banner';
-import {MainStackNavigator} from './src/routes';
+import MainStackNavigator from './src/routes';
 import {
   addBroadcastMessageToRead,
   isMessageLastReadMessage,
@@ -80,8 +80,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // Crashlytics().log('App Mounted');
-
     store.subscribe(() => {
       const {
         tunnel: {
@@ -366,11 +364,5 @@ class App extends React.Component {
     );
   }
 }
-
-// const codePushOptions = {
-//   checkFrequency: CodePush.CheckFrequency.MANUAL,
-//   installMode: CodePush.InstallMode.IMMEDIATE,
-//   deploymentKey: CODE_PUSH_DEPLOYMENT_KEY
-// };
 
 export default App;
