@@ -11,6 +11,7 @@ import {AGENT} from '../../../../constants';
 import {
   SHOW_AGGREGATOR_COMMISSION,
   SHOW_BANK_NETWORK,
+  SHOW_CAC,
   SHOW_CRM,
 } from '../../../../constants/api-resources';
 import {
@@ -141,16 +142,17 @@ class ReportsScene extends React.Component {
                 this.props.navigation.navigate('ReportTransactions')
               }
             />
-
-            <ItemRow
-              colors={['#2CBC65', '#2CBC65']}
-              icon="briefcase"
-              style={{
-                marginBottom: 30,
-              }}
-              title="CAC Report"
-              onPressOut={() => this.props.navigation.navigate('CacReports')}
-            />
+            {SHOW_CAC && (
+              <ItemRow
+                colors={['#2CBC65', '#2CBC65']}
+                icon="briefcase"
+                style={{
+                  marginBottom: 30,
+                }}
+                title="CAC Report"
+                onPressOut={() => this.props.navigation.navigate('CacReports')}
+              />
+            )}
             <ItemRow
               colors={['#9578F8', '#9E53F5']}
               icon="bar-chart"

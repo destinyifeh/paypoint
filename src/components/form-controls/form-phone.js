@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -9,13 +9,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
 import CountryFlag from 'react-native-country-flag';
 
-import {FlatList} from 'react-native-gesture-handler';
-import {connect} from 'react-redux';
-import {NIGERIA_SHORT_CODE} from '../../constants';
+import { FlatList } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { NIGERIA_SHORT_CODE } from '../../constants';
 import {
   COLOUR_BLACK,
   COLOUR_BLUE,
@@ -32,10 +32,10 @@ import {
   FONT_SIZE_TITLE,
 } from '../../constants/styles';
 import SupportedCountries from '../../fixtures/supported_countries';
-import {validateFieldLength} from '../../validators/form-validators';
+import { validateFieldLength } from '../../validators/form-validators';
 import ClickableListItem from '../clickable-list-item';
 import Text from '../text';
-import {FormInput} from './form-input';
+import { FormInput } from './form-input';
 
 class FlagDropdown extends Component {
   constructor() {

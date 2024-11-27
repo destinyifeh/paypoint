@@ -105,9 +105,11 @@ export let SHOW_CRM = true;
 export let SHOW_AGGREGATOR_COMMISSION = true;
 export let SHOW_CBN_COMPLIANCE = true;
 export let ALLOW_NEW_FMPA = false;
+export let SHOW_CAC = false;
 
 const FORCE_UAT = true;
 if (FORCE_UAT) {
+  SHOW_CAC = true;
   SHOW_CBN_COMPLIANCE = true;
   SHOW_AGGREGATOR_COMMISSION = true;
   SHOW_CRM = true;
@@ -165,6 +167,7 @@ if (FORCE_UAT) {
 
 const FORCE_PROD = false;
 if (FORCE_PROD) {
+  SHOW_CAC = false;
   SHOW_CBN_COMPLIANCE = true;
   SHOW_AGGREGATOR_COMMISSION = false;
   SHOW_CRM = true;

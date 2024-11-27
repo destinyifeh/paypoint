@@ -59,8 +59,7 @@ class AirtimeAndDataForm extends BaseForm {
   }
 
   componentDidMount() {
-    const subCategory = this.props.route?.params?.subCategory || {};
-
+    const subCategory = this.props.subCategory || {};
     this.isAirtime = subCategory.id === AIRTIME_SUB_CATEGORY_ID;
     this.isData = subCategory.id === DATA_SUB_CATEGORY_ID;
     this.isEpins = subCategory.id === E_PINS_SUB_CATEGORY_ID;
@@ -76,7 +75,7 @@ class AirtimeAndDataForm extends BaseForm {
       isData: this.isData,
     });
 
-    setTimeout(() => this.phone.focus(), 350);
+    setTimeout(() => this.phone?.focus(), 350);
     this.fetchBillers();
   }
 
@@ -149,7 +148,7 @@ class AirtimeAndDataForm extends BaseForm {
     };
 
     const isComplete =
-      this.requiredFields.find(
+      this.requiredFields?.find(
         fieldName =>
           newForm[fieldName] === null || newForm[fieldName] === undefined,
       ) === undefined;

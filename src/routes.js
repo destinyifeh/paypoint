@@ -94,7 +94,7 @@ function MainStackNavigator() {
           const state = savedStateString
             ? JSON.parse(savedStateString)
             : undefined;
-          console.log(state, 'my boss');
+          console.log(state, 'my initials');
           if (state) {
             setInitialState(state);
           }

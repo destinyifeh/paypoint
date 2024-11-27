@@ -20,6 +20,7 @@ import {
   ENVIRONMENT,
   ENVIRONMENT_IS_TEST,
   PRODUCTION,
+  SHOW_CAC,
 } from '../../../../constants/api-resources';
 import {
   COLOUR_BLUE,
@@ -263,28 +264,29 @@ function ServicesScene(props) {
               />
             )}
           </FeatureFlag>
-
-          <FeatureFlag
-            requiredDomain={AGENT}
-            uid="register-cac-service-thumbnail">
-            {featureProps => (
-              <ItemRow
-                colors={['#2CBC65', '#2CBC65']}
-                // disabled={enable_cash_in === false}
-                icon="briefcase"
-                isNew={featureProps.isNew}
-                style={{
-                  marginBottom: 30,
-                }}
-                title="Register with CAC"
-                onPressOut={() =>
-                  props.navigation.replace('CacBusinessNameDetails', {
-                    cacRegType: 'assisted',
-                  })
-                }
-              />
-            )}
-          </FeatureFlag>
+          {SHOW_CAC && (
+            <FeatureFlag
+              requiredDomain={AGENT}
+              uid="register-cac-service-thumbnail">
+              {featureProps => (
+                <ItemRow
+                  colors={['#2CBC65', '#2CBC65']}
+                  // disabled={enable_cash_in === false}
+                  icon="briefcase"
+                  isNew={featureProps.isNew}
+                  style={{
+                    marginBottom: 30,
+                  }}
+                  title="Register with CAC"
+                  onPressOut={() =>
+                    props.navigation.replace('CacBusinessNameDetails', {
+                      cacRegType: 'assisted',
+                    })
+                  }
+                />
+              )}
+            </FeatureFlag>
+          )}
 
           {Boolean(enable_account_opening) && (
             <FeatureFlag
