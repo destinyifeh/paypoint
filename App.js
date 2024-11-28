@@ -21,7 +21,7 @@ import {
   SET_SCREEN_AFTER_LOGIN,
 } from './src/constants/action-types/tunnel';
 import {QUICK_ACTION_ITEMS_DELIMITER} from './src/constants/api-resources';
-import UpdateBanner from './src/fragments/update-banner';
+import {paypointAppUpdateNotifier} from './src/fragments/app-update-notifier';
 import MainStackNavigator from './src/routes';
 import {
   addBroadcastMessageToRead,
@@ -32,6 +32,7 @@ import ImportantUpdateAvailable, {
   shouldForceAppUpdate,
 } from './src/scenes/misc/important-update-available';
 import {shouldShowReleaseNotes} from './src/scenes/release-notes';
+import {onPressAppUpdateButton} from './src/services/redux/actions/tunnel';
 import store from './src/services/redux/store';
 import './src/setup';
 import {
@@ -56,6 +57,7 @@ class App extends React.Component {
     showingReleaseNotes: false,
     isReady: false,
     initialState: null,
+    hasExecutedUpdateNotifier: false,
   };
 
   persistenceKey = 'persistenceKey';
@@ -76,6 +78,18 @@ class App extends React.Component {
       NavigationService.navigate('BroadcastMessage', {
         message: this.state.broadcastMessage,
       });
+    }
+
+    const isUpdateClicked = store.getState().tunnel.updateButtonClicked;
+    console.log(isUpdateClicked, 'checkkk');
+    if (isUpdateClicked && !this.state.hasExecutedUpdateNotifier) {
+      this.setState({hasExecutedUpdateNotifier: true});
+
+      setTimeout(() => {
+        paypointAppUpdateNotifier();
+        store.dispatch(onPressAppUpdateButton(false));
+        this.setState({hasExecutedUpdateNotifier: false});
+      }, 3000);
     }
   }
 
@@ -235,6 +249,10 @@ class App extends React.Component {
         showingReleaseNotes: result,
       });
     });
+
+    setTimeout(() => {
+      paypointAppUpdateNotifier();
+    }, 3000);
   }
 
   handleQuickAction(quickActionData) {
@@ -357,7 +375,7 @@ class App extends React.Component {
         <ErrorBoundary>
           <View style={{flex: 1}}>
             {content}
-            <UpdateBanner />
+            {/* <UpdateBanner /> */}
           </View>
         </ErrorBoundary>
       </Provider>

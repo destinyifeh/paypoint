@@ -25,8 +25,6 @@ function UpdateBanner({remoteConfig}) {
     ENVIRONMENT_IS_PRODUCTION;
 
   useEffect(() => {
-    console.log(APP_VERSION, 'app_vv');
-    console.log(remoteConfig.latest_app_version, 'remote_app_v');
     Animated.timing(translateY, {
       toValue: -170,
       duration: 200,
