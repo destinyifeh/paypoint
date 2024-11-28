@@ -1,58 +1,58 @@
-import React from "react";
+import React from 'react';
 
-import LottieView from "lottie-react-native";
-import { InteractionManager, StyleSheet, View } from "react-native";
-import RBSheet from "react-native-raw-bottom-sheet";
-import { connect } from "react-redux";
+import LottieView from 'lottie-react-native';
+import {InteractionManager, StyleSheet, View} from 'react-native';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import {connect} from 'react-redux';
 
-import { stopwatch } from "../../../../../../App";
-import ActivityIndicator from "../../../../../components/activity-indicator";
-import BaseForm from "../../../../../components/base-form";
-import Button from "../../../../../components/button";
-import FormCheckbox from "../../../../../components/form-controls/form-checkbox";
-import FormInput from "../../../../../components/form-controls/form-input";
-import FormPicker from "../../../../../components/form-controls/form-picker";
-import Text from "../../../../../components/text";
-import { NIGERIA_SHORT_CODE } from "../../../../../constants";
+import {stopwatch} from '../../../../../../App';
+import ActivityIndicator from '../../../../../components/activity-indicator';
+import BaseForm from '../../../../../components/base-form';
+import Button from '../../../../../components/button';
+import FormCheckbox from '../../../../../components/form-controls/form-checkbox';
+import FormInput from '../../../../../components/form-controls/form-input';
+import FormPicker from '../../../../../components/form-controls/form-picker';
+import Text from '../../../../../components/text';
+import {NIGERIA_SHORT_CODE} from '../../../../../constants';
 import {
   ACCOUNT_VALIDATION_CLICK,
   ACCOUNT_VALIDATION_FAILURE,
   ACCOUNT_VALIDATION_SUCCESS,
-} from "../../../../../constants/analytics";
-import { ERROR_STATUS } from "../../../../../constants/api";
-import { FORCE_ACCOUNT_VALIDATION_ON_TRANSFER_TO_ACCOUNT } from "../../../../../constants/api-resources";
-import { BLOCKER } from "../../../../../constants/dialog-priorities";
+} from '../../../../../constants/analytics';
+import {ERROR_STATUS} from '../../../../../constants/api';
+import {FORCE_ACCOUNT_VALIDATION_ON_TRANSFER_TO_ACCOUNT} from '../../../../../constants/api-resources';
+import {BLOCKER} from '../../../../../constants/dialog-priorities';
 import {
   MIN_ACCOUNT_NUMBER_LENGTH,
   MIN_NAME_LENGTH,
   MIN_NIGERIA_PHONE_LENGTH,
-} from "../../../../../constants/fields";
+} from '../../../../../constants/fields';
 import {
   COLOUR_GREY,
   COLOUR_RED,
   COLOUR_WHITE,
-} from "../../../../../constants/styles";
-import { logEvent } from "../../../../../core/logger";
-import Banks from "../../../../../fixtures/banks";
-import Transaction from "../../../../../services/api/resources/transaction";
+} from '../../../../../constants/styles';
+import {logEvent} from '../../../../../core/logger';
+import Banks from '../../../../../fixtures/banks';
+import Transaction from '../../../../../services/api/resources/transaction';
 import {
   nipService,
   platformService,
   transactionServiceV1,
-} from "../../../../../setup/api";
-import { getDeviceDetails } from "../../../../../utils/device";
-import { flashMessage } from "../../../../../utils/dialog";
-import handleErrorResponse from "../../../../../utils/error-handlers/api";
-import { formatPhoneNumberToReadable } from "../../../../../utils/formatters";
-import globalStyles from "../styles";
+} from '../../../../../setup/api';
+import {getDeviceDetails} from '../../../../../utils/device';
+import {flashMessage} from '../../../../../utils/dialog';
+import handleErrorResponse from '../../../../../utils/error-handlers/api';
+import {formatPhoneNumberToReadable} from '../../../../../utils/formatters';
+import globalStyles from '../styles';
 
-const DEFAULT_ACCOUNT_TYPE = "00";
-const DEFAULT_ACCOUNT_TYPE_NIP = "NOT SURE";
+const DEFAULT_ACCOUNT_TYPE = '00';
+const DEFAULT_ACCOUNT_TYPE_NIP = 'NOT SURE';
 
 class DistributeForm_ extends BaseForm {
   transaction = new Transaction();
 
-  requiredFields = ["beneficiaryPhone", "amount"];
+  requiredFields = ['beneficiaryPhone', 'amount'];
 
   componentDidUpdate() {}
 
@@ -99,10 +99,7 @@ class DistributeForm_ extends BaseForm {
   }
 
   async loadData() {
-    const {
-      response,
-      status,
-    } = await platformService.getAgentsUnderAggregator();
+    const {response, status} = await platformService.getAgentsUnderAggregator();
     if (status === ERROR_STATUS) {
       flashMessage(null, await handleErrorResponse(response), BLOCKER);
 
@@ -112,19 +109,19 @@ class DistributeForm_ extends BaseForm {
     this.setState({
       agents: response.content,
       recipientOptions: response.content.map(
-        ({ businessName, businessPhoneNo }) => ({
+        ({businessName, businessPhoneNo}) => ({
           label: `${businessName} - ${formatPhoneNumberToReadable(
-            businessPhoneNo
+            businessPhoneNo,
           )}`,
           value: businessPhoneNo,
-        })
+        }),
       ),
     });
 
     if (this.state.form.beneficiaryPhone) {
       const selectedAgent = this.state.agents.find(
-        ({ businessPhoneNo }) =>
-          businessPhoneNo === this.state.form.beneficiaryPhone
+        ({businessPhoneNo}) =>
+          businessPhoneNo === this.state.form.beneficiaryPhone,
       );
 
       this.updateFormField({
@@ -139,13 +136,13 @@ class DistributeForm_ extends BaseForm {
   }
 
   render() {
-    const { disabledOptions, defaultFormValues } = this.props;
-    const { recipientOptions } = this.state;
+    const {disabledOptions, defaultFormValues} = this.props;
+    const {recipientOptions} = this.state;
 
     return (
       <React.Fragment>
         <FormPicker
-          choices={recipientOptions.map((option) => ({
+          choices={recipientOptions.map(option => ({
             label: option.label,
             value: option.value,
           }))}
@@ -154,7 +151,7 @@ class DistributeForm_ extends BaseForm {
           innerContainerStyle={styles.formInputInnerContainerStyle}
           onSelect={(beneficiaryPhone, isValid) => {
             const selectedAgent = this.state.agents.find(
-              ({ businessPhoneNo }) => businessPhoneNo === beneficiaryPhone
+              ({businessPhoneNo}) => businessPhoneNo === beneficiaryPhone,
             );
 
             this.updateFormField({
@@ -167,8 +164,8 @@ class DistributeForm_ extends BaseForm {
               beneficiaryName: selectedAgent?.businessName,
             });
             isValid === false
-              ? this.addInvalidField("beneficiaryPhone")
-              : this.removeInvalidField("beneficiaryPhone");
+              ? this.addInvalidField('beneficiaryPhone')
+              : this.removeInvalidField('beneficiaryPhone');
 
             this.setState({
               disabledOptions: [...disabledOptions, beneficiaryPhone],
@@ -176,7 +173,7 @@ class DistributeForm_ extends BaseForm {
           }}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           propagateError={this.props.propagateFormErrors}
-          ref={(comp) => (this.beneficiaryPicker = comp)}
+          ref={comp => (this.beneficiaryPicker = comp)}
           text="Beneficiary:"
           validators={{
             required: false,
@@ -188,15 +185,15 @@ class DistributeForm_ extends BaseForm {
           innerContainerStyle={styles.formInputInnerContainerStyle}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           text="Gender:"
-          options={["Male", "Female"]}
+          options={['Male', 'Female']}
           onSelect={(gender, isValid) => {
-            this.updateFormField({ gender });
+            this.updateFormField({gender});
             isValid === false
-              ? this.addInvalidField("gender")
-              : this.removeInvalidField("gender");
+              ? this.addInvalidField('gender')
+              : this.removeInvalidField('gender');
           }}
           propagateError={this.props.propagateFormErrors}
-          ref={(comp) => (this.genderPicker = comp)}
+          ref={comp => (this.genderPicker = comp)}
         />
 
         <FormInput
@@ -209,16 +206,16 @@ class DistributeForm_ extends BaseForm {
               amount,
             });
             isValid === false
-              ? this.addInvalidField("amount")
-              : this.removeInvalidField("amount");
+              ? this.addInvalidField('amount')
+              : this.removeInvalidField('amount');
           }}
           optional={true}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           placeholder="0.00"
           propagateError={this.props.propagateFormErrors}
           text="Amount:"
-          ref={(comp) => (this.amountInput__ = comp)}
-          textInputRef={(input) => (this.amount = input)}
+          ref={comp => (this.amountInput__ = comp)}
+          textInputRef={input => (this.amount = input)}
           validators={{
             required: true,
           }}
@@ -232,11 +229,11 @@ class TransferToAccountForm_ extends BaseForm {
   transaction = new Transaction();
 
   requiredFields = [
-    "accountNumber",
-    "bankCode",
-    "beneficiaryName",
+    'accountNumber',
+    'bankCode',
+    'beneficiaryName',
     // "beneficiaryPhone",
-    "amount",
+    'amount',
   ];
 
   constructor() {
@@ -262,7 +259,7 @@ class TransferToAccountForm_ extends BaseForm {
       this.setState({
         animationsDone: true,
       });
-      setTimeout(() => this.accountNumber.focus(), 500);
+      setTimeout(() => this.accountNumber?.focus(), 500);
     });
 
     this.updateFormField({
@@ -273,7 +270,7 @@ class TransferToAccountForm_ extends BaseForm {
 
   async fetchBanks() {
     //const { code, response, status } = await quicktellerService.getBanks();
-    const { code, response, status } = await transactionServiceV1.getBanks();
+    const {code, response, status} = await transactionServiceV1.getBanks();
     const banksList = response || [];
     banksList.sort((a, b) => {
       if (a.bankName.toLowerCase() > b.bankName.toLowerCase()) {
@@ -302,11 +299,11 @@ class TransferToAccountForm_ extends BaseForm {
     });
 
     stopwatch.start();
-    const { deviceUuid } = await getDeviceDetails();
-    const { status, response } = await this.transaction.doAccountInquiry(
+    const {deviceUuid} = await getDeviceDetails();
+    const {status, response} = await this.transaction.doAccountInquiry(
       bankCode,
       this.state.form.accountNumber,
-      deviceUuid
+      deviceUuid,
     );
 
     stopwatch.stop();
@@ -356,7 +353,7 @@ class TransferToAccountForm_ extends BaseForm {
       <React.Fragment>
         <RBSheet
           animationType="fade"
-          ref={(ref) => {
+          ref={ref => {
             this.activityIndicator = ref;
           }}
           closeOnDragDown={false}
@@ -366,17 +363,16 @@ class TransferToAccountForm_ extends BaseForm {
           duration={250}
           customStyles={{
             container: {
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             },
-          }}
-        >
+          }}>
           {this.state.nameInquirySuccess && (
             <React.Fragment>
               <LottieView
                 autoPlay={true}
                 loop={false}
-                ref={(animation) => {
+                ref={animation => {
                   this.animation = animation;
                 }}
                 style={{
@@ -384,13 +380,12 @@ class TransferToAccountForm_ extends BaseForm {
                   top: 0,
                   width: 230,
                 }}
-                source={require("../../../../../animations/checked-done-2.json")}
+                source={require('../../../../../animations/checked-done-2.json')}
               />
               <View
                 style={{
-                  flexDirection: "column",
-                }}
-              >
+                  flexDirection: 'column',
+                }}>
                 <Text center green>
                   Name Inquiry Successful.
                 </Text>
@@ -405,7 +400,7 @@ class TransferToAccountForm_ extends BaseForm {
               <LottieView
                 autoPlay={true}
                 loop={false}
-                ref={(animation) => {
+                ref={animation => {
                   this.animation = animation;
                 }}
                 style={{
@@ -413,21 +408,20 @@ class TransferToAccountForm_ extends BaseForm {
                   top: 0,
                   width: 230,
                 }}
-                source={require("../../../../../animations/14651-error-animation (2).json")}
+                source={require('../../../../../animations/14651-error-animation (2).json')}
               />
-              <Text big bold center red style={{ marginTop: 10 }}>
+              <Text big bold center red style={{marginTop: 10}}>
                 Account name confirmation failed. Please, retry.
               </Text>
 
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                }}
-              >
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}>
                 <Button
-                  containerStyle={{ width: "30%" }}
+                  containerStyle={{width: '30%'}}
                   onPressOut={() => this.onSelectBank(this.state.form.bankCode)}
                   title="RETRY"
                   titleStyle={{
@@ -437,7 +431,7 @@ class TransferToAccountForm_ extends BaseForm {
                 />
 
                 <Button
-                  containerStyle={{ width: "30%" }}
+                  containerStyle={{width: '30%'}}
                   onPressOut={() => this.activityIndicator.close()}
                   title="CANCEL"
                   titleStyle={{
@@ -455,7 +449,7 @@ class TransferToAccountForm_ extends BaseForm {
                   flex: null,
                 }}
               />
-              <Text style={{ marginTop: 5 }}>Verifying account details</Text>
+              <Text style={{marginTop: 5}}>Verifying account details</Text>
             </React.Fragment>
           )}
         </RBSheet>
@@ -471,8 +465,8 @@ class TransferToAccountForm_ extends BaseForm {
               accountNumber,
             });
             isValid === false
-              ? this.addInvalidField("accountNumber")
-              : this.removeInvalidField("accountNumber");
+              ? this.addInvalidField('accountNumber')
+              : this.removeInvalidField('accountNumber');
             isValid &&
               this.state.form.bankCode &&
               this.onSelectBank(this.state.form.bankCode);
@@ -482,21 +476,21 @@ class TransferToAccountForm_ extends BaseForm {
           placeholder="1234567890"
           propagateError={this.props.propagateFormErrors}
           text="Account Number:"
-          textInputRef={(input) => (this.accountNumber = input)}
+          textInputRef={input => (this.accountNumber = input)}
           validators={{
             length: MIN_ACCOUNT_NUMBER_LENGTH,
             required: true,
           }}
         />
         <FormPicker
-          choices={this.state.banks.map((option) => ({
+          choices={this.state.banks.map(option => ({
             label: option.bankName,
             value: option.cbnCode,
           }))}
           innerContainerStyle={styles.formInputInnerContainerStyle}
           onSelect={(bankCode, isValid) => {
             const bank = this.state.banks.find(
-              (bank) => bankCode == bank.cbnCode
+              bank => bankCode == bank.cbnCode,
             );
 
             this.updateFormField({
@@ -505,11 +499,10 @@ class TransferToAccountForm_ extends BaseForm {
               bank: bank,
             });
             isValid === false
-              ? this.addInvalidField("bankCode")
-              : this.removeInvalidField("bankCode");
-            const isAccountNumberValid = !this.state.invalidFields.includes(
-              "accountNumber"
-            );
+              ? this.addInvalidField('bankCode')
+              : this.removeInvalidField('bankCode');
+            const isAccountNumberValid =
+              !this.state.invalidFields.includes('accountNumber');
             isAccountNumberValid && this.onSelectBank(bankCode);
           }}
           outerContainerStyle={styles.formInputOuterContainerStyle}
@@ -529,10 +522,10 @@ class TransferToAccountForm_ extends BaseForm {
           }
           innerContainerStyle={styles.formInputInnerContainerStyle}
           onChangeText={(beneficiaryName, isValid) => {
-            this.updateFormField({ beneficiaryName });
+            this.updateFormField({beneficiaryName});
             !isValid
-              ? this.addInvalidField("beneficiaryName")
-              : this.removeInvalidField("beneficiaryName");
+              ? this.addInvalidField('beneficiaryName')
+              : this.removeInvalidField('beneficiaryName');
           }}
           onSubmitEditing={() => {
             this.beneficiaryPhone.focus();
@@ -541,10 +534,10 @@ class TransferToAccountForm_ extends BaseForm {
           placeholder="John"
           propagateError={this.props.propagateFormErrors}
           text="Beneficiary Name:"
-          textInputRef={(input) => (this.beneficiaryName = input)}
+          textInputRef={input => (this.beneficiaryName = input)}
           validators={{
             minLength: MIN_NAME_LENGTH,
-            regex: "name",
+            regex: 'name',
             required: true,
           }}
         />
@@ -558,8 +551,8 @@ class TransferToAccountForm_ extends BaseForm {
               beneficiaryPhone,
             });
             isValid === false
-              ? this.addInvalidField("beneficiaryPhone")
-              : this.removeInvalidField("beneficiaryPhone");
+              ? this.addInvalidField('beneficiaryPhone')
+              : this.removeInvalidField('beneficiaryPhone');
           }}
           onSubmitEditing={() => {
             this.remark.focus();
@@ -569,7 +562,7 @@ class TransferToAccountForm_ extends BaseForm {
           placeholder="xxxxxxxxxxx"
           propagateError={this.props.propagateFormErrors}
           text="Beneficiary Phone:"
-          textInputRef={(input) => (this.beneficiaryPhone = input)}
+          textInputRef={input => (this.beneficiaryPhone = input)}
           validators={{
             length: MIN_NIGERIA_PHONE_LENGTH,
             //required: true,
@@ -585,15 +578,15 @@ class TransferToAccountForm_ extends BaseForm {
               amount,
             });
             isValid === false
-              ? this.addInvalidField("amount")
-              : this.removeInvalidField("amount");
+              ? this.addInvalidField('amount')
+              : this.removeInvalidField('amount');
           }}
           optional={true}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           placeholder="0.00"
           propagateError={this.props.propagateFormErrors}
           text="Amount:"
-          textInputRef={(input) => (this.amount = input)}
+          textInputRef={input => (this.amount = input)}
           validators={{
             required: true,
           }}
@@ -603,10 +596,10 @@ class TransferToAccountForm_ extends BaseForm {
           defaultValue={this.state.form.remark}
           innerContainerStyle={styles.formInputInnerContainerStyle}
           onChangeText={(remark, isValid) => {
-            this.updateFormField({ remark });
+            this.updateFormField({remark});
             !isValid
-              ? this.addInvalidField("remark")
-              : this.removeInvalidField("remark");
+              ? this.addInvalidField('remark')
+              : this.removeInvalidField('remark');
           }}
           onSubmitEditing={() => {
             this.amount.focus();
@@ -616,19 +609,19 @@ class TransferToAccountForm_ extends BaseForm {
           placeholder="Remark"
           propagateError={this.props.propagateFormErrors}
           text="Remark:"
-          textInputRef={(input) => (this.remark = input)}
+          textInputRef={input => (this.remark = input)}
         />
         <FormCheckbox
           defaultValue={this.state.form.gender}
           innerContainerStyle={styles.formInputInnerContainerStyle}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           text="Gender:"
-          options={["Male", "Female"]}
+          options={['Male', 'Female']}
           onSelect={(gender, isValid) => {
-            this.updateFormField({ gender });
+            this.updateFormField({gender});
             isValid === false
-              ? this.addInvalidField("gender")
-              : this.removeInvalidField("gender");
+              ? this.addInvalidField('gender')
+              : this.removeInvalidField('gender');
           }}
           propagateError={this.props.propagateFormErrors}
         />
@@ -641,11 +634,11 @@ class NipTransferToAccountForm_ extends BaseForm {
   transaction = new Transaction();
 
   requiredFields = [
-    "accountNumber",
-    "institutionCode",
-    "beneficiaryName",
-    "beneficiaryPhone",
-    "amount",
+    'accountNumber',
+    'institutionCode',
+    'beneficiaryName',
+    'beneficiaryPhone',
+    'amount',
   ];
 
   constructor() {
@@ -680,8 +673,8 @@ class NipTransferToAccountForm_ extends BaseForm {
   }
 
   async fetchBanks() {
-    const { deviceUuid } = await getDeviceDetails();
-    const { code, response, status } = await nipService.getBanks(deviceUuid);
+    const {deviceUuid} = await getDeviceDetails();
+    const {code, response, status} = await nipService.getBanks(deviceUuid);
 
     const banksList = response.aliases || [];
     banksList.sort((a, b) => {
@@ -712,11 +705,11 @@ class NipTransferToAccountForm_ extends BaseForm {
 
     stopwatch.start();
 
-    const { deviceUuid } = await getDeviceDetails();
-    const { status, response } = await nipService.getAccountName(
+    const {deviceUuid} = await getDeviceDetails();
+    const {status, response} = await nipService.getAccountName(
       this.state.form.accountNumber,
       institutionCode,
-      deviceUuid
+      deviceUuid,
     );
 
     stopwatch.stop();
@@ -766,7 +759,7 @@ class NipTransferToAccountForm_ extends BaseForm {
       <React.Fragment>
         <RBSheet
           animationType="fade"
-          ref={(ref) => {
+          ref={ref => {
             this.activityIndicator = ref;
           }}
           closeOnDragDown={false}
@@ -776,17 +769,16 @@ class NipTransferToAccountForm_ extends BaseForm {
           duration={250}
           customStyles={{
             container: {
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             },
-          }}
-        >
+          }}>
           {this.state.nameInquirySuccess && (
             <React.Fragment>
               <LottieView
                 autoPlay={true}
                 loop={false}
-                ref={(animation) => {
+                ref={animation => {
                   this.animation = animation;
                 }}
                 style={{
@@ -794,13 +786,12 @@ class NipTransferToAccountForm_ extends BaseForm {
                   top: 0,
                   width: 230,
                 }}
-                source={require("../../../../../animations/checked-done-2.json")}
+                source={require('../../../../../animations/checked-done-2.json')}
               />
               <View
                 style={{
-                  flexDirection: "column",
-                }}
-              >
+                  flexDirection: 'column',
+                }}>
                 <Text center green>
                   Name Inquiry Successful.
                 </Text>
@@ -815,7 +806,7 @@ class NipTransferToAccountForm_ extends BaseForm {
               <LottieView
                 autoPlay={true}
                 loop={false}
-                ref={(animation) => {
+                ref={animation => {
                   this.animation = animation;
                 }}
                 style={{
@@ -823,21 +814,20 @@ class NipTransferToAccountForm_ extends BaseForm {
                   top: 0,
                   width: 230,
                 }}
-                source={require("../../../../../animations/14651-error-animation (2).json")}
+                source={require('../../../../../animations/14651-error-animation (2).json')}
               />
-              <Text big bold center red style={{ marginTop: 10 }}>
+              <Text big bold center red style={{marginTop: 10}}>
                 Account name confirmation failed. Please, retry.
               </Text>
 
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                }}
-              >
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}>
                 <Button
-                  containerStyle={{ width: "30%" }}
+                  containerStyle={{width: '30%'}}
                   onPressOut={() =>
                     this.onSelectBank(this.state.form.institutionCode)
                   }
@@ -849,7 +839,7 @@ class NipTransferToAccountForm_ extends BaseForm {
                 />
 
                 <Button
-                  containerStyle={{ width: "30%" }}
+                  containerStyle={{width: '30%'}}
                   onPressOut={() => this.activityIndicator.close()}
                   title="CANCEL"
                   titleStyle={{
@@ -867,7 +857,7 @@ class NipTransferToAccountForm_ extends BaseForm {
                   flex: null,
                 }}
               />
-              <Text style={{ marginTop: 5 }}>Verifying account details</Text>
+              <Text style={{marginTop: 5}}>Verifying account details</Text>
             </React.Fragment>
           )}
         </RBSheet>
@@ -883,8 +873,8 @@ class NipTransferToAccountForm_ extends BaseForm {
               accountNumber,
             });
             isValid === false
-              ? this.addInvalidField("accountNumber")
-              : this.removeInvalidField("accountNumber");
+              ? this.addInvalidField('accountNumber')
+              : this.removeInvalidField('accountNumber');
             isValid &&
               this.state.form.bankCode &&
               this.onSelectBank(this.state.form.bankCode);
@@ -894,14 +884,14 @@ class NipTransferToAccountForm_ extends BaseForm {
           placeholder="1234567890"
           propagateError={this.props.propagateFormErrors}
           text="Account Number:"
-          textInputRef={(input) => (this.accountNumber = input)}
+          textInputRef={input => (this.accountNumber = input)}
           validators={{
             length: MIN_ACCOUNT_NUMBER_LENGTH,
             required: true,
           }}
         />
         <FormPicker
-          choices={this.state.banks.map((option) => ({
+          choices={this.state.banks.map(option => ({
             label: option.institutionName,
             value: option.alias,
           }))}
@@ -909,15 +899,14 @@ class NipTransferToAccountForm_ extends BaseForm {
           onSelect={(alias, isValid) => {
             this.updateFormField({
               institutionCode: alias,
-              bankName: this.state.banks.find((bank) => alias === bank.alias)
+              bankName: this.state.banks.find(bank => alias === bank.alias)
                 .institutionName,
             });
             isValid === false
-              ? this.addInvalidField("institutionCode")
-              : this.removeInvalidField("institutionCode");
-            const isAccountNumberValid = !this.state.invalidFields.includes(
-              "accountNumber"
-            );
+              ? this.addInvalidField('institutionCode')
+              : this.removeInvalidField('institutionCode');
+            const isAccountNumberValid =
+              !this.state.invalidFields.includes('accountNumber');
             isAccountNumberValid && this.onSelectBank(alias);
           }}
           outerContainerStyle={styles.formInputOuterContainerStyle}
@@ -937,10 +926,10 @@ class NipTransferToAccountForm_ extends BaseForm {
           }
           innerContainerStyle={styles.formInputInnerContainerStyle}
           onChangeText={(beneficiaryName, isValid) => {
-            this.updateFormField({ beneficiaryName });
+            this.updateFormField({beneficiaryName});
             !isValid
-              ? this.addInvalidField("beneficiaryName")
-              : this.removeInvalidField("beneficiaryName");
+              ? this.addInvalidField('beneficiaryName')
+              : this.removeInvalidField('beneficiaryName');
           }}
           onSubmitEditing={() => {
             this.beneficiaryPhone.focus();
@@ -949,10 +938,10 @@ class NipTransferToAccountForm_ extends BaseForm {
           placeholder="John"
           propagateError={this.props.propagateFormErrors}
           text="Beneficiary Name:"
-          textInputRef={(input) => (this.beneficiaryName = input)}
+          textInputRef={input => (this.beneficiaryName = input)}
           validators={{
             minLength: MIN_NAME_LENGTH,
-            regex: "name",
+            regex: 'name',
             required: true,
           }}
         />
@@ -966,8 +955,8 @@ class NipTransferToAccountForm_ extends BaseForm {
               beneficiaryPhone,
             });
             isValid === false
-              ? this.addInvalidField("beneficiaryPhone")
-              : this.removeInvalidField("beneficiaryPhone");
+              ? this.addInvalidField('beneficiaryPhone')
+              : this.removeInvalidField('beneficiaryPhone');
           }}
           onSubmitEditing={() => {
             this.remark.focus();
@@ -977,7 +966,7 @@ class NipTransferToAccountForm_ extends BaseForm {
           placeholder="xxxxxxxxxxx"
           propagateError={this.props.propagateFormErrors}
           text="Beneficiary Phone:"
-          textInputRef={(input) => (this.beneficiaryPhone = input)}
+          textInputRef={input => (this.beneficiaryPhone = input)}
           validators={{
             length: MIN_NIGERIA_PHONE_LENGTH,
             required: true,
@@ -993,15 +982,15 @@ class NipTransferToAccountForm_ extends BaseForm {
               amount,
             });
             isValid === false
-              ? this.addInvalidField("amount")
-              : this.removeInvalidField("amount");
+              ? this.addInvalidField('amount')
+              : this.removeInvalidField('amount');
           }}
           optional={true}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           placeholder="0.00"
           propagateError={this.props.propagateFormErrors}
           text="Amount:"
-          textInputRef={(input) => (this.amount = input)}
+          textInputRef={input => (this.amount = input)}
           validators={{
             required: true,
           }}
@@ -1011,10 +1000,10 @@ class NipTransferToAccountForm_ extends BaseForm {
           defaultValue={this.state.form.remark}
           innerContainerStyle={styles.formInputInnerContainerStyle}
           onChangeText={(remark, isValid) => {
-            this.updateFormField({ remark });
+            this.updateFormField({remark});
             !isValid
-              ? this.addInvalidField("remark")
-              : this.removeInvalidField("remark");
+              ? this.addInvalidField('remark')
+              : this.removeInvalidField('remark');
           }}
           onSubmitEditing={() => {
             this.amount.focus();
@@ -1024,19 +1013,19 @@ class NipTransferToAccountForm_ extends BaseForm {
           placeholder="Remark"
           propagateError={this.props.propagateFormErrors}
           text="Remark:"
-          textInputRef={(input) => (this.remark = input)}
+          textInputRef={input => (this.remark = input)}
         />
         <FormCheckbox
           defaultValue={this.state.form.gender}
           innerContainerStyle={styles.formInputInnerContainerStyle}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           text="Gender:"
-          options={["Male", "Female"]}
+          options={['Male', 'Female']}
           onSelect={(gender, isValid) => {
-            this.updateFormField({ gender });
+            this.updateFormField({gender});
             isValid === false
-              ? this.addInvalidField("gender")
-              : this.removeInvalidField("gender");
+              ? this.addInvalidField('gender')
+              : this.removeInvalidField('gender');
           }}
           propagateError={this.props.propagateFormErrors}
         />
@@ -1046,7 +1035,7 @@ class NipTransferToAccountForm_ extends BaseForm {
 }
 
 class TransferToAgentForm_ extends BaseForm {
-  requiredFields = ["beneficiaryPhone", "amount"];
+  requiredFields = ['beneficiaryPhone', 'amount'];
 
   state = {
     countryShortCode: NIGERIA_SHORT_CODE,
@@ -1073,15 +1062,15 @@ class TransferToAgentForm_ extends BaseForm {
               beneficiaryPhone,
             });
             isValid === false
-              ? this.addInvalidField("beneficiaryPhone")
-              : this.removeInvalidField("beneficiaryPhone");
+              ? this.addInvalidField('beneficiaryPhone')
+              : this.removeInvalidField('beneficiaryPhone');
           }}
           optional={true}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           placeholder="08012345678"
           propagateError={this.props.propagateFormErrors}
           text="Beneficiary Phone:"
-          textInputRef={(input) => (this.beneficiaryPhone = input)}
+          textInputRef={input => (this.beneficiaryPhone = input)}
           validators={{
             length: MIN_NIGERIA_PHONE_LENGTH,
             required: true,
@@ -1093,12 +1082,12 @@ class TransferToAgentForm_ extends BaseForm {
           innerContainerStyle={styles.formInputInnerContainerStyle}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           text="Gender:"
-          options={["Male", "Female"]}
+          options={['Male', 'Female']}
           onSelect={(gender, isValid) => {
-            this.updateFormField({ gender });
+            this.updateFormField({gender});
             isValid === false
-              ? this.addInvalidField("gender")
-              : this.removeInvalidField("gender");
+              ? this.addInvalidField('gender')
+              : this.removeInvalidField('gender');
           }}
           propagateError={this.props.propagateFormErrors}
         />
@@ -1113,15 +1102,15 @@ class TransferToAgentForm_ extends BaseForm {
               amount,
             });
             isValid === false
-              ? this.addInvalidField("amount")
-              : this.removeInvalidField("amount");
+              ? this.addInvalidField('amount')
+              : this.removeInvalidField('amount');
           }}
           optional={true}
           outerContainerStyle={styles.formInputOuterContainerStyle}
           placeholder="0.00"
           propagateError={this.props.propagateFormErrors}
           text="Amount:"
-          textInputRef={(input) => (this.amount = input)}
+          textInputRef={input => (this.amount = input)}
           validators={{
             required: true,
           }}
@@ -1138,33 +1127,21 @@ function mapStateToProps(state) {
   };
 }
 
-export const DistributeForm = connect(
-  mapStateToProps,
-  null,
-  null,
-  { forwardRef: true }
-)(DistributeForm_);
+export const DistributeForm = connect(mapStateToProps, null, null, {
+  forwardRef: true,
+})(DistributeForm_);
 
-export const NipTransferToAccountForm = connect(
-  mapStateToProps,
-  null,
-  null,
-  { forwardRef: true }
-)(NipTransferToAccountForm_);
+export const NipTransferToAccountForm = connect(mapStateToProps, null, null, {
+  forwardRef: true,
+})(NipTransferToAccountForm_);
 
-export const TransferToAccountForm = connect(
-  mapStateToProps,
-  null,
-  null,
-  { forwardRef: true }
-)(TransferToAccountForm_);
+export const TransferToAccountForm = connect(mapStateToProps, null, null, {
+  forwardRef: true,
+})(TransferToAccountForm_);
 
-export const TransferToAgentForm = connect(
-  mapStateToProps,
-  null,
-  null,
-  { forwardRef: true }
-)(TransferToAgentForm_);
+export const TransferToAgentForm = connect(mapStateToProps, null, null, {
+  forwardRef: true,
+})(TransferToAgentForm_);
 
 const styles = StyleSheet.create({
   ...globalStyles,

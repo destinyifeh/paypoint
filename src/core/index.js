@@ -52,7 +52,7 @@ async function checkThatSessionsAreStillValid() {
     const navigationState = JSON.parse(navigationStateString);
 
     const currentScreen =
-      navigationState.routes[navigationState.index].routeName;
+      navigationState?.routes[navigationState.index].routeName;
     if (
       currentScreen === 'Login' ||
       currentScreen === 'Welcome' ||

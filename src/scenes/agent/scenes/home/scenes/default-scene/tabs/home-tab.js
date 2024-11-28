@@ -36,6 +36,7 @@ import {
   APPLICATION,
   APP_NAME,
   BILLS,
+  BVN_STATUS,
   CONTACT_US_EMAIL,
   CONTACT_US_PHONE,
   CONTACT_US_WEBPAGE,
@@ -1544,7 +1545,7 @@ class HomeTab extends React.PureComponent {
     const hasUserSelectedBiometricLogin =
       await settings.checkIfCurrentUserHasSelectedBiometricLogin();
 
-    console.warn({
+    console.log({
       isUserBlacklistedFromBiometricLogin,
       isBiometricLoginEnabled,
       doesDeviceHaveBiometricLogin,
@@ -1610,7 +1611,7 @@ class HomeTab extends React.PureComponent {
 
   async tryShowingBVNMenu(currentAgent) {
     const currentUser = new UserSerializer(JSON.parse(await loadData(USER)));
-    //const bvnStatusField = `${BVN_STATUS}${currentAgent.businessPhoneNo}`;
+    const bvnStatusField = `${BVN_STATUS}${currentAgent.businessPhoneNo}`;
     //const bvnStatus = await loadData(bvnStatusField);
 
     // if(!bvnStatus){
