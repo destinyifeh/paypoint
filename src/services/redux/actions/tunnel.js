@@ -121,7 +121,6 @@ export function updateRemoteConfig(payload) {
 }
 
 export function onPressAppUpdateButton(payload) {
-  console.log(payload, 'update pay');
   return {
     type: FIRE_APP_UPDATE_BUTTON,
     payload,

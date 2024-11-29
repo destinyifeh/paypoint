@@ -41,8 +41,7 @@ export default class ManageDevicesAuditTrail extends React.Component {
   }
 
   componentDidMount() {
-    const {filters} = this.props.route?.params || {};
-
+    const filters = this.props.route?.params || {};
     this.setState({
       filters,
     });
@@ -304,7 +303,7 @@ export default class ManageDevicesAuditTrail extends React.Component {
           />
         )}
 
-        {!Boolean(auditTrail.length) && !isLoading && (
+        {!Boolean(auditTrail.length) && !didErrorOccur && !isLoading && (
           <Text big center style={{padding: 16}}>
             Nothing to display.
           </Text>

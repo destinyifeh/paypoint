@@ -14,6 +14,7 @@ import {
   HTTP_OK,
 } from '../../../../../../../constants/api';
 import {
+  COLOUR_BLACK,
   COLOUR_BLUE,
   COLOUR_GREEN,
   COLOUR_GREY,
@@ -569,6 +570,13 @@ export default class MyDevicesScene extends Component {
           data={this.state.devices}
           keyExtractor={(item, index) => index}
           renderItem={({item, index}) => this.renderItem(item)}
+          ListFooterComponent={
+            !this.state.devices?.length && (
+              <Text style={{color: COLOUR_BLACK, textAlign: 'center'}}>
+                No device available yet
+              </Text>
+            )
+          }
         />
       </View>
     );

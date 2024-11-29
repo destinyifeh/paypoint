@@ -38,7 +38,6 @@ const initialState = {
 };
 
 export default function tunnelReducer(state = initialState, action) {
-  console.log(action, 'actionn');
   switch (action.type) {
     case ADD_REQUERIED_TRANSACTION:
       const {requeryTransactionBucket} = state;

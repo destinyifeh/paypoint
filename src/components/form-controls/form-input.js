@@ -493,6 +493,7 @@ export class FormInput extends React.Component {
             returnKeyType="next"
             secureTextEntry={this.state.hideText}
             style={{
+              color: COLOUR_BLACK,
               fontFamily: FONT_FAMILY_BODY,
               fontSize: FONT_SIZE_TEXT_INPUT,
               height: multiline ? '100%' : undefined,

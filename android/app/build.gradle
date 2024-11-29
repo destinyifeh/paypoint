@@ -86,6 +86,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 30
         versionName "2.0.30"
+        multiDexEnabled true
         ndk {
         abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64" 
     }
