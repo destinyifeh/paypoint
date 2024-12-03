@@ -14,15 +14,18 @@ export const paypointAppUpdateNotifier = () => {
     const force_app_update = remoteChecker.should_force_app_updates;
     console.log(force_app_update, 'forcer');
     const isUpdateAvailable =
-      remoteChecker.latest_app_version &&
+      remoteChecker.latest_app_version !== null &&
       remoteChecker.latest_app_version !== APP_VERSION;
     const showUpdate = isUpdateAvailable && ENVIRONMENT_IS_PRODUCTION;
 
     console.log(isUpdateAvailable, 'update available');
     console.log(showUpdate, 'show update');
     console.log(remoteChecker.latest_app_version, APP_VERSION, 'versions');
+    console.log(ENVIRONMENT_IS_PRODUCTION, 'env...');
 
-    if (!showUpdate) {
+    const yes = false;
+
+    if (yes) {
       Alert.alert(
         'Update Available',
         'A new version of the app is available. Update now for the latest features and improvements.',
