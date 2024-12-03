@@ -325,17 +325,14 @@ export default class PosRequestSubmitScene extends BaseForm {
               <View
                 style={{
                   flexDirection: 'row',
-                  height: 50,
                   justifyContent: 'flex-start',
                   alignItems: 'center',
                   borderColor: COLOUR_LIGHT_GREY,
                   borderWidth: 1,
                   borderRadius: 5,
-                  paddingTop: 6,
-                  paddingBottom: 10,
-                  paddingRight: 8,
-                  paddingLeft: 2,
-                  marginBottom: 4,
+                  gap: 5,
+                  marginBottom: 10,
+                  paddingLeft: 10,
                 }}>
                 <FormCheckboxNew
                   center

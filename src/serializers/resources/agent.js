@@ -10,7 +10,6 @@ const RETIRED = 'Retired';
 const SUSPENDED = 'Suspended';
 const WALLET_CREATED = 'WALLET_CREATED';
 
-
 export default class Agent {
   disabledStatuses = [INACTIVE, RETIRED, SUSPENDED];
 
@@ -20,8 +19,8 @@ export default class Agent {
     console.log('IN AGENT SERIAILZER', props);
 
     this.walletPhone = this.agentMobileNo;
-    
-    this.firstName = this.businessContact.firstname;
+
+    this.firstName = this.businessContact?.firstname;
     this.middleName = this.businessContact.middlename;
     this.surname = this.businessContact.lastname;
     this.lastName = this.businessContact.lastname;
@@ -50,21 +49,28 @@ export default class Agent {
         gender: this.nextOfKins[0].gender,
         email: null,
         relationship: null,
-        address: `${this.nextOfKins[0].residentialAddress.houseNo || ''} ${this.nextOfKins[0].residentialAddress.addressLine1 || ''} ${this.nextOfKins[0].residentialAddress.addressLine2 || ''} ${this.nextOfKins[0].residentialAddress.city || ''}`
-      }
+        address: `${this.nextOfKins[0].residentialAddress.houseNo || ''} ${
+          this.nextOfKins[0].residentialAddress.addressLine1 || ''
+        } ${this.nextOfKins[0].residentialAddress.addressLine2 || ''} ${
+          this.nextOfKins[0].residentialAddress.city || ''
+        }`,
+      };
     }
   }
 
   get age() {
     if (!this.businessContact) {
-      return null
+      return null;
     }
-    
-    return JSON.stringify(moment().year()) - parseInt(moment(this.businessContact.dob, 'YYYY-MM-DD').year());
+
+    return (
+      JSON.stringify(moment().year()) -
+      parseInt(moment(this.businessContact.dob, 'YYYY-MM-DD').year())
+    );
   }
 
   get gender() {
-    return this.businessContact?.gender
+    return this.businessContact?.gender;
   }
 
   get isActive() {
@@ -107,8 +113,7 @@ export default class Agent {
     return {
       ...this.props,
       agentAge: this.age,
-      agentGender: this.gender
-    }
+      agentGender: this.gender,
+    };
   }
-
 }

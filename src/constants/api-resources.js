@@ -301,7 +301,7 @@ export const DEFAULT_REMOTE_CONFIG_VALUES = {
   on_submit_editing_delay_milliseconds: 100,
   print_restriction_password: ['445544321'],
   print_restriction_biller: ['BENUE STATE IRS', 'Benue MDA Revenue'],
-  should_force_app_updates: true,
+  should_force_app_updates: false,
   show_status_animation_before_transaction_receipt: true,
   show_app_update_banner: false,
   show_rate_this_app_menu: false,
