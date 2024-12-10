@@ -1,25 +1,25 @@
-import React from "react";
+import React from 'react';
 
-import { View } from "react-native";
-import RBSheet from "react-native-raw-bottom-sheet";
+import {View} from 'react-native';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
-import { Icon } from "react-native-elements";
-import { connect } from "react-redux";
-import ClickableListItem from "../components/clickable-list-item";
-import Text from "../components/text";
-import { AGENT } from "../constants";
-import { SHOW_FUND_VIA_USSD } from "../constants/api-resources";
-import { BLOCKER } from "../constants/dialog-priorities";
+import {Icon} from 'react-native-elements';
+import {connect} from 'react-redux';
+import ClickableListItem from '../components/clickable-list-item';
+import Text from '../components/text';
+import {AGENT} from '../constants';
+import {SHOW_FUND_VIA_USSD} from '../constants/api-resources';
+import {BLOCKER} from '../constants/dialog-priorities';
 import {
   COLOUR_BLACK,
   COLOUR_GREY,
   COLOUR_LIGHT_GREY,
   COLOUR_WHITE,
-} from "../constants/styles";
-import AgentSerializer from "../serializers/resources/agent";
-import { flashMessage } from "../utils/dialog";
-import { loadData } from "../utils/storage";
-import FundViaTransfer from "./fund-via-transfer";
+} from '../constants/styles';
+import AgentSerializer from '../serializers/resources/agent';
+import {flashMessage} from '../utils/dialog';
+import {loadData} from '../utils/storage';
+import FundViaTransfer from './fund-via-transfer';
 
 class FundingWalletOptionsMenu extends React.Component {
   state = {
@@ -56,9 +56,9 @@ class FundingWalletOptionsMenu extends React.Component {
     const {
       navigation,
       ref_,
-      remoteConfig: { enable_quickteller_funding, enable_webpay_funding },
+      remoteConfig: {enable_quickteller_funding, enable_webpay_funding},
       requestClose,
-      screenShown
+      screenShown,
     } = this.props;
 
     const isQuicktellerFundingDisabled = !enable_quickteller_funding;
@@ -68,23 +68,23 @@ class FundingWalletOptionsMenu extends React.Component {
       <View>
         <FundViaTransfer
           navigation={this.props.navigation}
-          ref_={(component) => (this.fundViaTransfer = component)}
+          ref_={component => (this.fundViaTransfer = component)}
           requestClose={() => this.fundViaTransfer.close()}
           accountNo={
             this.state.currentAgent?.staticAccounts
               ? this.state.currentAgent?.staticAccounts[0]?.accountNumber
-              : "..."
+              : '...'
           }
           // accountNo={this.state.currentAgent?.staticAccounts[0]?.accountNumber || "123456789099"}
           bankName={
             this.state.currentAgent?.staticAccounts
               ? this.state.currentAgent?.staticAccounts[0]?.bankName
-              : "..."
+              : '...'
           }
           accountName={
             this.state.currentAgent?.staticAccounts
               ? this.state.currentAgent?.staticAccounts[0]?.accountName
-              : "..."
+              : '...'
           }
           // bankName={this.state.currentAgent?.staticAccounts[0]?.bankName  || "Wema Bank"}
         />
@@ -94,13 +94,11 @@ class FundingWalletOptionsMenu extends React.Component {
           duration={250}
           height={430}
           onClose={this.onCancelConfirmation}
-          ref={ref_}
-        >
+          ref={ref_}>
           <View
             style={{
               padding: 20,
-            }}
-          >
+            }}>
             <Text bold>Fund your wallet via</Text>
           </View>
 
@@ -109,16 +107,15 @@ class FundingWalletOptionsMenu extends React.Component {
               this.fundViaTransfer.open();
             }}
             style={{
-              alignItems: "center",
+              alignItems: 'center',
               borderBottomColor: COLOUR_LIGHT_GREY,
               borderBottomWidth: 1,
-              flexDirection: "row",
+              flexDirection: 'row',
               height: 70,
-              justifyContent: "space-between",
+              justifyContent: 'space-between',
               padding: 20,
-            }}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text big black>
                 Via Transfer
               </Text>
@@ -126,12 +123,11 @@ class FundingWalletOptionsMenu extends React.Component {
                 <Text
                   style={{
                     fontSize: 9,
-                    backgroundColor: "red",
+                    backgroundColor: 'red',
                     padding: 3,
-                    color: "white",
+                    color: 'white',
                     marginLeft: 10,
-                  }}
-                >
+                  }}>
                   NEW
                 </Text>
               )}
@@ -145,22 +141,21 @@ class FundingWalletOptionsMenu extends React.Component {
           {SHOW_FUND_VIA_USSD && (
             <ClickableListItem
               onPress={() => {
-                navigation.navigate("FundWalletViaUssd",{
+                navigation.navigate('FundWalletViaUssd', {
                   previousScreen: screenShown,
                 });
                 requestClose();
               }}
               style={{
-                alignItems: "center",
+                alignItems: 'center',
                 borderBottomColor: COLOUR_LIGHT_GREY,
                 borderBottomWidth: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
                 height: 70,
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
                 padding: 20,
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text big black>
                   Via USSD
                 </Text>
@@ -168,12 +163,11 @@ class FundingWalletOptionsMenu extends React.Component {
                   <Text
                     style={{
                       fontSize: 9,
-                      backgroundColor: "red",
+                      backgroundColor: 'red',
                       padding: 3,
-                      color: "white",
+                      color: 'white',
                       marginLeft: 10,
-                    }}
-                  >
+                    }}>
                     New
                   </Text>
                 )}
@@ -191,34 +185,32 @@ class FundingWalletOptionsMenu extends React.Component {
             <ClickableListItem
               onPress={() =>
                 flashMessage(
-                  "Fund Via USSD",
-                  "This feature will be launched soon!",
-                  BLOCKER
+                  'Fund Via USSD',
+                  'This feature will be launched soon!',
+                  BLOCKER,
                 )
               }
               style={{
-                alignItems: "center",
+                alignItems: 'center',
                 borderBottomColor: COLOUR_LIGHT_GREY,
                 borderBottomWidth: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
                 height: 70,
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
                 padding: 20,
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text big grey>
                   Via USSD
                 </Text>
                 <Text
                   style={{
                     fontSize: 9,
-                    backgroundColor: "#bB8000",
+                    backgroundColor: '#bB8000',
                     padding: 3,
-                    color: "white",
+                    color: 'white',
                     marginLeft: 10,
-                  }}
-                >
+                  }}>
                   Coming Soon
                 </Text>
               </View>
@@ -234,43 +226,41 @@ class FundingWalletOptionsMenu extends React.Component {
           <ClickableListItem
             disabled={isWebPayFundingDisabled}
             onPress={() => {
-              navigation.navigate("FundWalletInApp", { previousScreen: screenShown,});
+              navigation.navigate('FundWalletInApp', {
+                previousScreen: screenShown,
+              });
               requestClose();
             }}
             style={{
-              alignItems: "center",
+              alignItems: 'center',
               borderBottomColor: COLOUR_LIGHT_GREY,
               borderBottomWidth: 1,
-              flexDirection: "row",
+              flexDirection: 'row',
               height: 70,
-              justifyContent: "space-between",
+              justifyContent: 'space-between',
               padding: 20,
-            }}
-          >
+            }}>
             <View>
               <Text
                 big
                 black={!isWebPayFundingDisabled}
-                lightGrey={isWebPayFundingDisabled}
-              >
+                lightGrey={isWebPayFundingDisabled}>
                 Quickteller Paypoint
               </Text>
               <View
                 style={{
-                  alignItems: "center",
-                  flexDirection: "row",
+                  alignItems: 'center',
+                  flexDirection: 'row',
                   backgroundColor: isWebPayFundingDisabled
                     ? COLOUR_WHITE
                     : COLOUR_LIGHT_GREY,
-                  justifyContent: "space-evenly",
+                  justifyContent: 'space-evenly',
                   padding: 6,
                   width: 100,
-                }}
-              >
+                }}>
                 <Text
                   lightGrey={isWebPayFundingDisabled}
-                  style={{ fontSize: 13 }}
-                >
+                  style={{fontSize: 13}}>
                   Instant
                 </Text>
                 <Icon
@@ -293,24 +283,22 @@ class FundingWalletOptionsMenu extends React.Component {
           <ClickableListItem
             disabled={isQuicktellerFundingDisabled}
             onPress={() => {
-              navigation.navigate("FundWalletQuickteller");
+              navigation.navigate('FundWalletQuickteller');
               requestClose();
             }}
             style={{
-              alignItems: "center",
+              alignItems: 'center',
               borderBottomColor: COLOUR_LIGHT_GREY,
               borderBottomWidth: 1,
-              flexDirection: "row",
+              flexDirection: 'row',
               height: 70,
-              justifyContent: "space-between",
+              justifyContent: 'space-between',
               padding: 20,
-            }}
-          >
+            }}>
             <Text
               big
               black={!isQuicktellerFundingDisabled}
-              lightGrey={isQuicktellerFundingDisabled}
-            >
+              lightGrey={isQuicktellerFundingDisabled}>
               Quickteller
             </Text>
             <Icon name="chevron-right" type="feather" />
@@ -318,21 +306,20 @@ class FundingWalletOptionsMenu extends React.Component {
 
           <ClickableListItem
             onPress={() => {
-              "Fund Wallet via Bank Branch",
+              'Fund Wallet via Bank Branch',
                 flashMessage(
-                  "Fund Via Bank Branch",
-                  "Visit any bank branch nationwide, and fund your Quickteller Paypoint wallet using PayDirect.",
-                  BLOCKER
+                  'Fund Via Bank Branch',
+                  'Visit any bank branch nationwide, and fund your Quickteller Paypoint wallet using PayDirect.',
+                  BLOCKER,
                 );
             }}
             style={{
-              alignItems: "center",
-              flexDirection: "row",
+              alignItems: 'center',
+              flexDirection: 'row',
               height: 70,
-              justifyContent: "space-between",
+              justifyContent: 'space-between',
               padding: 20,
-            }}
-          >
+            }}>
             <Text big black>
               Bank Branch
             </Text>
@@ -349,7 +336,4 @@ function mapStateToProps(state) {
     remoteConfig: state.tunnel.remoteConfig,
   };
 }
-export default connect(
-  mapStateToProps,
-  null
-)(FundingWalletOptionsMenu);
+export default connect(mapStateToProps, null)(FundingWalletOptionsMenu);
