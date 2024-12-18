@@ -382,7 +382,7 @@ class HomeTab extends React.PureComponent {
 
     const {response, status} = await this.onboarding.getMyApplications();
 
-    console.log('GET APPLICATIONS', {response});
+    //console.log('GET APPLICATIONS', {response});
 
     this.setState({
       isLoadingTotalAgents: false,

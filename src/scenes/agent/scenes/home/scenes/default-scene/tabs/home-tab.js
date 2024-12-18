@@ -2843,67 +2843,66 @@ class HomeTab extends React.PureComponent {
             </View>
           </View>
 
-          {this.state.showPosBanner &&
-            this.props.remoteConfig.enable_pos_request === true && (
+          {this.state.showPosBanner && (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#EBF8FE',
+                maxHeight: '15%',
+                paddingVertical: 20,
+                paddingHorizontal: 10,
+                flexDirection: 'row',
+                marginBottom: 15,
+                marginHorizontal: 15,
+                borderRadius: 5,
+              }}>
               <View
                 style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#EBF8FE',
-                  maxHeight: '15%',
-                  paddingVertical: 20,
-                  paddingHorizontal: 10,
-                  flexDirection: 'row',
-                  marginBottom: 15,
-                  marginHorizontal: 15,
-                  borderRadius: 5,
+                  width: '30%',
+                  height: '100%',
+                  transform: [{scale: 1.3}],
                 }}>
-                <View
+                <Image
+                  source={require('../../../../../../../assets/media/images/pos.png')}
                   style={{
-                    width: '30%',
+                    resizeMode: 'contain',
+                    width: '100%',
                     height: '100%',
-                    transform: [{scale: 1.3}],
-                  }}>
-                  <Image
-                    source={require('../../../../../../../assets/media/images/pos.png')}
-                    style={{
-                      resizeMode: 'contain',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    width: '70%',
-                  }}>
-                  <Text bold big style={{color: COLOUR_BLACK, marginBottom: 5}}>
-                    Received your POS?
-                  </Text>
-                  <Text style={{color: COLOUR_BLACK, marginBottom: 10}}>
-                    Enter your terminal ID to activate your POS
-                  </Text>
-                  <ClickableListItem
-                    onPress={() => {
-                      this.props.navigation.navigate(
-                        'PosConcorConfirmationScene',
-                      );
-                    }}>
-                    <Text
-                      bold
-                      big
-                      style={{
-                        color: '#00B8DE',
-                        textDecorationLine: 'underline',
-                        textDecorationStyle: 'solid',
-                        textDecorationColor: '#00B8DE',
-                      }}>
-                      Activate Here
-                    </Text>
-                  </ClickableListItem>
-                </View>
+                  }}
+                />
               </View>
-            )}
+              <View
+                style={{
+                  width: '70%',
+                }}>
+                <Text bold big style={{color: COLOUR_BLACK, marginBottom: 5}}>
+                  Received your POS?
+                </Text>
+                <Text style={{color: COLOUR_BLACK, marginBottom: 10}}>
+                  Enter your terminal ID to activate your POS
+                </Text>
+                <ClickableListItem
+                  onPress={() => {
+                    this.props.navigation.navigate(
+                      'PosConcorConfirmationScene',
+                    );
+                  }}>
+                  <Text
+                    bold
+                    big
+                    style={{
+                      color: '#00B8DE',
+                      textDecorationLine: 'underline',
+                      textDecorationStyle: 'solid',
+                      textDecorationColor: '#00B8DE',
+                    }}>
+                    Activate Here
+                  </Text>
+                </ClickableListItem>
+              </View>
+            </View>
+          )}
           {this.renderCarouselPagination()}
 
           <Carousel

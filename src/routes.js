@@ -78,7 +78,7 @@ function MainStackNavigator() {
   const [isStateRestored, setIsStateRestored] = React.useState(false);
 
   const persistNavigationState = async navState => {
-    console.log(navState, 'my navstate');
+    // console.log(navState, 'my navstate');
     try {
       await AsyncStorage.setItem(persistenceKey, JSON.stringify(navState));
     } catch (err) {}

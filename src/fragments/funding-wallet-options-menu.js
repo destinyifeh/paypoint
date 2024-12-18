@@ -7,7 +7,7 @@ import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import ClickableListItem from '../components/clickable-list-item';
 import Text from '../components/text';
-import {AGENT} from '../constants';
+import {AGENT, USER} from '../constants';
 import {SHOW_FUND_VIA_USSD} from '../constants/api-resources';
 import {BLOCKER} from '../constants/dialog-priorities';
 import {
@@ -20,10 +20,10 @@ import AgentSerializer from '../serializers/resources/agent';
 import {flashMessage} from '../utils/dialog';
 import {loadData} from '../utils/storage';
 import FundViaTransfer from './fund-via-transfer';
-
 class FundingWalletOptionsMenu extends React.Component {
   state = {
     currentAgent: {},
+    user: {},
   };
 
   constructor() {
@@ -34,6 +34,12 @@ class FundingWalletOptionsMenu extends React.Component {
 
   componentDidMount() {
     this._loadAgent();
+    loadData(USER).then(data => {
+      const user = JSON.parse(data);
+      this.setState({
+        user,
+      });
+    });
   }
 
   async _loadAgent() {
@@ -51,6 +57,13 @@ class FundingWalletOptionsMenu extends React.Component {
 
     return currentAgent;
   }
+
+  onInstantFunding = () => {
+    this.props.navigation.navigate('FundWalletInAppWebview', {
+      currentAgent: this.state.user,
+    });
+    this.props.requestClose();
+  };
 
   render() {
     const {
@@ -225,12 +238,14 @@ class FundingWalletOptionsMenu extends React.Component {
           )}
           <ClickableListItem
             disabled={isWebPayFundingDisabled}
-            onPress={() => {
-              navigation.navigate('FundWalletInApp', {
-                previousScreen: screenShown,
-              });
-              requestClose();
-            }}
+            // onPress={() => {
+            //   navigation.navigate('FundWalletInApp', {
+            //     previousScreen: screenShown,
+            //   });
+            //   requestClose();
+            // }}
+
+            onPress={this.onInstantFunding}
             style={{
               alignItems: 'center',
               borderBottomColor: COLOUR_LIGHT_GREY,

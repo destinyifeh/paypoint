@@ -9,7 +9,7 @@ import store from '../services/redux/store';
 export const paypointAppUpdateNotifier = () => {
   try {
     const remoteChecker = store.getState().tunnel.remoteConfig;
-    console.log(remoteChecker, 'remote check');
+    // console.log(remoteChecker, 'remote check');
     const store_url = remoteChecker.latest_app_url;
     const force_app_update = remoteChecker.should_force_app_updates;
     console.log(force_app_update, 'forcer');

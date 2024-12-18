@@ -3,11 +3,11 @@ import {ScrollView, View} from 'react-native';
 import {connect} from 'react-redux';
 
 import CryptoJS from 'crypto-js';
-import IswMobileSdk, {
-  Environment,
-  IswPaymentInfo,
-  IswSdkConfig,
-} from 'react-native-isw-mobile-sdk';
+// import IswMobileSdk, {
+//   Environment,
+//   IswPaymentInfo,
+//   IswSdkConfig,
+// } from 'react-native-isw-mobile-sdk';
 
 import {liquidityService} from '../../../../../../../App';
 import Button from '../../../../../../components/button';

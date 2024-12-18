@@ -80,6 +80,12 @@ export let NIP_API_BASE_URL = {
   uat: 'https://finch-nip-service.k8.isw.la/api',
   production: 'https://api-gateway.interswitchng.com/api',
 }[ENVIRONMENT];
+
+export let WEBVIEW_FUNDING_URL = {
+  uat: 'https://finch-agent-dashboard.k8.isw.la/agent/fund-via-debit',
+  production: 'https://paypoint.quickteller.com/agent/fund-via-debit',
+}[ENVIRONMENT];
+
 export let ONBOARDING_API_BASE_URL = Config.ONBOARDING_API_BASE_URL;
 export let PASSPORT_API_BASE_URL = Config.PASSPORT_API_BASE_URL;
 export let PLATFORM_API_BASE_URL = Config.PLATFORM_API_BASE_URL;

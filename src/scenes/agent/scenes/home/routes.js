@@ -73,6 +73,7 @@ import CacInsuffiecientFunds from '../cac-registration/scenes/insuffiecient-fund
 import CacPersonalDetails from '../cac-registration/scenes/personal-details';
 import CacSuccess from '../cac-registration/scenes/success';
 import CacUnsuccessfulPayment from '../cac-registration/scenes/unsuccessful-payment';
+import FundWalletInAppWebviewScene from './scenes/fund-wallet-in-app/wallet-in-app-webview';
 
 const Stack = createStackNavigator();
 
@@ -99,6 +100,11 @@ export default function AppNavigator() {
         component={CommissionsEarnedFilterScene}
       />
       <Stack.Screen name="FundWalletInApp" component={FundWalletInAppScene} />
+      <Stack.Screen
+        name="FundWalletInAppWebview"
+        component={FundWalletInAppWebviewScene}
+      />
+
       <Stack.Screen
         name="FundWalletQuickteller"
         component={FundWalletQuicktellerScene}
