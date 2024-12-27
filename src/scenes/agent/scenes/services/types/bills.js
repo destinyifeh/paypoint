@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { BILLS } from "../../../../../constants";
+import {BILLS} from '../../../../../constants';
 import {
   BILL_PAYMENT_INITIATE_CLICK,
   BILL_PAYMENT_INITIATE_FAILURE,
@@ -14,29 +14,30 @@ import {
   POS_BILL_PAYMENT_PROCEED_CLICK,
   POS_BILL_PAYMENT_PROCEED_FAILURE,
   POS_BILL_PAYMENT_PROCEED_SUCCESS,
-} from "../../../../../constants/analytics";
+} from '../../../../../constants/analytics';
 import {
   IKEDC_CODES,
   QUICKTELLER_API_TERMINAL_ID,
   QUICKTELLER_CHANNEL,
-} from "../../../../../constants/api-resources";
-import { NGN } from "../../../../../constants/currencies";
-import Services from "../../../../../fixtures/services";
-import amountField from "../../../../../fragments/amount-field";
-import { TransactionReceiptSerializer } from "../../../../../serializers/resources/receipt";
-import { TransactionConfirmationSerializer } from "../../../../../serializers/resources/transaction-confirmation";
+} from '../../../../../constants/api-resources';
+import {NGN} from '../../../../../constants/currencies';
+import Services from '../../../../../fixtures/services';
+import amountField from '../../../../../fragments/amount-field';
+import {TransactionReceiptSerializer} from '../../../../../serializers/resources/receipt';
+import {TransactionConfirmationSerializer} from '../../../../../serializers/resources/transaction-confirmation';
 import {
   transactionService,
   transactionServiceV3,
-} from "../../../../../setup/api";
-import { convertNgnToNgk } from "../../../../../utils/converters/currencies";
-import { generateChecksum } from "../../../../../utils/helpers";
-import sanitizePhoneNumber from "../../../../../utils/sanitizers/phone-number";
-import PayBillForm from "../forms/pay-bill-form";
-import BaseTransactionType from "./base";
+} from '../../../../../setup/api';
+import {convertNgnToNgk} from '../../../../../utils/converters/currencies';
+import {generateChecksum} from '../../../../../utils/helpers';
+import sanitizePhoneNumber from '../../../../../utils/sanitizers/phone-number';
+import PayBillForm from '../forms/pay-bill-form';
+import BaseTransactionType from './base';
 
 const receiptSerializer = new TransactionReceiptSerializer();
-const transactionConfirmationSerializer = new TransactionConfirmationSerializer();
+const transactionConfirmationSerializer =
+  new TransactionConfirmationSerializer();
 
 export class Bills extends BaseTransactionType {
   get analyticsEvents() {
@@ -56,7 +57,7 @@ export class Bills extends BaseTransactionType {
     };
   }
   get customerIdField() {
-    return "Customer ID";
+    return 'Customer ID';
   }
 
   get codename() {
@@ -64,7 +65,7 @@ export class Bills extends BaseTransactionType {
   }
 
   get friendlyName() {
-    return "Pay Bills";
+    return 'Pay Bills';
   }
 
   get proceedButtonTitle() {
@@ -72,7 +73,7 @@ export class Bills extends BaseTransactionType {
   }
 
   get requestFieldName() {
-    return "billsPaymentRequest";
+    return 'billsPaymentRequest';
   }
 
   get subCategories() {
@@ -80,10 +81,8 @@ export class Bills extends BaseTransactionType {
   }
 
   getConfirmationFields() {
-    const {
-      selectedSubOption,
-      subOptionsName,
-    } = this.transactionStateFromReduxStore;
+    const {selectedSubOption, subOptionsName} =
+      this.transactionStateFromReduxStore;
 
     return transactionConfirmationSerializer.getConfirmationFields({
       category: this.codename,
@@ -99,10 +98,8 @@ export class Bills extends BaseTransactionType {
   }
 
   getReceiptFields() {
-    const {
-      selectedSubOption,
-      subOptionsName,
-    } = this.transactionStateFromReduxStore;
+    const {selectedSubOption, subOptionsName} =
+      this.transactionStateFromReduxStore;
 
     return receiptSerializer.getReceiptFields({
       category: this.codename,
@@ -131,32 +128,34 @@ export class Bills extends BaseTransactionType {
     }
 
     const {
-      deviceDetails: { deviceUuid: deviceId },
+      deviceDetails: {deviceUuid: deviceId},
     } = this;
-    const { selectedBillerOption } = this.form.state;
+    const {selectedBillerOption} = this.form.state;
     this.formData = this.form.state.form;
 
-    const { name, paymentCode, serviceName, billerType } = selectedBillerOption;
+    const {name, paymentCode, serviceName, billerType} = selectedBillerOption;
     const amount = convertNgnToNgk(this.formData.amount);
     const channel = QUICKTELLER_CHANNEL;
-    const httpMethod = "POST";
+    const httpMethod = 'POST';
     const username = this.user.username;
 
     this.initiateResponseObj =
-      billerType === "BP" || IKEDC_CODES.includes(paymentCode)
+      billerType === 'BP' ||
+      billerType === 'IKEDC' ||
+      IKEDC_CODES.includes(paymentCode)
         ? await transactionServiceV3.initiateTransaction(
             generateChecksum(
               `${username}${httpMethod}${amount}${httpMethod}${paymentCode.trim()}` +
-                `${httpMethod}${deviceId}`
+                `${httpMethod}${deviceId}`,
             ),
             this.codename,
             {
               amount,
-              paymentInstrumentType: "CASH",
+              paymentInstrumentType: 'CASH',
               channel,
               customerMsisdn: sanitizePhoneNumber(
                 this.formData.phone,
-                this.formData.countryShortCode
+                this.formData.countryShortCode,
               ),
               customerId: this.formData.customerId,
               gender: this.formData.gender,
@@ -166,21 +165,21 @@ export class Bills extends BaseTransactionType {
               address: this.formData.address ? this.formData.address : null,
             },
             this.requestFieldName,
-            deviceId
+            deviceId,
           )
         : await transactionService.initiateTransaction(
             generateChecksum(
               `${username}${httpMethod}${amount}${httpMethod}${paymentCode.trim()}` +
-                `${httpMethod}${deviceId}`
+                `${httpMethod}${deviceId}`,
             ),
             this.codename,
             {
               amount,
-              paymentInstrumentType: "CASH",
+              paymentInstrumentType: 'CASH',
               channel,
               customerMsisdn: sanitizePhoneNumber(
                 this.formData.phone,
-                this.formData.countryShortCode
+                this.formData.countryShortCode,
               ),
               customerId: this.formData.customerId,
               gender: this.formData.gender,
@@ -190,12 +189,12 @@ export class Bills extends BaseTransactionType {
               address: this.formData.address ? this.formData.address : null,
             },
             this.requestFieldName,
-            deviceId
+            deviceId,
           );
 
-    this.initiateResponseObj.response["billerType"] = billerType;
-    this.initiateResponseObj.response["paymentCode"] = paymentCode;
-    console.log({ initiateResponseObj: this.initiateResponseObj });
+    this.initiateResponseObj.response['billerType'] = billerType;
+    this.initiateResponseObj.response['paymentCode'] = paymentCode;
+    console.log({initiateResponseObj: this.initiateResponseObj});
 
     this.afterInitiate();
   }
@@ -203,40 +202,41 @@ export class Bills extends BaseTransactionType {
   async proceed() {
     this.beforeProceed();
 
-    const billerType = this.initiateResponseObj.response["billerType"];
-    const paymentCode = this.initiateResponseObj.response["paymentCode"];
+    const billerType = this.initiateResponseObj.response['billerType'];
+    const paymentCode = this.initiateResponseObj.response['paymentCode'];
 
     const {
-      deviceDetails: { deviceUuid: deviceId },
+      deviceDetails: {deviceUuid: deviceId},
     } = this;
-    const requestPayload = this.initiateResponseObj.response[
-      this.requestFieldName
-    ];
+    const requestPayload =
+      this.initiateResponseObj.response[this.requestFieldName];
     requestPayload.parentCustomerId = this.formData.customerId;
 
     this.proceedResponseObj =
-      billerType === "BP" || IKEDC_CODES.includes(paymentCode)
+      billerType === 'BP' ||
+      billerType === 'IKEDC' ||
+      IKEDC_CODES.includes(paymentCode)
         ? await transactionServiceV3.processTransaction(
             this.initiateResponseObj.response.transactionReference,
             this.codename,
             requestPayload,
             this.requestFieldName,
-            deviceId
+            deviceId,
           )
         : await transactionService.processTransaction(
             this.initiateResponseObj.response.transactionReference,
             this.codename,
             requestPayload,
             this.requestFieldName,
-            deviceId
+            deviceId,
           );
-    console.log({ proceedResponseObj: this.proceedResponseObj });
+    console.log({proceedResponseObj: this.proceedResponseObj});
 
     this.afterProceed();
     return;
   }
 
   renderForm(props) {
-    return <PayBillForm {...props} ref={(form) => (this.form = form)} />;
+    return <PayBillForm {...props} ref={form => (this.form = form)} />;
   }
 }
