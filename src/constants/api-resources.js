@@ -114,7 +114,7 @@ export let SHOW_CBN_COMPLIANCE = true;
 export let ALLOW_NEW_FMPA = false;
 export let SHOW_CAC = false;
 
-const FORCE_UAT = true;
+const FORCE_UAT = false;
 if (FORCE_UAT) {
   SHOW_CAC = true;
   SHOW_CBN_COMPLIANCE = true;
@@ -154,7 +154,7 @@ if (FORCE_UAT) {
 
   QUICKTELLER_API_BASE_URL = 'https://quickteller.k8.isw.la/api/v1';
   CATALOG_API_BASE_URL =
-    'http://finch.qa.interswitchng.com/api/v2/finch-catalog-service/quickteller';
+    'https://finch-catalog-service.k8.isw.la/api/v2/finch-catalog-service/quickteller';
   DOCUMENT_BASE_URL =
     'https://mufasa.k8.isw.la/p/inclusio/finch-onboarding-service';
   WEBVIEW_FACIAL_VERIFICATION_BASE_URL =
@@ -172,7 +172,7 @@ if (FORCE_UAT) {
   TRANSFER_TO_ACCOUNT_PAYMENT_ITEM_CODE = 70101;
 }
 
-const FORCE_PROD = false;
+const FORCE_PROD = true;
 if (FORCE_PROD) {
   SHOW_CAC = false;
   SHOW_CBN_COMPLIANCE = true;

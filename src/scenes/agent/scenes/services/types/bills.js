@@ -140,15 +140,14 @@ export class Bills extends BaseTransactionType {
     const username = this.user.username;
 
     this.initiateResponseObj =
-      billerType === 'BP' ||
-      billerType === 'IKEDC' ||
-      IKEDC_CODES.includes(paymentCode)
+      billerType === 'BP' || IKEDC_CODES.includes(paymentCode)
         ? await transactionServiceV3.initiateTransaction(
             generateChecksum(
               `${username}${httpMethod}${amount}${httpMethod}${paymentCode.trim()}` +
                 `${httpMethod}${deviceId}`,
             ),
             this.codename,
+            channel,
             {
               amount,
               paymentInstrumentType: 'CASH',
@@ -162,7 +161,8 @@ export class Bills extends BaseTransactionType {
               narration: `${serviceName} (${name})`,
               paymentItemCode: paymentCode,
               terminalId: QUICKTELLER_API_TERMINAL_ID,
-              address: this.formData.address ? this.formData.address : null,
+              ...(this.formData.address && {address: this.formData.address}),
+              parentCustomerId: this.formData.customerId,
             },
             this.requestFieldName,
             deviceId,
@@ -213,9 +213,7 @@ export class Bills extends BaseTransactionType {
     requestPayload.parentCustomerId = this.formData.customerId;
 
     this.proceedResponseObj =
-      billerType === 'BP' ||
-      billerType === 'IKEDC' ||
-      IKEDC_CODES.includes(paymentCode)
+      billerType === 'BP' || IKEDC_CODES.includes(paymentCode)
         ? await transactionServiceV3.processTransaction(
             this.initiateResponseObj.response.transactionReference,
             this.codename,
