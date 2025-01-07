@@ -1,7 +1,7 @@
 import React from "react";
+import { View } from "react-native";
 import { connect } from "react-redux";
 import SuccessModal from "../../../../../fragments/success-modal";
-import { View } from "react-native";
 
 class SuccessScene extends React.Component {
   constructor() {
@@ -32,11 +32,11 @@ class SuccessScene extends React.Component {
           onClosePress={this.handleModalClose}
           screen2={"Agent"}
           message={
-            "The payment has been completed successfully. Your business registration will be completed within 2-5 business days."
+            "The payment has been completed successfully. Your business registration will be completed within 3-5 business days."
           }
           source={require("../../../../../animations/checked-done-2.json")}
           successMessage={"Congratulations!"}
-          buttonTitle2= {"Continue to Dashboard"}
+          buttonTitle2={"Continue to Dashboard"}
           show={false}
           show2={true}
         />

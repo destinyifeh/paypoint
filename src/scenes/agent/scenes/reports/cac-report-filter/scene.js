@@ -66,7 +66,6 @@ export default class ReportCacFilterScene extends React.Component {
 
   async loadData() {
     const {response, status} = await platformService.getAgentsUnderAggregator();
-
     const {isHistoricalData = false} = this.props.route.params || {};
 
     const {domainCode = ''} = this.props.route.params || {};

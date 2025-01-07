@@ -205,7 +205,7 @@ export default class CacReportRow extends React.Component {
             <Icon
               color={"#5F738C"}
               name="chevron-right"
-              onPress={() => this.props.navigation.goBack()}
+              onPress={this.props.onPressOut}
               size={24}
               type="material"
               underlayColor="transparent"

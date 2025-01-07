@@ -8,7 +8,10 @@ import FormInput from "../../../../../components/form-controls/form-input";
 import FormPicker from "../../../../../components/form-controls/form-picker";
 import Text from "../../../../../components/text";
 import { NIGERIA } from "../../../../../constants";
-import { MIN_NIGERIA_PHONE_LENGTH, PAST_DATE } from "../../../../../constants/fields";
+import {
+  MIN_NIGERIA_PHONE_LENGTH,
+  PAST_DATE,
+} from "../../../../../constants/fields";
 import {
   COLOUR_BLACK,
   COLOUR_BLUE,
@@ -18,8 +21,8 @@ import {
 import CountriesStatesLga from "../../../../../fixtures/countries_states_lgas.json";
 import styles from "../../../../../scenes/aggregator/scenes/home/scenes/pre-setup-agent/styles";
 import Platform from "../../../../../services/api/resources/platform";
-import { loadData } from "../../../../../utils/storage";
 import { computePastDate } from "../../../../../utils/calendar";
+import { loadData } from "../../../../../utils/storage";
 
 const GENDER_TYPES = [
   {

@@ -46,6 +46,17 @@ export function generateMac(rawValue) {
   const hash = CryptoJS.SHA512(rawValue);
   return hash.toString(CryptoJS.enc.Hex);
 }
+export function validateName(name) {
+  // Regular expression to check if the input contains at least two words
+
+  const nameRegex = /^[a-zA-Z]+(?: [a-zA-Z]+)+$/;
+  // Test the input against the regular expression
+  if (nameRegex.test(name.trim())) {
+    return true; // The input is valid
+  } else {
+    return false; // The input is invalid
+  }
+}
 
 export function getBankForBankCode(bankCode) {
   return Banks.find(({cbnCode}) => bankCode === cbnCode);

@@ -51,7 +51,7 @@ const CacRegPaymentPrompt = (props) => {
             </Text>
           </View>
         </View>
-        <PaymentForm />
+        <PaymentForm amount={props.amount} />
 
         <View
           style={{

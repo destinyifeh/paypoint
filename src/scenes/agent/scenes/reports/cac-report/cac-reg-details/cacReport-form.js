@@ -30,11 +30,15 @@ const COUNTRY = [
 const LINE_OF_BUSINESS = [
   {
     name: "General Merchandise",
-    value: "General MerchandiseMale",
+    value: "General Merchandise",
   },
   {
     name: "Trading",
     value: "Trading",
+  },
+  {
+    name: "Fashion design/tailoring",
+    value: "Fashion design/tailoring",
   },
   {
     name: "ICT Service",
@@ -80,18 +84,6 @@ const LINE_OF_BUSINESS = [
     name: "POS Agent",
     value: "POS Agent",
   },
-  {
-    name: "Fashion design/tailoring",
-    value: "Fashion design/tailoring",
-  },
-  {
-    name: "Fashion",
-    value: "Fashion",
-  },
-  {
-    name: "pharmacy",
-    value: "pharmacy",
-  },
 ];
 const UPLOAD_LIMIT = 1048576;
 const FILE_UPLOAD_LIMIT_MESSAGE_NEW =
@@ -130,6 +122,7 @@ export class CacReportForm extends BaseForm {
     "proprietorState",
     "proprietorFirstname",
     "proprietorSurname",
+    "proprietorEmail",
     "proposedOption1",
     "proprietorStreetNumber",
     "proprietorServiceAddress",
@@ -156,6 +149,7 @@ export class CacReportForm extends BaseForm {
         proprietorState: null,
         proprietorFirstname: null,
         proprietorSurname: null,
+        proprietorEmail: null,
         proposedOption1: null,
         proprietorServiceAddress: null,
         serviceAddress: null,
@@ -237,7 +231,8 @@ export class CacReportForm extends BaseForm {
             .proprietorNationality,
           proprietorState: this.state.cacReportdetails.proprietorState,
           proprietorFirstname: this.state.cacReportdetails.proprietorFirstname,
-          proprietorSurname: this.state.cacReportdetails.proprietorSurname,
+          proprietorSurname: this.state.cacReportdetails.proprietorSurname, //proprietorEmail
+          proprietorEmail: this.state.cacReportdetails.proprietorEmail, //proprietorEmail
           proposedOption1: this.state.cacReportdetails.proposedOption1,
           proprietorStreetNumber: this.state.cacReportdetails
             .proprietorStreetNumber,
@@ -750,7 +745,11 @@ export class CacReportForm extends BaseForm {
             <View>
               {this.props.queried && (
                 <CacReportBanner
-                  title={" errors occurred"}
+                  title={
+                    this.state.queriedFieldsArray.length > 1
+                      ? "errors occurred"
+                      : "error occurred"
+                  }
                   bgColor="#FEF6CF"
                   titleColor="#353F50"
                   message={this.state.queriedFieldsArray?.map(
@@ -1257,6 +1256,68 @@ export class CacReportForm extends BaseForm {
               }
               textContentType="emailAddress"
               textInputRef={(input) => (this.proprietorSurname = input)}
+              validators={{
+                required: true,
+              }}
+              hideOptionalLabel={true}
+            />
+
+            <FormInput
+              autoCapitalize="name"
+              autoCompleteType="email"
+              defaultValue={formData.proprietorEmail}
+              disabled={this.props.queried ? false : true}
+              innerContainerStyle={styles.formInputInnerContainerStyle}
+              keyboardType="email-address"
+              onChangeText={(proprietorEmail, isValid) => {
+                this.updateFormField({ proprietorEmail });
+                !isValid
+                  ? this.addInvalidField("proprietorEmail")
+                  : this.removeInvalidField("proprietorEmail");
+                if (this.state.queriedFields.proprietorEmail) {
+                  this.clearError("proprietorEmail");
+                  this.setState((prevState) => ({
+                    queriedFields: {
+                      ...prevState.queriedFields,
+                      proprietorEmail: false, // Replace 'newValue' with the actual value you want to set
+                    },
+                  }));
+                }
+                this.checkFormValidity();
+              }}
+              onSubmitEditing={() => {
+                if (this.state.queriedFields.proprietorEmail) {
+                  this.clearError("proprietorEmail");
+                  this.setState((prevState) => ({
+                    queriedFields: {
+                      ...prevState.queriedFields,
+                      proprietorEmail: false, // Replace 'newValue' with the actual value you want to set
+                    },
+                  }));
+                }
+                this.checkFormValidity();
+              }}
+              outerContainerStyle={styles.formInputOuterContainerStyle}
+              placeholder="Placeholder"
+              propagateError={this.props.propagateFormErrors}
+              showValidIndicator={true}
+              // text="Proprietor Surname"
+              text={
+                this.state.queriedFields.proprietorEmail ? (
+                  <>
+                    {" "}
+                    <Text style={{ color: "red" }} bold>
+                      Proprietor Email
+                    </Text>
+                  </>
+                ) : (
+                  <Text style={{ color: COLOUR_BLACK }} bold>
+                    Proprietor Email
+                  </Text>
+                )
+              }
+              textContentType="emailAddress"
+              textInputRef={(input) => (this.proprietorEmail = input)}
               validators={{
                 required: true,
               }}

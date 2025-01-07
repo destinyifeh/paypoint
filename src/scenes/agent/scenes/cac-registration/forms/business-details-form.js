@@ -26,7 +26,7 @@ const lineBusiness = "ICT";
 const LINE_OF_BUSINESS = [
   {
     name: "General Merchandise",
-    value: "General MerchandiseMale",
+    value: "General Merchandise",
   },
   {
     name: "Trading",
@@ -214,9 +214,10 @@ export class BusinessDetailsForm extends BaseForm {
     const cacInitiateResponse = JSON.parse(
       await loadData("cacRegInitiateResponseData")
     );
+    //   cacInitiateResponse.cacInitiateRequest.lineOfBusiness
     console.log(
       "initaitaeResponseData1",
-      cacInitiateResponse.cacInitiateRequest.lineOfBusiness
+      cacInitiateResponse
     );
     this.setState(
       {

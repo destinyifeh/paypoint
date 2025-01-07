@@ -1,47 +1,47 @@
-import moment from "moment";
+import moment from 'moment';
 
 import {
   PENDING_TRANSACTION_STATUS_CODE,
   TRANSACTION_STATUS_LABELS,
-} from "../../constants";
-import { ENVIRONMENT, IKEDC_CODES } from "../../constants/api-resources";
-import { NGN } from "../../constants/currencies";
-import AllNetworkPaymentCodes from "../../fixtures/network-payments-code";
-import AllNetworkPaymentCodesEpin from "../../fixtures/network-payments-code-epin.json";
-import amountField from "../../fragments/amount-field";
-import { convertNgkToNgn } from "../../utils/converters/currencies";
+} from '../../constants';
+import {ENVIRONMENT, IKEDC_CODES} from '../../constants/api-resources';
+import {NGN} from '../../constants/currencies';
+import AllNetworkPaymentCodes from '../../fixtures/network-payments-code';
+import AllNetworkPaymentCodesEpin from '../../fixtures/network-payments-code-epin.json';
+import amountField from '../../fragments/amount-field';
+import {convertNgkToNgn} from '../../utils/converters/currencies';
 
 const NetworkPaymentCodes = AllNetworkPaymentCodes[ENVIRONMENT];
 const NetworkPaymentCodesEPin = AllNetworkPaymentCodesEpin[ENVIRONMENT];
 
 function processPins(pins, paymentCode) {
-  console.log({ paymentCode });
+  console.log({paymentCode});
   if (IKEDC_CODES.includes(paymentCode)) {
     if (pins?.length > 25) {
-      const splitPins = pins.split(";");
+      const splitPins = pins.split(';');
 
       const fields = {};
-      splitPins[0] ? (fields["Activation Token 1"] = splitPins[0]) : "";
-      splitPins[1] ? (fields["Activation Token 2"] = splitPins[1]) : "";
-      splitPins[2] ? (fields["Credit Token"] = splitPins[2]) : "";
+      splitPins[0] ? (fields['Activation Token 1'] = splitPins[0]) : '';
+      splitPins[1] ? (fields['Activation Token 2'] = splitPins[1]) : '';
+      splitPins[2] ? (fields['Credit Token'] = splitPins[2]) : '';
       return fields;
     } else {
-      return { Token: pins };
+      return {Token: pins};
     }
   } else {
-    return { PIN: pins };
+    return {PIN: pins};
   }
 }
 
 export function formatReceiptFieldsAsString(fields) {
-  let result = "";
+  let result = '';
 
-  fields.map((section) => {
+  fields.map(section => {
     Object.keys(section).length &&
-      Object.keys(section).map((key) => {
+      Object.keys(section).map(key => {
         const value = section[key];
         result += `${key.toUpperCase()}: ${value}\n`;
-      }, (result += "-------------------------------\n"));
+      }, (result += '-------------------------------\n'));
   });
 
   return result;
@@ -52,16 +52,16 @@ export class TransactionHistoryReceiptSerializer {
   getBillsReceiptFields(data) {
     const address = data.customerAddress;
     const customerId = data.customerId;
-    let customerIdField = "Customer ID";
+    let customerIdField = 'Customer ID';
     try {
       customerIdField =
-        data.paymentItemCode === "051727101" ||
-        data.paymentItemCode === "04393801"
-          ? "Account Number"
-          : data.paymentItemCode === "051722602" ||
-            data.paymentItemCode === "04393701"
-          ? "Meter Number"
-          : "Customer ID";
+        data.paymentItemCode === '051727101' ||
+        data.paymentItemCode === '04393801'
+          ? 'Account Number'
+          : data.paymentItemCode === '051722602' ||
+            data.paymentItemCode === '04393701'
+          ? 'Meter Number'
+          : 'Customer ID';
     } catch {}
     const customerName = `${data.customerFirstName} ${data.customerLastName}`;
     const phone = data.customerMsisdn;
@@ -71,15 +71,15 @@ export class TransactionHistoryReceiptSerializer {
 
     return [
       {
-        "Customer Name": customerName,
-        "Phone Number": phone,
-        ...(Boolean(address) && { Address: address }),
+        'Customer Name': customerName,
+        'Phone Number': phone,
+        ...(Boolean(address) && {Address: address}),
       },
       {
-        "Biller Name": productName,
-        ...(Boolean(serviceOption) && { "Service Option": serviceOption }),
+        'Biller Name': productName,
+        ...(Boolean(serviceOption) && {'Service Option': serviceOption}),
         [customerIdField]: customerId,
-        ...(Boolean(pin) && { ...processPins(pin, data.paymentItemCode) }),
+        ...(Boolean(pin) && {...processPins(pin, data.paymentItemCode)}),
         // IKEJA ELECTRIC fields conditionally comes in here
         // just like PIN and Address
       },
@@ -88,15 +88,15 @@ export class TransactionHistoryReceiptSerializer {
 
   getCashInReceiptFields(data) {
     const address = data.customerAddress;
-    const customerIdField = "Customer ID";
+    const customerIdField = 'Customer ID';
     const customerId = data.customerId;
     const phone = data.customerMsisdn;
     const pin = data.pin;
 
     return [
       {
-        "Phone Number": phone,
-        ...(Boolean(address) && { Address: address }),
+        'Phone Number': phone,
+        ...(Boolean(address) && {Address: address}),
       },
       {
         [customerIdField]: customerId,
@@ -112,9 +112,9 @@ export class TransactionHistoryReceiptSerializer {
 
     return [
       {
-        "Phone Number": customerId,
-        ...(Boolean(beneficiaryEmail) && { Email: beneficiaryEmail }),
-        ...(Boolean(pin) && { PIN: pin }),
+        'Phone Number': customerId,
+        ...(Boolean(beneficiaryEmail) && {Email: beneficiaryEmail}),
+        ...(Boolean(pin) && {PIN: pin}),
       },
     ];
   }
@@ -122,7 +122,7 @@ export class TransactionHistoryReceiptSerializer {
   getFundReceiptFields(data) {
     const address = data.customerAddress;
     const customerId = data.customerId;
-    const customerIdField = "Customer ID";
+    const customerIdField = 'Customer ID';
     const customerName = data.customerFirstName || data.agentName;
     const email = data.beneficiaryEmail;
     const phone = data.customerMsisdn;
@@ -130,11 +130,11 @@ export class TransactionHistoryReceiptSerializer {
 
     return [
       {
-        "Customer Name": customerName,
-        "Phone Number": phone,
-        ...(Boolean(email) && { Email: email }),
-        "Biller Name": productName,
-        ...(Boolean(address) && { Address: address }),
+        'Customer Name': customerName,
+        'Phone Number': phone,
+        ...(Boolean(email) && {Email: email}),
+        'Biller Name': productName,
+        ...(Boolean(address) && {Address: address}),
       },
       {
         [customerIdField]: customerId,
@@ -151,9 +151,9 @@ export class TransactionHistoryReceiptSerializer {
     return [
       {
         Network: network,
-        ...(Boolean(serviceOption) && { "Service Option": serviceOption }),
-        "Phone Number": phone,
-        ...(Boolean(pin) && { PIN: pin }),
+        ...(Boolean(serviceOption) && {'Service Option': serviceOption}),
+        'Phone Number': phone,
+        ...(Boolean(pin) && {PIN: pin}),
       },
     ];
   }
@@ -168,9 +168,9 @@ export class TransactionHistoryReceiptSerializer {
     return [
       {
         Bank: bankName,
-        "Account Number": accountNumber,
-        "Beneficiary Name": beneficiaryName,
-        "Beneficiary Phone": beneficiaryPhone,
+        'Account Number': accountNumber,
+        'Beneficiary Name': beneficiaryName,
+        'Beneficiary Phone': beneficiaryPhone,
         Remark: narration,
       },
     ];
@@ -179,9 +179,7 @@ export class TransactionHistoryReceiptSerializer {
   getNipTransferToAccountReceiptFields(data) {
     const formData = data;
 
-    const beneficiaryFullName = `${formData?.beneficiaryFirstName} ${
-      formData?.beneficiaryLastName
-    }`;
+    const beneficiaryFullName = `${formData?.beneficiaryFirstName} ${formData?.beneficiaryLastName}`;
 
     const accountNumber = formData.beneficiaryAccountNumber;
     const bankName = formData.bankName;
@@ -191,9 +189,9 @@ export class TransactionHistoryReceiptSerializer {
     return [
       {
         Bank: bankName,
-        "Account Number": accountNumber,
-        "Beneficiary Name": beneficiaryName,
-        "Beneficiary Phone": beneficiaryPhone,
+        'Account Number': accountNumber,
+        'Beneficiary Name': beneficiaryName,
+        'Beneficiary Phone': beneficiaryPhone,
       },
     ];
   }
@@ -208,11 +206,11 @@ export class TransactionHistoryReceiptSerializer {
 
     return [
       {
-        "Beneficiary Name": `${beneficiaryFirstName} ${beneficiaryLastName}`,
-        "Beneficiary Business Name": beneficiaryName,
-        "Phone Number": beneficiaryPhone,
-        ...(Boolean(beneficiaryEmail) && { Email: beneficiaryEmail }),
-        ...(Boolean(pin) && { PIN: pin }),
+        'Beneficiary Name': `${beneficiaryFirstName} ${beneficiaryLastName}`,
+        'Beneficiary Business Name': beneficiaryName,
+        'Phone Number': beneficiaryPhone,
+        ...(Boolean(beneficiaryEmail) && {Email: beneficiaryEmail}),
+        ...(Boolean(pin) && {PIN: pin}),
       },
     ];
   }
@@ -222,31 +220,31 @@ export class TransactionHistoryReceiptSerializer {
 
     let transactionTypeFields = null;
     switch (data.transactionType) {
-      case "BILLS":
+      case 'BILLS':
         transactionTypeFields = this.getBillsReceiptFields(data);
         break;
-      case "CASH_IN":
+      case 'CASH_IN':
         transactionTypeFields = this.getCashInReceiptFields(data);
         break;
-      case "DISTRIBUTE":
+      case 'DISTRIBUTE':
         transactionTypeFields = this.getDistributeReceiptFields(data);
         break;
-      case "FUND":
+      case 'FUND':
         transactionTypeFields = this.getFundReceiptFields(data);
         break;
-      case "RECHARGE":
+      case 'RECHARGE':
         transactionTypeFields = this.getRechargeReceiptFields(data);
         break;
-      case "TRANSFER_CASH_IN":
+      case 'TRANSFER_CASH_IN':
         transactionTypeFields = this.getTransferToAccountReceiptFields(data);
-        data["transactionType"] = "CASH_IN";
+        data['transactionType'] = 'CASH_IN';
         break;
-      case "FUND_TRANSFER_UNIFIED":
+      case 'FUND_TRANSFER_UNIFIED':
         transactionTypeFields = data.bankName
           ? this.getTransferToAccountReceiptFields(data)
           : this.getTransferToAgentReceiptFields(data);
         break;
-      case "NIP":
+      case 'NIP':
         transactionTypeFields = this.getNipTransferToAccountReceiptFields(data);
         break;
     }
@@ -254,16 +252,22 @@ export class TransactionHistoryReceiptSerializer {
     return [
       ...(Boolean(transactionTypeFields) ? transactionTypeFields : []),
       {
-        "Transaction Date": data.formattedDateTime,
-        "Transaction Type": data.transactionType,
-        "Transaction Ref": data.transactionRef,
+        'Transaction Date': data.formattedDateTime,
+        'Transaction Type': data.transactionType,
+        'Transaction Ref': data.transactionRef,
         ...(Boolean(data.parentReference) && {
-          "Parent Ref": data.parentReference,
+          'Parent Ref': data.parentReference,
         }),
-        "Transaction Status": data.statusCode,
+        'Transaction Status': data.statusCode,
       },
       {
         Amount: amount,
+      },
+      {
+        Fee:
+          data !== null && data?.transactionType === 'CAC_REGISTRATION'
+            ? '₦0.00'
+            : data?.fee,
       },
       {
         // "extra" will already have been parsed by transaction serializer
@@ -287,20 +291,20 @@ export class TransactionReceiptSerializer {
     return [
       {
         ...(Boolean(customerName) && {
-          "Customer Name": data.payment.billsPaymentRequest.customerName,
+          'Customer Name': data.payment.billsPaymentRequest.customerName,
         }),
-        "Phone Number": data.form.phone,
-        ...(Boolean(address) && { Address: address }),
+        'Phone Number': data.form.phone,
+        ...(Boolean(address) && {Address: address}),
       },
       {
-        "Biller Name": data.meta.selectedBillerOption.serviceName,
-        "Service Option": data.meta.selectedBillerOption.name,
+        'Biller Name': data.meta.selectedBillerOption.serviceName,
+        'Service Option': data.meta.selectedBillerOption.name,
         [customerIdField]: data.form.customerId,
         ...(Boolean(selectedSubOption)
-          ? { [subOptionsName]: selectedSubOption }
+          ? {[subOptionsName]: selectedSubOption}
           : {}),
         ...(Boolean(pin)
-          ? { ...processPins(pin, data.form.paymentItemCode.paymentCode) }
+          ? {...processPins(pin, data.form.paymentItemCode.paymentCode)}
           : {}),
         // IKEJA ELECTRIC fields conditionally comes in here
         // just like PIN and Address
@@ -309,31 +313,31 @@ export class TransactionReceiptSerializer {
   }
 
   getRechargeReceiptFields(data) {
-    const { selectedBillerOption } = data.meta;
+    const {selectedBillerOption} = data.meta;
 
     const isData = Boolean(selectedBillerOption.name);
     const paymentCode = data.form.paymentItemCode;
     const pin = data.processPaymentResponse.pin;
 
-    let networkName = "";
+    let networkName = '';
     try {
       networkName =
         selectedBillerOption && selectedBillerOption.name
           ? selectedBillerOption.name
           : NetworkPaymentCodes.find(
-              (value) => parseInt(value.payment_code) === parseInt(paymentCode)
+              value => parseInt(value.payment_code) === parseInt(paymentCode),
             ).name;
     } catch (e) {
       networkName = NetworkPaymentCodesEPin.find(
-        (value) => parseInt(value.payment_code) === parseInt(paymentCode)
+        value => parseInt(value.payment_code) === parseInt(paymentCode),
       ).name;
     }
 
     return [
       {
-        [isData ? "Data Plan" : "Network"]: networkName,
-        "Phone Number": data.form.phone,
-        ...(Boolean(pin) && { PIN: pin }),
+        [isData ? 'Data Plan' : 'Network']: networkName,
+        'Phone Number': data.form.phone,
+        ...(Boolean(pin) && {PIN: pin}),
       },
     ];
   }
@@ -346,12 +350,12 @@ export class TransactionReceiptSerializer {
 
     return [
       {
-        "Phone Number": data.form.phone,
-        ...(Boolean(address) && { Address: address }),
+        'Phone Number': data.form.phone,
+        ...(Boolean(address) && {Address: address}),
       },
       {
         [customerIdField]: customerId,
-        ...(Boolean(pin) && { PIN: pin }),
+        ...(Boolean(pin) && {PIN: pin}),
       },
     ];
   }
@@ -370,9 +374,9 @@ export class TransactionReceiptSerializer {
     return [
       {
         Bank: bankName,
-        "Account Number": accountNumber,
-        "Beneficiary Name": beneficiaryName,
-        "Beneficiary Phone": beneficiaryPhone,
+        'Account Number': accountNumber,
+        'Beneficiary Name': beneficiaryName,
+        'Beneficiary Phone': beneficiaryPhone,
         Remark: remark,
       },
     ];
@@ -382,9 +386,9 @@ export class TransactionReceiptSerializer {
     return [
       {
         Bank: data.form.bankName,
-        "Account Number": data.form.accountNumber,
-        "Beneficiary Name": data.form.beneficiaryName,
-        "Beneficiary Phone": data.form.beneficiaryPhone,
+        'Account Number': data.form.accountNumber,
+        'Beneficiary Name': data.form.beneficiaryName,
+        'Beneficiary Phone': data.form.beneficiaryPhone,
         Remark: data.form.remark,
       },
     ];
@@ -396,12 +400,12 @@ export class TransactionReceiptSerializer {
 
     return [
       {
-        "Beneficiary Name": !numberOfRecipients
+        'Beneficiary Name': !numberOfRecipients
           ? data.processPaymentResponse.beneficiaryName
           : numberOfRecipients === 1
           ? data.processPaymentResponse.w2WRequestList[0].beneficiaryName
           : `Multiple Recipients (${numberOfRecipients})`,
-        "Phone Number": !numberOfRecipients
+        'Phone Number': !numberOfRecipients
           ? data.processPaymentResponse.beneficiaryPhone
           : numberOfRecipients === 1
           ? data.processPaymentResponse.w2WRequestList[0].beneficiaryPhone
@@ -412,16 +416,16 @@ export class TransactionReceiptSerializer {
 
   getTransactionType(data) {
     switch (data.category) {
-      case "Pay a Bill":
-        return "BILLS";
-      case "Airtime & Data":
-        return "RECHARGE";
-      case "Send Money":
-        return data.subCategory.name === "Distribute"
-          ? "DISTRIBUTE"
-          : "FUND_TRANSFER_UNIFIED";
-      case "Cash In":
-        return "CASH IN";
+      case 'Pay a Bill':
+        return 'BILLS';
+      case 'Airtime & Data':
+        return 'RECHARGE';
+      case 'Send Money':
+        return data.subCategory.name === 'Distribute'
+          ? 'DISTRIBUTE'
+          : 'FUND_TRANSFER_UNIFIED';
+      case 'Cash In':
+        return 'CASH IN';
       default:
         return data.category.toUpperCase();
     }
@@ -430,10 +434,10 @@ export class TransactionReceiptSerializer {
   getPaycodeWithdrawReceiptFields(data) {
     return [
       {
-        "Customer Name": data.form.customerName,
-        "Customer Phone": data.form.customerPhoneNo,
-        "Customer Email": data.form.customerEmail,
-        "Subscriber ID": data.form.subscriberId,
+        'Customer Name': data.form.customerName,
+        'Customer Phone': data.form.customerPhoneNo,
+        'Customer Email': data.form.customerEmail,
+        'Subscriber ID': data.form.subscriberId,
       },
     ];
   }
@@ -441,8 +445,8 @@ export class TransactionReceiptSerializer {
   getUSSDWithdrawReceiptFields(data) {
     return [
       {
-        "Phone Number": data.form.phone,
-        "Bank Name": data.form.bankName,
+        'Phone Number': data.form.phone,
+        'Bank Name': data.form.bankName,
       },
     ];
   }
@@ -453,20 +457,20 @@ export class TransactionReceiptSerializer {
 
     let transactionType = this.getTransactionType(data);
     const resolvedTransactionType =
-      (data.payment.transactionType === "NIP" && "NIP") ||
-      (data.payment.transactionType === "TRANSFER" && "TRANSFER");
+      (data.payment.transactionType === 'NIP' && 'NIP') ||
+      (data.payment.transactionType === 'TRANSFER' && 'TRANSFER');
 
     const extra = {};
     try {
       const processedExtra = data.processPaymentResponse.pinExtras
         ? this.serializeExtraData(
-            JSON.parse(data.processPaymentResponse.pinExtras)
+            JSON.parse(data.processPaymentResponse.pinExtras),
           )
         : {};
 
       if (Object.keys(processedExtra).length > 0) {
         Object.keys(processedExtra).map(
-          (value) => (extra[value] = processedExtra[value])
+          value => (extra[value] = processedExtra[value]),
         );
       }
     } catch (e) {}
@@ -474,33 +478,33 @@ export class TransactionReceiptSerializer {
     let transactionTypeFields = null;
 
     switch (transactionType) {
-      case "BILLS":
+      case 'BILLS':
         transactionTypeFields = this.getBillsReceiptFields(data);
         break;
-      case "CASH_IN":
+      case 'CASH_IN':
         transactionTypeFields = this.getCashInReceiptFields(data);
         break;
-      case "DISTRIBUTE":
+      case 'DISTRIBUTE':
         transactionTypeFields = this.getTransferToAgentReceiptFields(data);
         break;
-      case "RECHARGE":
+      case 'RECHARGE':
         transactionTypeFields = this.getRechargeReceiptFields(data);
         break;
-      case "TRANSFER_CASH_IN":
+      case 'TRANSFER_CASH_IN':
         transactionTypeFields = this.getTransferToAccountReceiptFields(data);
-        transactionType = "CASH_IN";
+        transactionType = 'CASH_IN';
         break;
-      case "FUND_TRANSFER_UNIFIED":
+      case 'FUND_TRANSFER_UNIFIED':
         transactionTypeFields = data.form.bankName
           ? this.getTransferToAccountReceiptFields(data)
           : this.getTransferToAgentReceiptFields(data);
         break;
-      case "NIP":
+      case 'NIP':
         transactionTypeFields = this.getNipTransferToAccountReceiptFields(data);
         break;
-      case "CASH_OUT":
+      case 'CASH_OUT':
         transactionTypeFields =
-          data.subCategory.name === "Via USSD"
+          data.subCategory.name === 'Via USSD'
             ? this.getUSSDWithdrawReceiptFields(data)
             : this.getPaycodeWithdrawReceiptFields(data);
         break;
@@ -509,14 +513,14 @@ export class TransactionReceiptSerializer {
     return [
       ...(Boolean(transactionTypeFields) ? transactionTypeFields : []),
       {
-        "Transaction Date": moment().format("DD/MM/YYYY h:mm a"),
-        "Transaction Type": resolvedTransactionType || transactionType,
-        "Transaction Ref":
+        'Transaction Date': moment().format('DD/MM/YYYY h:mm a'),
+        'Transaction Type': resolvedTransactionType || transactionType,
+        'Transaction Ref':
           data.payment.transactionReference ||
           data.payment.transactionRef ||
           data.processPaymentResponse.requestReference ||
-          "N/A",
-        "Transaction Status": TRANSACTION_STATUS_LABELS[responseCode],
+          'N/A',
+        'Transaction Status': TRANSACTION_STATUS_LABELS[responseCode],
       },
       {
         Amount: amountField(
@@ -526,19 +530,19 @@ export class TransactionReceiptSerializer {
               data.processPaymentResponse.totalAmount ||
                 data.processPaymentResponse.amount ||
                 data.payment.amount ||
-                data.form.amount * 100
-            )
-          )
+                data.form.amount * 100,
+            ),
+          ),
         ),
       },
-      { ...extra },
+      {...extra},
     ];
   }
 
   serializeExtraData(rawExtraData) {
     const refinedExtraData = {};
 
-    rawExtraData.map((obj) => {
+    rawExtraData.map(obj => {
       const key = Object.keys(obj)[0];
       const value = obj[key];
 

@@ -178,7 +178,6 @@ class CacReportDetails extends React.Component {
     this.fetchStates();
     await this.loadAgent();
     const {businessDetails} = this.props.route.params || {};
-
     this.setState(
       {
         businessDetails: businessDetails || {},

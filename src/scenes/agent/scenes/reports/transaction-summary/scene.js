@@ -468,7 +468,18 @@ class TransactionSummary extends React.Component {
               content={
                 <View>
                   {Object.keys(items).map((key, index) => {
-                    const value = items[key];
+                    let value = items[key];
+                    const transactionType =
+                      summaryContent['Transaction Details']?.[
+                        'Transaction Type'
+                      ];
+
+                    if (
+                      key === 'Fee' &&
+                      transactionType === 'CAC_REGISTRATION'
+                    ) {
+                      value = '₦0.00'; // Set a different value for "Fee"
+                    }
 
                     if (value === undefined) {
                       return <React.Fragment />;

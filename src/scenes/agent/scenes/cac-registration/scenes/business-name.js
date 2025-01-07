@@ -44,7 +44,6 @@ class BusinessNameDetails extends React.Component {
 
   componentDidMount() {
     const {cacRegType} = this.props.route.params || {};
-
     this.saveRegType(cacRegType);
     console.log('RegTypeBusiness', cacRegType);
   }

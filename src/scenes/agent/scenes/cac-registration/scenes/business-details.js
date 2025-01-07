@@ -14,6 +14,7 @@ import {
 import CountriesStatesLga from '../../../../../fixtures/countries_states_lgas.json';
 import CacRegPaymentPrompt from '../../../../../fragments/cac-reg-payment-details-modal';
 import TransactionV1 from '../../../../../services/api/resources/transaction-v1';
+import {convertNgkToNgn} from '../../../../../utils/converters/currencies';
 import {getDeviceDetails} from '../../../../../utils/device';
 import {loadData, saveData} from '../../../../../utils/storage';
 import ProgressBar from '../../../../aggregator/components/progress-bar';
@@ -61,6 +62,7 @@ class BusinessDetails extends React.Component {
       newproprietorDob: null,
       assistedCacRegType: false,
       proprietorGender: null,
+      amount: null,
     };
   }
 
@@ -187,9 +189,18 @@ class BusinessDetails extends React.Component {
     const cacInitiateResponse = JSON.parse(
       await loadData('cacRegInitiateResponseData'),
     );
+    console.log(
+      'initaitaeResponseData0',
+      cacInitiateResponse.cacInitiateRequest.amount,
+    );
+    const amount = convertNgkToNgn(
+      cacInitiateResponse.cacInitiateRequest.amount,
+    );
+    console.log('convertNgnToNgk', amount.toString());
     this.setState(
       {
         initiateResponseData: cacInitiateResponse,
+        amount: amount.toString(),
       },
       () => {
         console.log(
@@ -222,6 +233,7 @@ class BusinessDetails extends React.Component {
           this.state.businessDetailsFormData.businessCommencementDate;
         const newcommencementDate = this.rewriteDateFormat(commencementDate);
         console.log('newcommencementDate', newcommencementDate);
+
         this.setState(
           {
             stateName: stateName ? stateName.name : null,
@@ -265,14 +277,14 @@ class BusinessDetails extends React.Component {
           this.state.initiateResponseData.transactionReference,
         transactionType: 'CAC_REGISTRATION',
         cacInitiateRequest: {
-          amount: this.state.initiateResponseData.cacInitiateRequest.amount,
+          amount: this.state.initiateResponseData.cacInitiateRequest?.amount,
           borneBy: 'customer',
           businessName:
-            this.state.initiateResponseData.cacInitiateRequest.businessName,
+            this.state.initiateResponseData.cacInitiateRequest?.businessName,
           customerMsisdn: this.state.personalDetailsFormData.phoneNumber,
           fee: amount,
           lineOfBusiness:
-            this.state.initiateResponseData.cacInitiateRequest.lineOfBusiness,
+            this.state.initiateResponseData.cacInitiateRequest?.lineOfBusiness,
           narration: 'cac registration',
           paymentInstrumentType: 'CASH',
           paymentItemCode: paymentItemCode,
@@ -320,14 +332,15 @@ class BusinessDetails extends React.Component {
             this.state.initiateResponseData.transactionReference,
           transactionType: 'CAC_REGISTRATION',
           cacInitiateRequest: {
-            amount: this.state.initiateResponseData.cacInitiateRequest.amount,
+            amount: this.state.initiateResponseData.cacInitiateRequest?.amount,
             borneBy: 'customer',
             businessName:
-              this.state.initiateResponseData.cacInitiateRequest.businessName,
+              this.state.initiateResponseData.cacInitiateRequest?.businessName,
             customerMsisdn: this.state.personalDetailsFormData.phoneNumber,
             fee: amount,
             lineOfBusiness:
-              this.state.initiateResponseData.cacInitiateRequest.lineOfBusiness,
+              this.state.initiateResponseData.cacInitiateRequest
+                ?.lineOfBusiness,
             narration: 'cac registration',
             paymentInstrumentType: 'CASH',
             paymentItemCode: paymentItemCode,
@@ -508,6 +521,7 @@ class BusinessDetails extends React.Component {
               paymentModalRef={this.paymentModalRef}
               otpOk={this.makePayment}
               loading={this.state.isLoading}
+              amount={this.state.amount}
             />
 
             <View style={{paddingHorizontal: 20, marginBottom: 10}}>

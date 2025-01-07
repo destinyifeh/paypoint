@@ -18,6 +18,7 @@ export class PaymentForm extends BaseForm {
   }
 
   render() {
+    const { amount } = this.props;
     return (
       <View
         style={{
@@ -27,18 +28,11 @@ export class PaymentForm extends BaseForm {
       >
         <FormInput
           disabled={true}
-          defaultValue={"N17,500"}
+          defaultValue={amount}
           innerContainerStyle={styles.formInputInnerContainerStyle}
           keyboardType="number-pad"
-          onChangeText={(otp, isValid) => {
-            this.props.setOtp(otp);
-            this.updateFormField({ otp });
-            !isValid
-              ? this.addInvalidField("otp")
-              : this.removeInvalidField("otp");
-          }}
           outerContainerStyle={styles.formInputOuterContainerStyle}
-          placeholder="Amount"
+         
           propagateError={this.props.propagateFormErrors}
           text="Amount"
           textContentType="oneTimeCode"

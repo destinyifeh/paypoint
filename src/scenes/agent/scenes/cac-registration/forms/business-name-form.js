@@ -18,11 +18,15 @@ import { loadData } from "../../../../../utils/storage";
 const LINE_OF_BUSINESS = [
   {
     name: "General Merchandise",
-    value: "General MerchandiseMale",
+    value: "General Merchandise",
   },
   {
     name: "Trading",
     value: "Trading",
+  },
+  {
+    name: "Fashion design/tailoring",
+    value: "Fashion design/tailoring",
   },
   {
     name: "ICT Service",
@@ -67,18 +71,6 @@ const LINE_OF_BUSINESS = [
   {
     name: "POS Agent",
     value: "POS Agent",
-  },
-  {
-    name: "Fashion design/tailoring",
-    value: "Fashion design/tailoring",
-  },
-  {
-    name: "Fashion",
-    value: "Fashion",
-  },
-  {
-    name: "pharmacy",
-    value: "pharmacy",
   },
 ];
 
@@ -219,7 +211,7 @@ export class BusinessName extends BaseForm {
             <View style={{ marginTop: 2, marginBottom: 5 }}>
               {this.state.invalidName && (
                 <Text mid red>
-                  Business name cannot be empty & a one word
+                  Business name cannot be one word
                 </Text>
               )}
             </View>

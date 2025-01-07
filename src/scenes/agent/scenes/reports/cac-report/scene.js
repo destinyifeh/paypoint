@@ -72,8 +72,9 @@ export default class CacReport extends React.Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    // await this.loadCacReports();
     const {filters: statusValue} = this.props.route.params || {};
+
+    // await this.loadCacReports();
 
     if (
       statusValue &&
@@ -168,6 +169,10 @@ export default class CacReport extends React.Component {
         isLoading: false,
         allReports: response.data.content,
       });
+    } else if (Object.keys(response).length === 0) {
+      this.setState({
+        isLoading: false,
+      });
     } else {
       this.setState({
         didErrorOccur: true,
@@ -223,6 +228,7 @@ export default class CacReport extends React.Component {
       />
     );
   }
+
   render() {
     const {filteredReports, didErrorOccur, isLoading, allReports} = this.state;
     return (
@@ -339,7 +345,7 @@ export default class CacReport extends React.Component {
         )}
         {console.log('filteredReports9', filteredReports)}
         {!Boolean(allReports.length) && !isLoading && (
-          <Text big center style={{padding: 16}}></Text>
+          <Text big center style={{padding: 16}} />
         )}
         {isLoading && <ActivityIndicator />}
         {didErrorOccur && this.errorFallbackMessage()}
