@@ -65,7 +65,6 @@ import {
   SHOW_CBN_COMPLIANCE,
 } from '../../../../../../../constants/api-resources';
 import {
-  BLOCKER,
   CASUAL,
   UNIMPORTANT,
 } from '../../../../../../../constants/dialog-priorities';
@@ -1232,11 +1231,12 @@ function ServicesRow({
               colours={['#2CBC65', '#2CBC65']}
               //category="Pay a Bill"
               text={`Register\nwith CAC`}
-              onPress={() =>
-                // navigation.replace("CacBusinessNameDetails", {
-                //   cacRegType: "assisted",
-                // })
-                flashMessage('Stay tuned!', 'Coming soon', BLOCKER)
+              onPress={
+                () =>
+                  navigation.replace('CacBusinessNameDetails', {
+                    cacRegType: 'assisted',
+                  })
+                //flashMessage('Stay tuned!', 'Coming soon', BLOCKER)
               }
               {...props}
               {...featureProps}

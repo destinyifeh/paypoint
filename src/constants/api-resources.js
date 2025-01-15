@@ -174,7 +174,7 @@ if (FORCE_UAT) {
 
 const FORCE_PROD = false;
 if (FORCE_PROD) {
-  SHOW_CAC = false;
+  SHOW_CAC = true;
   SHOW_CBN_COMPLIANCE = true;
   SHOW_AGGREGATOR_COMMISSION = false;
   SHOW_CRM = true;
@@ -220,7 +220,7 @@ if (FORCE_PROD) {
 
   FIP_WEBVIEW_FACIAL_VERIFICATION_BASE_URL =
     'https://paypoint.quickteller.com/agent/face-verification-fmpa';
-  CAC_API_BASE_URL = 'https://cac-registration-service-prod.k2.isw.la/cac';
+  CAC_API_BASE_URL = 'https://api-gateway.interswitchng.com/cac';
 
   QUICKTELLER_CHANNEL = '7';
   QUICKTELLER_API_TERMINAL_ID = '9FIS0001';
