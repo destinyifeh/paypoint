@@ -259,15 +259,10 @@ export class TransactionHistoryReceiptSerializer {
           'Parent Ref': data.parentReference,
         }),
         'Transaction Status': data.statusCode,
-      },
-      {
         Amount: amount,
-      },
-      {
-        Fee:
-          data !== null && data?.transactionType === 'CAC_REGISTRATION'
-            ? '₦0.00'
-            : data?.fee,
+        ...(data?.transactionType === 'CAC_REGISTRATION' && {
+          Fee: '₦0.00',
+        }),
       },
       {
         // "extra" will already have been parsed by transaction serializer
