@@ -221,6 +221,7 @@ if (FORCE_PROD) {
   FIP_WEBVIEW_FACIAL_VERIFICATION_BASE_URL =
     'https://paypoint.quickteller.com/agent/face-verification-fmpa';
   CAC_API_BASE_URL = 'https://api-gateway.interswitchng.com/cac';
+  WEBVIEW_FUNDING_URL = 'https://paypoint.quickteller.com/agent/fund-via-debit';
 
   QUICKTELLER_CHANNEL = '7';
   QUICKTELLER_API_TERMINAL_ID = '9FIS0001';

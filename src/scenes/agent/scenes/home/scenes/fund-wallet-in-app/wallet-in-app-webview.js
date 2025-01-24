@@ -2,6 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 import ActivityIndicator from '../../../../../../components/activity-indicator';
+import {
+  paypointErrorMessage,
+  paypointSuccessMessage,
+} from '../../../../../../components/paypoint-flash-message';
 import {WEBVIEW_FUNDING_URL} from '../../../../../../constants/api-resources';
 import {retrieveAuthToken} from '../../../../../../utils/auth';
 import {getDeviceDetails} from '../../../../../../utils/device';
@@ -30,9 +34,18 @@ export default function FundWalletInAppWebviewScene({navigation, route}) {
         return navigation.goBack();
       }
 
-      // Example: Show an alert with the response details
+      if (response.key === 'success') {
+        paypointSuccessMessage(null, 'Payment successful');
+        return navigation.goBack();
+      }
 
-      // Handle the response (e.g., update backend or show success screen)
+      if (response.key === 'error') {
+        paypointErrorMessage(
+          'Oops!',
+          'Something went wrong, please try again.',
+        );
+        return navigation.goBack();
+      }
     } catch (error) {
       console.error('Error parsing payment response:', error);
     }
@@ -68,7 +81,7 @@ export default function FundWalletInAppWebviewScene({navigation, route}) {
           console.log("Injected JavaScript running--Dez on it");
         })();
       `}
-        onMessage={handleMessage} // Listen for messages from the WebView
+        onMessage={handleMessage}
         onError={syntheticEvent => {
           const {nativeEvent} = syntheticEvent;
           console.error('WebView error: ', nativeEvent);

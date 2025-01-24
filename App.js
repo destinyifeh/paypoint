@@ -7,10 +7,11 @@
  */
 
 import React from 'react';
-import {DeviceEventEmitter, View} from 'react-native';
+import {DeviceEventEmitter, StatusBar, View} from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Crashlytics from '@react-native-firebase/crashlytics';
+import FlashMessage from 'react-native-flash-message';
 import QuickActions from 'react-native-quick-actions';
 import {Provider} from 'react-redux';
 
@@ -376,6 +377,10 @@ class App extends React.Component {
           <View style={{flex: 1}}>
             {content}
             {/* <UpdateBanner /> */}
+            <FlashMessage
+              position="top"
+              style={{paddingTop: StatusBar.currentHeight || 20}}
+            />
           </View>
         </ErrorBoundary>
       </Provider>
