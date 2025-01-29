@@ -36,7 +36,7 @@ export default function FundWalletInAppWebviewScene({navigation, route}) {
 
       if (response.key === 'success') {
         paypointSuccessMessage(null, 'Payment successful');
-        return navigation.goBack();
+        return navigation.replace('HomeTabs');
       }
 
       if (response.key === 'error') {
@@ -44,7 +44,7 @@ export default function FundWalletInAppWebviewScene({navigation, route}) {
           'Oops!',
           'Something went wrong, please try again.',
         );
-        return navigation.goBack();
+        return navigation.replace('HomeTabs');
       }
     } catch (error) {
       console.error('Error parsing payment response:', error);
